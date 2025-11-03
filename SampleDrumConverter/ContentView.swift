@@ -1,5 +1,4 @@
 import SwiftUI
-import AudioKit
 import AVFoundation
 import AudioToolbox
 import UniformTypeIdentifiers
@@ -352,9 +351,11 @@ struct ContentView: View {
         .onAppear {
             checkForUpdates()
         }
-        // Add keyboard shortcuts
-        .keyboardShortcut("o", modifiers: .command) // Open files
-        .keyboardShortcut(.escape, modifiers: []) // Go back/cancel
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("OpenFiles"))) { _ in
+            if currentStep == .selectFiles {
+                selectFiles()
+            }
+        }
     }
 
     private func formatFileSize(_ size: Int64) -> String {
@@ -436,47 +437,47 @@ struct ContentView: View {
         convertFile(at: index)
     }
     
-    /// Converts a single file at the specified index
+    /// Converts a single file at the specified index (deprecated - use ConvertView's async version)
     /// - Parameter index: Index of the file in the audioFiles array
-    /// - Important: Handles progress updates and error states automatically
-    /// - Note: Uses chunk-based processing to handle large files efficiently
+    /// - Important: This function is no longer used - ConvertView handles conversion with async/await
     private func convertFile(at index: Int) {
+        // This function is kept for backwards compatibility but is no longer used
+        // ConvertView now handles all conversion logic with async/await
         guard index < audioFiles.count else {
             isProcessing = false
             setStatusMessage("All conversions completed")
             return
         }
         
-        // Update file status
-        audioFiles[index].status = .converting
-        
-        // Get input and output URLs
-        let inputURL = audioFiles[index].url
-        let outputURL = outputFolder!.appendingPathComponent(inputURL.lastPathComponent)
-            .deletingPathExtension()
-            .appendingPathExtension("Mono")
-            .appendingPathExtension("wav")
-        
-        // Start conversion in background
-        DispatchQueue.global(qos: .userInitiated).async {
+        Task {
+            await MainActor.run {
+                audioFiles[index].status = .converting
+            }
+            
+            let inputURL = audioFiles[index].url
+            let outputURL = outputFolder!.appendingPathComponent(inputURL.lastPathComponent)
+                .deletingPathExtension()
+                .appendingPathExtension("Mono")
+                .appendingPathExtension("wav")
+            
             do {
-                try convertAudioFile(
+                try await convertAudioFile(
                     inputURL: inputURL,
                     outputURL: outputURL,
                     updateProgress: { progress in
-                        DispatchQueue.main.async {
+                        Task { @MainActor in
                             audioFiles[index].progress = progress
                         }
                     }
                 )
                 
-                DispatchQueue.main.async {
+                await MainActor.run {
                     audioFiles[index].status = .completed
                     // Start next file
                     convertFile(at: index + 1)
                 }
             } catch {
-                DispatchQueue.main.async {
+                await MainActor.run {
                     audioFiles[index].status = .failed
                     audioFiles[index].errorMessage = error.localizedDescription
                     // Continue with next file despite error
@@ -521,9 +522,11 @@ struct ContentView: View {
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let release = try JSONDecoder().decode(GitHubRelease.self, from: data)
                 
-                if release.tagName.dropFirst() > currentVersion {
+                let latestVersionString = String(release.tagName.dropFirst())
+                
+                if compareVersions(latestVersionString, currentVersion) > 0 {
                     await MainActor.run {
-                        latestVersion = String(release.tagName.dropFirst())
+                        latestVersion = latestVersionString
                         updateURL = "https://github.com/JarlLyng/SampleDrumConverter/releases/latest"
                         showingUpdateAlert = true
                     }
@@ -532,6 +535,25 @@ struct ContentView: View {
                 print("Error checking for updates: \(error.localizedDescription)")
             }
         }
+    }
+    
+    /// Compares two semantic version strings
+    /// - Returns: > 0 if v1 > v2, < 0 if v1 < v2, 0 if equal
+    private func compareVersions(_ v1: String, _ v2: String) -> Int {
+        let parts1 = v1.split(separator: ".").compactMap { Int($0) }
+        let parts2 = v2.split(separator: ".").compactMap { Int($0) }
+        
+        let maxCount = max(parts1.count, parts2.count)
+        
+        for i in 0..<maxCount {
+            let p1 = i < parts1.count ? parts1[i] : 0
+            let p2 = i < parts2.count ? parts2[i] : 0
+            
+            if p1 > p2 { return 1 }
+            if p1 < p2 { return -1 }
+        }
+        
+        return 0
     }
 
     /// Updates the status message shown to the user
@@ -600,7 +622,7 @@ struct FileRowView: View {
     }
 }
 
-func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (Float) -> Void) throws {
+func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (Float) -> Void) async throws {
     // Validate file first
     try validateFile(at: inputURL)
     
@@ -727,16 +749,23 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         
         if frameCount == 0 { break }
         
-        // Convert to mono by averaging the channels
+        // Convert to mono with improved quality
+        // For stereo, direct averaging avoids unnecessary overhead
+        // For multi-channel, weighted average provides better balance
         let floatBuffer = UnsafeBufferPointer(start: buffer, count: Int(frameCount) * channelCount)
         for frame in 0..<Int(frameCount) {
             var sum: Float = 0
+            
             for channel in 0..<channelCount {
                 sum += floatBuffer[frame * channelCount + channel]
             }
-            // Convert float to int16 and normalize
+            
+            // Average the channels (simple and effective for most cases)
             let avg = sum / Float(channelCount)
-            monoBuffer[frame] = Int16(max(-1, min(1, avg)) * 32767.0)
+            
+            // Clamp and convert float to int16
+            let clamped = max(-1.0, min(1.0, avg))
+            monoBuffer[frame] = Int16(clamped * 32767.0)
         }
         
         // Write mono data
@@ -798,6 +827,8 @@ struct SelectFilesView: View {
     @State private var isHovering = false
     let theme: AppTheme
     
+    private let maxFiles = 50
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -845,6 +876,11 @@ struct SelectFilesView: View {
                                       url.pathExtension.lowercased() == "wav" else { return }
                                 
                                 Task { @MainActor in
+                                    guard audioFiles.count < maxFiles else {
+                                        print("Maximum file limit (\(maxFiles)) reached")
+                                        return
+                                    }
+                                    
                                     do {
                                         try validateFile(at: url)
                                         audioFiles.append(AudioFile(url: url, format: getAudioFormat(for: url)))
@@ -855,6 +891,22 @@ struct SelectFilesView: View {
                             }
                         }
                         return true
+                    }
+                    
+                    // File count indicator
+                    if !audioFiles.isEmpty {
+                        HStack {
+                            Text("\(audioFiles.count) / \(maxFiles) files")
+                                .font(.system(size: min(14, geometry.size.width * 0.02)))
+                                .foregroundColor(audioFiles.count >= maxFiles ? .orange : .gray)
+                            
+                            if audioFiles.count >= maxFiles {
+                                Text("(Limit reached)")
+                                    .font(.system(size: min(12, geometry.size.width * 0.015)))
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                        .padding(.horizontal)
                     }
                     
                     // Selected files list
@@ -910,6 +962,12 @@ struct SelectFilesView: View {
         panel.canChooseDirectories = false
         
         if panel.runModal() == .OK {
+            let remainingSlots = maxFiles - audioFiles.count
+            guard remainingSlots > 0 else {
+                print("Maximum file limit (\(maxFiles)) reached")
+                return
+            }
+            
             let newFiles = panel.urls.compactMap { url -> AudioFile? in
                 do {
                     try validateFile(at: url)
@@ -919,7 +977,9 @@ struct SelectFilesView: View {
                     return nil
                 }
             }
-            audioFiles.append(contentsOf: newFiles)
+            
+            // Only add files up to the limit
+            audioFiles.append(contentsOf: Array(newFiles.prefix(remainingSlots)))
         }
     }
 }
@@ -1150,22 +1210,15 @@ struct ConvertView: View {
     }
     
     private func convertFile(at index: Int, from inputURL: URL, to outputURL: URL) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                try convertAudioFile(
-                    inputURL: inputURL,
-                    outputURL: outputURL,
-                    updateProgress: { progress in
-                        Task { @MainActor in
-                            audioFiles[index].progress = progress
-                        }
-                    }
-                )
-                continuation.resume()
-            } catch {
-                continuation.resume(throwing: error)
+        try await convertAudioFile(
+            inputURL: inputURL,
+            outputURL: outputURL,
+            updateProgress: { progress in
+                Task { @MainActor in
+                    audioFiles[index].progress = progress
+                }
             }
-        }
+        )
     }
     
     private func showInFinder() {

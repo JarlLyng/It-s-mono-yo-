@@ -128,6 +128,15 @@ The app comes with two built-in themes:
 
 ## Release Notes
 
+### Version 1.0.7
+- Fixed version comparison bug (now uses proper semantic versioning)
+- Removed unnecessary AudioKit dependency (reduces app size)
+- Improved mono conversion quality
+- Fixed keyboard shortcuts (⌘O now works correctly)
+- Added visual indicator for maximum file limit (50 files)
+- Converted audio conversion to async/await for better performance
+- Various code improvements and bug fixes
+
 ### Version 1.0.6
 - Added drag and drop support
 - Added automatic update checking

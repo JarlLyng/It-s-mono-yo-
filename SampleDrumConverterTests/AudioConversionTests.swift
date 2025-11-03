@@ -14,7 +14,7 @@ final class AudioConversionTests: XCTestCase {
         }
         
         // Perform conversion
-        try convertAudioFile(inputURL: inputURL, outputURL: outputURL) { _ in }
+        try await convertAudioFile(inputURL: inputURL, outputURL: outputURL) { _ in }
         
         // Verify output
         guard let outputFile = try? AVAudioFile(forReading: outputURL) else {
@@ -39,7 +39,7 @@ final class AudioConversionTests: XCTestCase {
         let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("error_test.wav")
         
         do {
-            try convertAudioFile(inputURL: invalidURL, outputURL: outputURL) { _ in }
+            try await convertAudioFile(inputURL: invalidURL, outputURL: outputURL) { _ in }
             XCTFail("Expected error for invalid input")
         } catch {
             XCTAssertTrue(error is ConversionError)
