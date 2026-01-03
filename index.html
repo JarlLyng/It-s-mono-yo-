@@ -9,26 +9,35 @@
     <meta name="author" content="Jarl Lyng">
     
     <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
     <meta property="og:title" content="It's mono, yo! - WAV to Mono Converter for macOS">
-    <meta property="og:description" content="Convert WAV files to mono format with this elegant macOS app. Perfect for hardware samplers.">
+    <meta property="og:description" content="Convert WAV files to mono format with this elegant macOS app. Perfect for Erica Synths Sample Drum and other hardware samplers. Features drag &amp; drop, dark mode, and batch processing.">
     <meta property="og:image" content="https://jarllyng.github.io/It-s-mono-yo-/screenshots/Screenshot.png">
+    <meta property="og:image:width" content="544">
+    <meta property="og:image:height" content="464">
+    <meta property="og:image:alt" content="It's mono, yo! app interface showing WAV file conversion process">
     <meta property="og:url" content="https://jarllyng.github.io/It-s-mono-yo-">
+    <meta property="og:site_name" content="It's mono, yo!">
+    <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="It's mono, yo! - WAV to Mono Converter">
-    <meta name="twitter:description" content="Convert WAV files to mono format with this elegant macOS app">
+    <meta name="twitter:title" content="It's mono, yo! - WAV to Mono Converter for macOS">
+    <meta name="twitter:description" content="Convert WAV files to mono format with this elegant macOS app. Perfect for Erica Synths Sample Drum and other hardware samplers.">
     <meta name="twitter:image" content="https://jarllyng.github.io/It-s-mono-yo-/screenshots/Screenshot.png">
+    <meta name="twitter:image:alt" content="It's mono, yo! app interface showing WAV file conversion process">
+    <meta name="twitter:creator" content="@JarlLyng">
 
     <title>It's mono, yo! - WAV to Mono Converter for macOS</title>
     
     <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://buttons.github.io">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://buttons.github.io" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://buttons.github.io">
+    <link rel="preload" href="screenshots/Screenshot.png" as="image" type="image/png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -81,12 +90,24 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://jarllyng.github.io/It-s-mono-yo-">
     
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://jarllyng.github.io/It-s-mono-yo-/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://jarllyng.github.io/It-s-mono-yo-/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://jarllyng.github.io/It-s-mono-yo-/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png">
+    <link rel="manifest" href="/manifest.json">
+    
     <!-- More meta tags -->
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
     <meta name="application-name" content="It's mono, yo!">
     <meta name="apple-mobile-web-app-title" content="It's mono, yo!">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#6366f1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1a1b26" media="(prefers-color-scheme: dark)">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="geo.region" content="DK">
+    <meta name="language" content="English">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     <!-- Skip to main content link for accessibility -->
@@ -391,7 +412,7 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "It's mono, yo!",
-      "description": "Convert WAV files to mono format with this elegant macOS app. Perfect for Erica Synths Sample Drum and other hardware samplers.",
+      "description": "Convert WAV files to mono format with this elegant macOS app. Perfect for Erica Synths Sample Drum and other hardware samplers. Features drag & drop, dark mode, and batch processing.",
       "operatingSystem": "macOS",
       "applicationCategory": "AudioTool",
       "applicationSubCategory": "Audio Converter",
@@ -403,7 +424,15 @@
       "screenshot": "https://jarllyng.github.io/It-s-mono-yo-/screenshots/Screenshot.png",
       "downloadUrl": "https://github.com/JarlLyng/It-s-mono-yo-/releases/latest",
       "softwareVersion": "1.0.7",
+      "datePublished": "2024-12-27",
+      "dateModified": "2026-01-03",
       "author": {
+        "@type": "Person",
+        "name": "Jarl Lyng",
+        "url": "https://github.com/JarlLyng",
+        "sameAs": ["https://iamjarl.com"]
+      },
+      "publisher": {
         "@type": "Person",
         "name": "Jarl Lyng",
         "url": "https://github.com/JarlLyng"
@@ -412,6 +441,49 @@
         "@type": "AggregateRating",
         "ratingValue": "5",
         "ratingCount": "1"
+      },
+      "featureList": [
+        "Batch conversion of multiple files",
+        "Preserves original sample rate",
+        "Progress tracking for each file",
+        "Error handling with retry option",
+        "Keyboard shortcuts",
+        "Context menu actions",
+        "Dark mode with two themes",
+        "Drag and drop support"
+      ],
+      "softwareRequirements": "macOS 11.0 or later",
+      "fileSize": "Small",
+      "license": "https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE"
+    }
+    </script>
+    
+    <!-- Structured data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "It's mono, yo!",
+      "url": "https://jarllyng.github.io/It-s-mono-yo-",
+      "logo": "https://jarllyng.github.io/It-s-mono-yo-/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png",
+      "sameAs": [
+        "https://github.com/JarlLyng/It-s-mono-yo-"
+      ]
+    }
+    </script>
+    
+    <!-- Structured data for WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "It's mono, yo!",
+      "url": "https://jarllyng.github.io/It-s-mono-yo-",
+      "description": "Convert WAV files to mono format with this elegant macOS app",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://github.com/JarlLyng/It-s-mono-yo-/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
     }
     </script>
