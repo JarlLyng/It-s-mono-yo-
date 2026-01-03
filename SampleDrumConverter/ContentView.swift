@@ -338,16 +338,7 @@ struct ContentView: View {
                 }
             }
         }
-        .alert("Update Available", isPresented: $showingUpdateAlert) {
-            Button("Download") {
-                if let url = URL(string: updateURL) {
-                    NSWorkspace.shared.open(url)
-                }
-            }
-            Button("Later", role: .cancel) { }
-        } message: {
-            Text("Version \(latestVersion) is available.")
-        }
+        .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
         .onAppear {
             checkForUpdates()
         }
@@ -563,6 +554,41 @@ struct ContentView: View {
     }
 }
 
+private struct UpdateAlertModifier: ViewModifier {
+    @Binding var showing: Bool
+    @Binding var latestVersion: String
+    @Binding var updateURL: String
+
+    func body(content: Content) -> some View {
+        if #available(macOS 12.0, *) {
+            content.alert("Update Available", isPresented: $showing) {
+                Button("Download") {
+                    if let url = URL(string: updateURL) {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+                Button("Later", role: .cancel) { }
+            } message: {
+                Text("Version \(latestVersion) is available.")
+            }
+        } else {
+            // Fallback for macOS < 12: simpler alert without roles/message closure
+            content.alert(isPresented: $showing) {
+                Alert(
+                    title: Text("Update Available"),
+                    message: Text("Version \(latestVersion) is available."),
+                    primaryButton: .default(Text("Download"), action: {
+                        if let url = URL(string: updateURL) {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }),
+                    secondaryButton: .cancel(Text("Later"))
+                )
+            }
+        }
+    }
+}
+
 // FileRowView til at vise individuelle filer
 struct FileRowView: View {
     let file: AudioFile
@@ -615,8 +641,14 @@ struct FileRowView: View {
                 }
             }
             Divider()
-            Button(role: .destructive, action: { onRemove() }) {
-                Label("Remove", systemImage: "trash")
+            if #available(macOS 12.0, *) {
+                Button(role: .destructive, action: { onRemove() }) {
+                    Label("Remove", systemImage: "trash")
+                }
+            } else {
+                Button(action: { onRemove() }) {
+                    Label("Remove", systemImage: "trash")
+                }
             }
         }
     }
@@ -1001,6 +1033,17 @@ struct HoverButtonStyle: ButtonStyle {
     }
 }
 
+extension View {
+    @ViewBuilder
+    func applyProminentStyleAndTint() -> some View {
+        if #available(macOS 12.0, *) {
+            self.buttonStyle(.borderedProminent).tint(.white)
+        } else {
+            self.buttonStyle(.bordered) // Fallback without tint
+        }
+    }
+}
+
 struct SelectOutputView: View {
     @Binding var outputFolder: URL?
     let onBack: () -> Void
@@ -1049,8 +1092,7 @@ struct SelectOutputView: View {
                         .fontWeight(.medium)
                         .frame(width: 100)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.white)
+                .applyProminentStyleAndTint()
                 .disabled(outputFolder == nil)
             }
             
@@ -1144,8 +1186,7 @@ struct ConvertView: View {
                             .fontWeight(.medium)
                             .frame(width: 100)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.white)
+                    .applyProminentStyleAndTint()
                 }
             }
             
@@ -1265,8 +1306,7 @@ struct CompletionView: View {
                     Label("Show in Finder", systemImage: "folder")
                         .frame(width: 200)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.white)
+                .applyProminentStyleAndTint()
                 
                 Button(action: onStartOver) {
                     Label("Convert More Files", systemImage: "arrow.clockwise")
@@ -1289,3 +1329,4 @@ struct GitHubRelease: Codable {
         case tagName = "tag_name"
     }
 }
+
