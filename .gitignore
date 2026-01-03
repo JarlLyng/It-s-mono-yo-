@@ -35,4 +35,8 @@ playground.xcworkspace
 .LSOverride
 
 # Thumbnails
-._* 
+._*
+
+# GitHub Pages files (only in gh-pages branch)
+index.html
+sitemap.xml 
