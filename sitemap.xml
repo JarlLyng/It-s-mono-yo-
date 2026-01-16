@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://jarllyng.github.io/It-s-mono-yo-/</loc>
-    <lastmod>2026-01-03</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jarllyng.github.io/It-s-mono-yo-/"/>
   </url>
 </urlset> 
