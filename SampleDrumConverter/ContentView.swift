@@ -881,11 +881,20 @@ struct SelectFilesView: View {
                     .onHover { hovering in
                         isHovering = hovering
                     }
-                    .onTapGesture(perform: selectFiles)
+                    .onTapGesture {
+                        selectFiles()
+                    }
                     .onDrop(of: [.fileURL], isTargeted: .init(get: { isDropTargeted },
                                                              set: { isDropTargeted = $0 })) { providers in
+                        guard !providers.isEmpty else { return false }
+                        
+                        #if DEBUG
+                        print("Received \(providers.count) dropped file(s)")
+                        #endif
+                        
+                        var hasValidFiles = false
                         for provider in providers {
-                            let _ = provider.loadObject(ofClass: URL.self) { url, error in
+                            provider.loadObject(ofClass: URL.self) { url, error in
                                 if let error = error {
                                     #if DEBUG
                                     print("Error reading dropped file: \(error.localizedDescription)")
@@ -893,8 +902,22 @@ struct SelectFilesView: View {
                                     return
                                 }
                                 
-                                guard let url = url,
-                                      url.pathExtension.lowercased() == "wav" else { return }
+                                guard let url = url else {
+                                    #if DEBUG
+                                    print("Dropped item is not a valid URL")
+                                    #endif
+                                    return
+                                }
+                                
+                                // Check file extension
+                                guard url.pathExtension.lowercased() == "wav" else {
+                                    #if DEBUG
+                                    print("Skipped non-WAV file: \(url.lastPathComponent)")
+                                    #endif
+                                    return
+                                }
+                                
+                                hasValidFiles = true
                                 
                                 // Access security-scoped resource for sandboxed environments
                                 let isAccessing = url.startAccessingSecurityScopedResource()
@@ -906,13 +929,14 @@ struct SelectFilesView: View {
                                 
                                 Task { @MainActor in
                                     guard audioFiles.count < maxFiles else {
-                                        // File limit reached - silently ignore additional files
+                                        #if DEBUG
+                                        print("File limit reached, skipping: \(url.lastPathComponent)")
+                                        #endif
                                         return
                                     }
                                     
                                     do {
                                         // Create a security-scoped bookmark for persistent access
-                                        // This allows the file to be accessed later during conversion
                                         let bookmarkData = try url.bookmarkData(
                                             options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
                                             includingResourceValuesForKeys: nil,
@@ -937,23 +961,27 @@ struct SelectFilesView: View {
                                         }
                                         
                                         // Validate and add file
-                                        // Note: The resolved URL maintains security-scoped access during the session
-                                        // For persistent access across app restarts, bookmark data would need to be stored
                                         try validateFile(at: resolvedURL)
                                         let format = getAudioFormat(for: resolvedURL)
                                         
                                         // Store the resolved URL - access will be re-established during conversion
                                         audioFiles.append(AudioFile(url: resolvedURL, format: format))
+                                        
+                                        #if DEBUG
+                                        print("Successfully added dropped file: \(resolvedURL.lastPathComponent)")
+                                        #endif
                                     } catch {
                                         #if DEBUG
-                                        print("Error validating dropped file: \(error.localizedDescription)")
+                                        print("Error processing dropped file \(url.lastPathComponent): \(error.localizedDescription)")
                                         #endif
                                         // Silently skip invalid files
                                     }
                                 }
                             }
                         }
-                        return true
+                        
+                        // Return true if we have valid files to process
+                        return hasValidFiles
                     }
                     
                     // File count indicator
@@ -1023,27 +1051,58 @@ struct SelectFilesView: View {
         panel.allowedContentTypes = [.wav]
         panel.allowsMultipleSelection = true
         panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.title = "Select WAV Files"
+        panel.prompt = "Select"
         
-        if panel.runModal() == .OK {
-            let remainingSlots = maxFiles - audioFiles.count
-            guard remainingSlots > 0 else {
-                // Maximum file limit reached
-                return
-            }
-            
-            let newFiles = panel.urls.compactMap { url -> AudioFile? in
-                do {
-                    try validateFile(at: url)
-                    return AudioFile(url: url, format: getAudioFormat(for: url))
-                } catch {
-                    // Show error in UI
-                    return nil
-                }
-            }
-            
-            // Only add files up to the limit
-            audioFiles.append(contentsOf: Array(newFiles.prefix(remainingSlots)))
+        let response = panel.runModal()
+        
+        #if DEBUG
+        print("NSOpenPanel response: \(response == .OK ? "OK" : "Cancel")")
+        #endif
+        
+        guard response == .OK else {
+            #if DEBUG
+            print("User cancelled file selection")
+            #endif
+            return
         }
+        
+        let remainingSlots = maxFiles - audioFiles.count
+        guard remainingSlots > 0 else {
+            #if DEBUG
+            print("Maximum file limit reached")
+            #endif
+            return
+        }
+        
+        #if DEBUG
+        print("Selected \(panel.urls.count) files, \(remainingSlots) slots available")
+        #endif
+        
+        let newFiles = panel.urls.compactMap { url -> AudioFile? in
+            do {
+                try validateFile(at: url)
+                let format = getAudioFormat(for: url)
+                #if DEBUG
+                print("Validated file: \(url.lastPathComponent)")
+                #endif
+                return AudioFile(url: url, format: format)
+            } catch {
+                #if DEBUG
+                print("Skipped invalid file \(url.lastPathComponent): \(error.localizedDescription)")
+                #endif
+                return nil
+            }
+        }
+        
+        // Only add files up to the limit
+        let filesToAdd = Array(newFiles.prefix(remainingSlots))
+        audioFiles.append(contentsOf: filesToAdd)
+        
+        #if DEBUG
+        print("Added \(filesToAdd.count) files to list. Total: \(audioFiles.count)")
+        #endif
     }
 }
 
