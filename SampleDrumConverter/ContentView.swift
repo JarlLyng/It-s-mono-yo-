@@ -3,6 +3,17 @@ import AVFoundation
 import AudioToolbox
 import UniformTypeIdentifiers
 
+// MARK: - Constants
+enum AppConstants {
+    static let maxFiles = 50
+    static let maxFileSizeBytes: Int64 = 100 * 1024 * 1024 // 100 MB
+    static let bufferSize: UInt32 = 32768
+    static let githubRepository = "JarlLyng/It-s-mono-yo-"
+    static let githubReleasesURL = "https://api.github.com/repos/\(githubRepository)/releases/latest"
+    static let githubReleasesPageURL = "https://github.com/\(githubRepository)/releases/latest"
+    static let defaultAppVersion = "1.0.7"
+}
+
 class AppTheme {
     // Colors
     let background: Color
@@ -160,7 +171,7 @@ func validateFile(at url: URL) throws {
     // Check file size
     let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
     let fileSize = attributes[.size] as? Int64 ?? 0
-    let maxSize: Int64 = 100 * 1024 * 1024 // 100 MB
+    let maxSize = AppConstants.maxFileSizeBytes
     
     if fileSize > maxSize {
         throw ConversionError.fileSizeTooLarge
@@ -217,8 +228,8 @@ struct ContentView: View {
     @State private var latestVersion: String = ""
     @State private var updateURL: String = ""
     
-    private let maxFiles = 50
-    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    private let maxFiles = AppConstants.maxFiles
+    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? AppConstants.defaultAppVersion
     
     private var statusMessage: String {
         if let custom = customStatusMessage {
@@ -406,84 +417,7 @@ struct ContentView: View {
         }
     }
     
-    /// Starts the conversion process for all pending files
-    /// - Note: Files are processed sequentially to optimize resource usage
-    /// - Important: Requires output folder to be set before starting
-    private func startConversion() {
-        guard outputFolder != nil else {
-            setStatusMessage("Please select an output folder first")
-            return
-        }
-        
-        isProcessing = true
-        
-        // Find first pending file
-        guard let index = audioFiles.firstIndex(where: { $0.status == .pending }) else {
-            isProcessing = false
-            setStatusMessage("No pending files to convert")
-            return
-        }
-        
-        // Start conversion for this file
-        convertFile(at: index)
-    }
     
-    /// Converts a single file at the specified index (deprecated - use ConvertView's async version)
-    /// - Parameter index: Index of the file in the audioFiles array
-    /// - Important: This function is no longer used - ConvertView handles conversion with async/await
-    private func convertFile(at index: Int) {
-        // This function is kept for backwards compatibility but is no longer used
-        // ConvertView now handles all conversion logic with async/await
-        guard index < audioFiles.count else {
-            isProcessing = false
-            setStatusMessage("All conversions completed")
-            return
-        }
-        
-        Task {
-            await MainActor.run {
-                audioFiles[index].status = .converting
-            }
-            
-            let inputURL = audioFiles[index].url
-            let outputURL = outputFolder!.appendingPathComponent(inputURL.lastPathComponent)
-                .deletingPathExtension()
-                .appendingPathExtension("Mono")
-                .appendingPathExtension("wav")
-            
-            do {
-                try await convertAudioFile(
-                    inputURL: inputURL,
-                    outputURL: outputURL,
-                    updateProgress: { progress in
-                        Task { @MainActor in
-                            audioFiles[index].progress = progress
-                        }
-                    }
-                )
-                
-                await MainActor.run {
-                    audioFiles[index].status = .completed
-                    // Start next file
-                    convertFile(at: index + 1)
-                }
-            } catch {
-                await MainActor.run {
-                    audioFiles[index].status = .failed
-                    audioFiles[index].errorMessage = error.localizedDescription
-                    // Continue with next file despite error
-                    convertFile(at: index + 1)
-                }
-            }
-        }
-    }
-    
-    /// Updates the conversion progress for the current file
-    /// - Parameter progress: Progress value between 0 and 1
-    /// - Note: Updates are dispatched to the main thread automatically
-    private func updateProgress(_ progress: Float) {
-        // Implementation of updateProgress method
-    }
 
     @MainActor
     private func addFile(from url: URL) {
@@ -495,9 +429,14 @@ struct ContentView: View {
         }
     }
 
+    /// Logs a debug message with timestamp
+    /// - Parameter message: The message to log
+    /// - Note: Only logs in DEBUG builds
     private func log(_ message: String) {
         #if DEBUG
-        print("[\(Date())] \(message)")
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        print("[\(formatter.string(from: Date()))] \(message)")
         #endif
     }
 
@@ -505,10 +444,10 @@ struct ContentView: View {
     /// - Note: Compares semantic versions to determine if an update is available
     private func checkForUpdates() {
         Task {
-            let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.5"
+            let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? AppConstants.defaultAppVersion
             
             do {
-                guard let url = URL(string: "https://api.github.com/repos/JarlLyng/SampleDrumConverter/releases/latest") else { return }
+                guard let url = URL(string: AppConstants.githubReleasesURL) else { return }
                 
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let release = try JSONDecoder().decode(GitHubRelease.self, from: data)
@@ -518,12 +457,15 @@ struct ContentView: View {
                 if compareVersions(latestVersionString, currentVersion) > 0 {
                     await MainActor.run {
                         latestVersion = latestVersionString
-                        updateURL = "https://github.com/JarlLyng/SampleDrumConverter/releases/latest"
+                        updateURL = AppConstants.githubReleasesPageURL
                         showingUpdateAlert = true
                     }
                 }
             } catch {
-                print("Error checking for updates: \(error.localizedDescription)")
+                #if DEBUG
+                log("Error checking for updates: \(error.localizedDescription)")
+                #endif
+                // Silently fail - update checking is not critical
             }
         }
     }
@@ -675,8 +617,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_FileDataFormat,
                                 &propSize,
                                 &inputFormat) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not get input format"])
+        throw ConversionError.inputFormatReadFailed
     }
     
     // Set output format (mono, same sample rate as input, 16-bit)
@@ -702,8 +643,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         &outputFile
     ) == noErr,
     let outputFile = outputFile else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not create output file"])
+        throw ConversionError.outputFileCreateFailed
     }
     defer { ExtAudioFileDispose(outputFile) }
     
@@ -724,8 +664,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_ClientDataFormat,
                                 UInt32(MemoryLayout<AudioStreamBasicDescription>.stride),
                                 &clientFormat) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not set client format"])
+        throw ConversionError.clientFormatSetFailed
     }
     
     // Set client format on output file
@@ -733,8 +672,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_ClientDataFormat,
                                 UInt32(MemoryLayout<AudioStreamBasicDescription>.stride),
                                 &outputFormat) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not set output client format"])
+        throw ConversionError.clientFormatSetFailed
     }
     
     // Get total number of frames
@@ -744,12 +682,11 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_FileLengthFrames,
                                 &propSize,
                                 &fileLengthFrames) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not get file length"])
+        throw ConversionError.fileLengthReadFailed
     }
     
     // Convert in chunks
-    let bufferSize: UInt32 = 32768
+    let bufferSize = AppConstants.bufferSize
     let channelCount = Int(clientFormat.mChannelsPerFrame)
     let buffer = UnsafeMutablePointer<Float>.allocate(capacity: Int(bufferSize) * channelCount)
     defer { buffer.deallocate() }
@@ -775,8 +712,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         
         // Read frames
         guard ExtAudioFileRead(inputFile, &frameCount, &inputBufferList) == noErr else {
-            throw NSError(domain: "Conversion", code: -1,
-                         userInfo: [NSLocalizedDescriptionKey: "Could not read frames"])
+            throw ConversionError.readFramesFailed
         }
         
         if frameCount == 0 { break }
@@ -811,8 +747,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         )
         
         guard ExtAudioFileWrite(outputFile, frameCount, &outputBufferList) == noErr else {
-            throw NSError(domain: "Conversion", code: -1,
-                         userInfo: [NSLocalizedDescriptionKey: "Could not write frames"])
+            throw ConversionError.writeFramesFailed
         }
         
         currentFrame += Int64(frameCount)
@@ -859,7 +794,7 @@ struct SelectFilesView: View {
     @State private var isHovering = false
     let theme: AppTheme
     
-    private let maxFiles = 50
+    private let maxFiles = AppConstants.maxFiles
     
     var body: some View {
         GeometryReader { geometry in
@@ -900,7 +835,9 @@ struct SelectFilesView: View {
                         for provider in providers {
                             let _ = provider.loadObject(ofClass: URL.self) { url, error in
                                 if let error = error {
+                                    #if DEBUG
                                     print("Error reading dropped file: \(error.localizedDescription)")
+                                    #endif
                                     return
                                 }
                                 
@@ -909,7 +846,7 @@ struct SelectFilesView: View {
                                 
                                 Task { @MainActor in
                                     guard audioFiles.count < maxFiles else {
-                                        print("Maximum file limit (\(maxFiles)) reached")
+                                        // File limit reached - silently ignore additional files
                                         return
                                     }
                                     
@@ -917,7 +854,10 @@ struct SelectFilesView: View {
                                         try validateFile(at: url)
                                         audioFiles.append(AudioFile(url: url, format: getAudioFormat(for: url)))
                                     } catch {
+                                        #if DEBUG
                                         print("Error validating dropped file: \(error.localizedDescription)")
+                                        #endif
+                                        // Silently skip invalid files
                                     }
                                 }
                             }
@@ -996,7 +936,7 @@ struct SelectFilesView: View {
         if panel.runModal() == .OK {
             let remainingSlots = maxFiles - audioFiles.count
             guard remainingSlots > 0 else {
-                print("Maximum file limit (\(maxFiles)) reached")
+                // Maximum file limit reached
                 return
             }
             
@@ -1210,7 +1150,7 @@ struct ConvertView: View {
         guard let index = audioFiles.firstIndex(where: { $0.status == .pending }) else {
             isConverting = false
             // Add this line to transition to completion view
-            currentStep = .completed  // Vi skal passe denne værdi gennem som binding
+            currentStep = .completed
             return
         }
         
