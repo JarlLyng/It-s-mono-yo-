@@ -330,8 +330,8 @@ struct ContentView: View {
                     ConvertView(
                         audioFiles: $audioFiles,
                         currentStep: $currentStep,
-                        outputFolder: outputFolder,
                         isProcessing: $isProcessing,
+                        outputFolder: outputFolder,
                         onBack: { 
                             withAnimation(.easeInOut) { 
                                 currentStep = .selectOutput
@@ -386,17 +386,15 @@ struct ContentView: View {
         .onAppear {
             checkForUpdates()
         }
-        .onChange(of: isProcessing) { oldValue, newValue in
+        .onChange(of: isProcessing) { _ in
             // Clear custom status message when processing state changes
-            if newValue && customStatusMessage != nil {
+            if isProcessing && customStatusMessage != nil {
                 clearStatusMessage()
             }
         }
-        .onChange(of: currentStep) { oldValue, newValue in
+        .onChange(of: currentStep) { _ in
             // Clear custom status message on step transitions
-            if oldValue != newValue {
-                clearStatusMessage()
-            }
+            clearStatusMessage()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("OpenFiles"))) { _ in
             if currentStep == .selectFiles {
