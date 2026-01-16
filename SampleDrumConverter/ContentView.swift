@@ -160,7 +160,8 @@ struct AudioFileFormat: Sendable {
     let bitDepth: Int
     
     var description: String {
-        return "\(channels == 1 ? "Mono" : "Stereo"), \(Int(sampleRate))kHz, \(bitDepth)-bit"
+        let sampleRateInKHz = sampleRate / 1000.0
+        return "\(channels == 1 ? "Mono" : "Stereo"), \(String(format: "%.1f", sampleRateInKHz)) kHz, \(bitDepth)-bit"
     }
 }
 
@@ -278,6 +279,15 @@ struct ContentView: View {
                     }
                 }
                 .padding(.top, currentTheme.spacing.lg)
+                
+                // Status message
+                if !statusMessage.isEmpty {
+                    Text(statusMessage)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                        .padding(.bottom, currentTheme.spacing.sm)
+                }
                 
                 // Current step content
                 switch currentStep {
@@ -452,7 +462,10 @@ struct ContentView: View {
                 let (data, _) = try await URLSession.shared.data(from: url)
                 let release = try JSONDecoder().decode(GitHubRelease.self, from: data)
                 
-                let latestVersionString = String(release.tagName.dropFirst())
+                // Handle version tags with or without 'v' prefix
+                let latestVersionString = release.tagName.hasPrefix("v") 
+                    ? String(release.tagName.dropFirst()) 
+                    : release.tagName
                 
                 if compareVersions(latestVersionString, currentVersion) > 0 {
                     await MainActor.run {
@@ -844,6 +857,14 @@ struct SelectFilesView: View {
                                 guard let url = url,
                                       url.pathExtension.lowercased() == "wav" else { return }
                                 
+                                // Access security-scoped resource for sandboxed environments
+                                let isAccessing = url.startAccessingSecurityScopedResource()
+                                defer {
+                                    if isAccessing {
+                                        url.stopAccessingSecurityScopedResource()
+                                    }
+                                }
+                                
                                 Task { @MainActor in
                                     guard audioFiles.count < maxFiles else {
                                         // File limit reached - silently ignore additional files
@@ -851,8 +872,37 @@ struct SelectFilesView: View {
                                     }
                                     
                                     do {
-                                        try validateFile(at: url)
-                                        audioFiles.append(AudioFile(url: url, format: getAudioFormat(for: url)))
+                                        // Create a security-scoped bookmark for persistent access
+                                        // This allows the file to be accessed later during conversion
+                                        let bookmarkData = try url.bookmarkData(
+                                            options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+                                            includingResourceValuesForKeys: nil,
+                                            relativeTo: nil
+                                        )
+                                        
+                                        // Resolve bookmark to get a URL that can be accessed later
+                                        var isStale = false
+                                        let resolvedURL = try URL(
+                                            resolvingBookmarkData: bookmarkData,
+                                            options: [.withSecurityScope, .withoutUI],
+                                            relativeTo: nil,
+                                            bookmarkDataIsStale: &isStale
+                                        )
+                                        
+                                        // Start accessing the resolved URL for validation
+                                        let resolvedAccessing = resolvedURL.startAccessingSecurityScopedResource()
+                                        defer {
+                                            if resolvedAccessing {
+                                                resolvedURL.stopAccessingSecurityScopedResource()
+                                            }
+                                        }
+                                        
+                                        // Validate and add file
+                                        try validateFile(at: resolvedURL)
+                                        let format = getAudioFormat(for: resolvedURL)
+                                        
+                                        // Store the resolved URL with bookmark - access will be re-established during conversion
+                                        audioFiles.append(AudioFile(url: resolvedURL, format: format))
                                     } catch {
                                         #if DEBUG
                                         print("Error validating dropped file: \(error.localizedDescription)")
@@ -1104,14 +1154,25 @@ struct ConvertView: View {
             .background(Color.white.opacity(0.05))
             .cornerRadius(12)
             
+            // Error message display
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+                    .font(.subheadline)
+                    .foregroundColor(.red)
+                    .padding()
+                    .background(Color.red.opacity(0.1))
+                    .cornerRadius(8)
+            }
+            
             // Buttons
             if isConverting {
-                Button(action: { /* Show in Finder */ }) {
+                Button(action: showInFinder) {
                     Text("Show in Finder")
                         .fontWeight(.medium)
                         .frame(width: 150)
                 }
                 .buttonStyle(.bordered)
+                .disabled(outputFolder == nil)
             } else {
                 HStack(spacing: 20) {
                     Button(action: onBack) {
@@ -1191,6 +1252,15 @@ struct ConvertView: View {
     }
     
     private func convertFile(at index: Int, from inputURL: URL, to outputURL: URL) async throws {
+        // Access security-scoped resource if needed (for sandboxed environments)
+        // This handles URLs from drag-and-drop that may be security-scoped
+        let isAccessing = inputURL.startAccessingSecurityScopedResource()
+        defer {
+            if isAccessing {
+                inputURL.stopAccessingSecurityScopedResource()
+            }
+        }
+        
         try await convertAudioFile(
             inputURL: inputURL,
             outputURL: outputURL,
@@ -1232,8 +1302,38 @@ struct CompletionView: View {
                     .foregroundColor(.gray)
                 
                 if failed > 0 {
-                    Text("\(failed) files failed")
-                        .foregroundColor(.red)
+                    VStack(spacing: 8) {
+                        Text("\(failed) files failed")
+                            .foregroundColor(.red)
+                            .fontWeight(.semibold)
+                        
+                        // Show error messages for failed files
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 4) {
+                                ForEach(audioFiles.filter { $0.status == .failed }) { file in
+                                    if let errorMessage = file.errorMessage {
+                                        HStack(alignment: .top, spacing: 8) {
+                                            Image(systemName: "exclamationmark.triangle.fill")
+                                                .foregroundColor(.red)
+                                                .font(.caption)
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(file.url.lastPathComponent)
+                                                    .font(.caption)
+                                                    .fontWeight(.medium)
+                                                Text(errorMessage)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.secondary)
+                                            }
+                                        }
+                                        .padding(.vertical, 4)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .frame(maxHeight: 150)
+                    }
+                    .padding(.top, 8)
                 }
             }
             
