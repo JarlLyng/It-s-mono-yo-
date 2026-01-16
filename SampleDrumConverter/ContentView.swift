@@ -795,7 +795,7 @@ struct SelectFilesView: View {
                         
                         var hasValidFiles = false
                         for provider in providers {
-                            provider.loadObject(ofClass: URL.self) { url, error in
+                            let _ = provider.loadObject(ofClass: URL.self) { url, error in
                                 if let error = error {
                                     #if DEBUG
                                     print("Error reading dropped file: \(error.localizedDescription)")
