@@ -851,9 +851,9 @@ struct SelectFilesView: View {
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
-                VStack(spacing: geometry.size.height * 0.05) {  // Relative spacing
-                    // Icon and drop zone
-                    VStack(spacing: geometry.size.height * 0.03) {
+                VStack(spacing: geometry.size.height * 0.03) {  // Reduced spacing
+                    // Icon and drop zone - moved up
+                    VStack(spacing: geometry.size.height * 0.02) {
                         Image(systemName: "plus.rectangle.fill")
                             .font(.system(size: min(40, geometry.size.width * 0.06), weight: .ultraLight))
                             .foregroundColor(isDropTargeted || isHovering ? .white : .gray)
@@ -864,7 +864,7 @@ struct SelectFilesView: View {
                             .foregroundColor(isDropTargeted || isHovering ? .white : .gray)
                     }
                     .frame(maxWidth: .infinity)
-                    .frame(height: max(180, geometry.size.height * 0.25))  // Relative height
+                    .frame(height: max(150, geometry.size.height * 0.2))  // Reduced height
                     .background(Color.white.opacity(isDropTargeted || isHovering ? 0.1 : 0.05))
                     .cornerRadius(16)
                     .overlay(
