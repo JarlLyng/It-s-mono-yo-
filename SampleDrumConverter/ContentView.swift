@@ -852,11 +852,6 @@ struct SelectFilesView: View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(spacing: geometry.size.height * 0.05) {  // Relative spacing
-                    // Title
-                    Text("Select WAV Files")
-                        .font(.system(size: min(34, geometry.size.width * 0.05)))
-                        .fontWeight(.bold)
-                    
                     // Icon and drop zone
                     VStack(spacing: geometry.size.height * 0.03) {
                         Image(systemName: "plus.rectangle.fill")
