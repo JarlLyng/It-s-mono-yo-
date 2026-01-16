@@ -55,14 +55,63 @@
             document.documentElement.classList.add('dark');
         }
     </script>
+    <style>
+        :root {
+            /* IAMJARL Design System - Light Mode */
+            --iamjarl-primary: #00FF7B;
+            --iamjarl-text-primary: #000000;
+            --iamjarl-text-secondary: rgba(0, 0, 0, 0.70);
+            --iamjarl-text-tertiary: rgba(0, 0, 0, 0.55);
+            --iamjarl-bg-app: #FFFFFF;
+            --iamjarl-bg-muted: rgba(0, 0, 0, 0.04);
+            --iamjarl-bg-card: rgba(0, 0, 0, 0.04);
+            --iamjarl-border-subtle: rgba(0, 0, 0, 0.10);
+            --iamjarl-border-default: rgba(0, 0, 0, 0.16);
+            --iamjarl-success: #4CAF50;
+            --iamjarl-warning: #FF6B35;
+            --iamjarl-error: #FF3B30;
+        }
+        .dark {
+            /* IAMJARL Design System - Dark Mode */
+            --iamjarl-primary: #D0FF00;
+            --iamjarl-text-primary: #FFFFFF;
+            --iamjarl-text-secondary: rgba(255, 255, 255, 0.75);
+            --iamjarl-text-tertiary: rgba(255, 255, 255, 0.60);
+            --iamjarl-bg-app: #000000;
+            --iamjarl-bg-muted: rgba(255, 255, 255, 0.05);
+            --iamjarl-bg-card: rgba(255, 255, 255, 0.05);
+            --iamjarl-border-subtle: rgba(255, 255, 255, 0.12);
+            --iamjarl-border-default: rgba(255, 255, 255, 0.18);
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: '#6366f1',
-                        secondary: '#8b5cf6',
+                        // IAMJARL Design System Colors
+                        'primary-light': '#00FF7B',
+                        'primary-dark': '#D0FF00',
+                        'success': '#4CAF50',
+                        'warning': '#FF6B35',
+                        'error': '#FF3B30',
+                    },
+                    spacing: {
+                        // IAMJARL Design System Spacing
+                        'xs': '4px',
+                        'sm': '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        'xxl': '24px',
+                        'xxxl': '32px',
+                    },
+                    borderRadius: {
+                        // IAMJARL Design System Radius
+                        'sm': '8px',
+                        'md': '12px',
+                        'lg': '16px',
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.5s ease-in',
@@ -103,13 +152,13 @@
     <meta name="apple-mobile-web-app-title" content="It's mono, yo!">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#6366f1" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1a1b26" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#00FF7B" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <meta name="format-detection" content="telephone=no">
     <meta name="geo.region" content="DK">
     <meta name="language" content="English">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+<body class="bg-white dark:bg-black transition-colors duration-200">
     <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
         Skip to main content
@@ -139,21 +188,21 @@
     </style>
     <main id="main-content">
         <!-- Navigation -->
-        <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-700/50">
+        <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <div class="text-2xl font-bold dark:text-primary-dark text-primary-light">
                     It's mono, yo!
                 </div>
                 <div class="flex items-center space-x-4">
                     <button onclick="toggleDarkMode()" 
                             aria-label="Toggle dark mode"
-                            class="p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200">
-                        <i class="fas fa-moon dark:hidden text-gray-700" aria-hidden="true"></i>
-                        <i class="fas fa-sun hidden dark:block text-yellow-400" aria-hidden="true"></i>
+                            class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200">
+                        <i class="fas fa-moon dark:hidden text-black/70" aria-hidden="true"></i>
+                        <i class="fas fa-sun hidden dark:block text-primary-dark" aria-hidden="true"></i>
                     </button>
                     <a href="https://github.com/JarlLyng/It-s-mono-yo-" 
                        aria-label="View source code on GitHub"
-                       class="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200">
+                       class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black dark:text-black hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 font-semibold">
                         <i class="fab fa-github" aria-hidden="true"></i>
                         <span class="font-medium">GitHub</span>
                     </a>
@@ -162,23 +211,19 @@
         </nav>
 
         <!-- Hero Section -->
-        <section class="pt-20 relative overflow-hidden" aria-label="Introduction">
-            <!-- Animated gradient background -->
-            <div class="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-purple-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"></div>
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
-            
+        <section class="pt-20 relative overflow-hidden bg-white dark:bg-black" aria-label="Introduction">
             <div class="relative container mx-auto px-6 py-24 text-center">
                 <div class="animate-fade-in">
-                    <h1 class="text-6xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-tight">
+                    <h1 class="text-6xl md:text-7xl font-extrabold mb-6 text-black dark:text-white leading-tight">
                         It's mono, yo!
                     </h1>
-                    <p class="text-xl md:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    <p class="text-xl md:text-2xl text-black/70 dark:text-white/75 mb-12 max-w-3xl mx-auto leading-relaxed">
                         The elegant way to convert your WAV files to mono while preserving sample rates
                     </p>
                 </div>
                 
                 <div class="relative group animate-float max-w-5xl mx-auto mb-12">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                    <div class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
                     <img src="screenshots/Screenshot.png" 
                          alt="It's mono, yo! app interface showing WAV file conversion process" 
                          width="544"
@@ -190,9 +235,9 @@
                 <div class="animate-slide-up">
                     <a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest" 
                        aria-label="Download the latest version of It's mono, yo! from GitHub releases"
-                       class="inline-flex items-center space-x-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-semibold text-lg
+                       class="inline-flex items-center space-x-3 px-8 py-4 bg-primary-light dark:bg-primary-dark text-black rounded-lg font-semibold text-lg
                               hover:shadow-2xl hover:scale-105 transform transition-all duration-300 
-                              focus:outline-none focus:ring-4 focus:ring-white/50">
+                              focus:outline-none focus:ring-4 focus:ring-primary-light/50 dark:focus:ring-primary-dark/50">
                         <i class="fas fa-download" aria-hidden="true"></i>
                         <span>Download Latest Version</span>
                         <i class="fas fa-arrow-right" aria-hidden="true"></i>
@@ -202,46 +247,46 @@
         </section>
 
         <!-- What's New -->
-        <section class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" aria-label="What's new">
+        <section class="py-20 bg-white dark:bg-black" aria-label="What's new">
             <div class="container mx-auto px-6 text-center">
-                <span class="inline-block px-5 py-2 bg-gradient-to-r from-primary/10 to-secondary/10 text-primary dark:text-secondary rounded-full mb-8 font-semibold border border-primary/20 dark:border-secondary/20">
+                <span class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12">
                     ✨ New in Version 1.0.7
                 </span>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                    <div class="group p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-xl transition-all duration-300">
+                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-bug text-white text-xl"></i>
                         </div>
-                        <h3 class="font-bold text-lg mb-2 dark:text-white">Bug Fixes</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">Fixed version check &amp; shortcuts</p>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Bug Fixes</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Fixed version check &amp; shortcuts</p>
                     </div>
-                    <div class="group p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-xl transition-all duration-300">
+                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-rocket text-white text-xl"></i>
                         </div>
-                        <h3 class="font-bold text-lg mb-2 dark:text-white">Performance</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">Async/await conversion</p>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Performance</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Async/await conversion</p>
                     </div>
-                    <div class="group p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-xl transition-all duration-300">
+                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-weight-hanging text-white text-xl"></i>
                         </div>
-                        <h3 class="font-bold text-lg mb-2 dark:text-white">Smaller Size</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">Removed unused dependencies</p>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Smaller Size</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Removed unused dependencies</p>
                     </div>
-                    <div class="group p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-xl transition-all duration-300">
+                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-eye text-white text-xl"></i>
                         </div>
-                        <h3 class="font-bold text-lg mb-2 dark:text-white">Better UI</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">File limit indicator</p>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Better UI</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">File limit indicator</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- GitHub Stats -->
-        <section class="py-16 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-900" aria-label="GitHub statistics">
+        <section class="py-16 bg-white dark:bg-black" aria-label="GitHub statistics">
             <div class="container mx-auto px-6 text-center">
                 <div class="github-buttons space-x-4 flex flex-wrap justify-center gap-4" role="group" aria-label="GitHub actions">
                     <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-" data-size="large" data-show-count="true" aria-label="Star this repository on GitHub">Star</a>
@@ -252,55 +297,51 @@
         </section>
 
         <!-- Features -->
-        <section class="py-24 bg-white dark:bg-gray-900" aria-label="Features">
+        <section class="py-24 bg-white dark:bg-black" aria-label="Features">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">
                         Powerful Features
                     </h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
                         Everything you need to convert your audio files efficiently
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="group relative p-8 rounded-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-hand-pointer text-white text-2xl"></i>
+                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-hand-pointer text-black text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 dark:text-white">Drag &amp; Drop</h3>
-                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Simply drag your WAV files directly into the app</p>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Drag &amp; Drop</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Simply drag your WAV files directly into the app</p>
                         </div>
                     </div>
-                    <div class="group relative p-8 rounded-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-secondary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-secondary to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-paint-brush text-white text-2xl"></i>
+                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-paint-brush text-black text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 dark:text-white">Modern Theme</h3>
-                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Choose between classic and modern dark themes</p>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Modern Theme</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">IAMJARL Design System with light &amp; dark mode</p>
                         </div>
                     </div>
-                    <div class="group relative p-8 rounded-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-layer-group text-white text-2xl"></i>
+                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-layer-group text-black text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 dark:text-white">Batch Processing</h3>
-                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Convert multiple files simultaneously with real-time progress tracking</p>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Batch Processing</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Convert multiple files simultaneously with real-time progress tracking</p>
                         </div>
                     </div>
-                    <div class="group relative p-8 rounded-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-secondary hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-secondary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-keyboard text-white text-2xl"></i>
+                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-keyboard text-black text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-3 dark:text-white">Keyboard Shortcuts</h3>
-                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Quick access with ⌘O and ESC shortcuts</p>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Keyboard Shortcuts</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Quick access with ⌘O and ESC shortcuts</p>
                         </div>
                     </div>
                 </div>
@@ -308,42 +349,42 @@
         </section>
 
         <!-- Requirements -->
-        <section class="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" aria-label="System requirements">
+        <section class="py-24 bg-white dark:bg-black" aria-label="System requirements">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 dark:text-white">Perfect for Hardware Samplers</h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">Perfect for Hardware Samplers</h2>
+                    <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
                         Designed specifically for music producers and hardware enthusiasts
                     </p>
                 </div>
                 <div class="max-w-3xl mx-auto">
-                    <div class="bg-white dark:bg-gray-800 p-10 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700">
-                        <p class="text-lg text-gray-700 dark:text-gray-200 mb-8 leading-relaxed">
-                            Specifically designed for preparing samples for hardware like the <span class="font-semibold text-primary dark:text-secondary">Erica Synths Sample Drum</span> module 
+                    <div class="bg-white dark:bg-black p-10 rounded-lg shadow-xl border border-black/10 dark:border-white/12">
+                        <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                            Specifically designed for preparing samples for hardware like the <span class="font-semibold text-primary-light dark:text-primary-dark">Erica Synths Sample Drum</span> module 
                             and other equipment that requires mono files.
                         </p>
-                        <h3 class="text-2xl font-bold mb-6 dark:text-white flex items-center">
-                            <span class="w-1 h-8 bg-gradient-to-b from-primary to-secondary rounded-full mr-3"></span>
+                        <h3 class="text-2xl font-bold mb-6 text-black dark:text-white flex items-center">
+                            <span class="w-1 h-8 bg-primary-light dark:bg-primary-dark rounded-full mr-3"></span>
                             System Requirements
                         </h3>
                         <ul class="space-y-4">
-                            <li class="flex items-center p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 flex-shrink-0">
+                            <li class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
-                                <span class="text-gray-700 dark:text-gray-200 font-medium">macOS 11.0 or later</span>
+                                <span class="text-black/70 dark:text-white/75 font-medium">macOS 11.0 or later</span>
                             </li>
-                            <li class="flex items-center p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 flex-shrink-0">
+                            <li class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
-                                <span class="text-gray-700 dark:text-gray-200 font-medium">64-bit processor</span>
+                                <span class="text-black/70 dark:text-white/75 font-medium">64-bit processor</span>
                             </li>
-                            <li class="flex items-center p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mr-4 flex-shrink-0">
+                            <li class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
-                                <span class="text-gray-700 dark:text-gray-200 font-medium">WAV file format support</span>
+                                <span class="text-black/70 dark:text-white/75 font-medium">WAV file format support</span>
                             </li>
                         </ul>
                     </div>
@@ -352,55 +393,55 @@
         </section>
 
         <!-- Footer -->
-        <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 border-t border-gray-700">
+        <footer class="bg-black text-white py-16 border-t border-white/12">
             <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div>
-                    <h3 class="text-xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Quick Links</h3>
+                    <h3 class="text-xl font-bold mb-6 text-primary-dark">Quick Links</h3>
                     <ul class="space-y-3">
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-" class="hover:text-primary transition-colors duration-200 flex items-center group">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
                             <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
                             GitHub Repository
                         </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases" class="hover:text-primary transition-colors duration-200 flex items-center group">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
                             <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
                             Latest Release
                         </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/issues" class="hover:text-primary transition-colors duration-200 flex items-center group">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/issues" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
                             <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
                             Report an Issue
                         </a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Resources</h3>
+                    <h3 class="text-xl font-bold mb-6 text-primary-dark">Resources</h3>
                     <ul class="space-y-3">
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-#readme" class="hover:text-primary transition-colors duration-200 flex items-center group">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-#readme" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
                             <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
                             Documentation
                         </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE" class="hover:text-primary transition-colors duration-200 flex items-center group">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
                             <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
                             License
                         </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest" class="hover:text-primary transition-colors duration-200 flex items-center group">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
                             <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
                             Download
                         </a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Connect</h3>
-                    <p class="mb-6 text-gray-300">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary hover:text-secondary transition-colors duration-200 font-semibold">IAMJARL</a></p>
+                    <h3 class="text-xl font-bold mb-6 text-primary-dark">Connect</h3>
+                    <p class="mb-6 text-white/75">Created with <span class="text-error">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 transition-colors duration-200 font-semibold">IAMJARL</a></p>
                     <div class="flex space-x-4">
                         <a href="https://github.com/JarlLyng" 
                            aria-label="Visit Jarl Lyng's GitHub profile"
-                           class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all duration-300">
-                            <i class="fab fa-github text-xl"></i>
+                           class="w-12 h-12 rounded-lg bg-primary-dark flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all duration-300">
+                            <i class="fab fa-github text-xl text-black"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
+            <div class="container mx-auto px-6 mt-12 pt-8 border-t border-white/12 text-center text-white/60">
                 <p>&copy; 2024 It's mono, yo!. All rights reserved.</p>
             </div>
         </footer>
