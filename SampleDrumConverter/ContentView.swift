@@ -14,101 +14,10 @@ enum AppConstants {
     static let defaultAppVersion = "1.0.7"
 }
 
-class AppTheme {
-    // Colors
-    let background: Color
-    let surface: Color
-    let elevated: Color
-    let overlay: Color
-    let accent: Color
-    
-    // Spacing
-    let spacing = Spacing()
-    
-    // Gradients
-    let backgroundGradient: LinearGradient
-    
-    // Add initializer
-    init(
-        background: Color,
-        surface: Color,
-        elevated: Color,
-        overlay: Color,
-        accent: Color,
-        backgroundGradient: LinearGradient
-    ) {
-        self.background = background
-        self.surface = surface
-        self.elevated = elevated
-        self.overlay = overlay
-        self.accent = accent
-        self.backgroundGradient = backgroundGradient
-    }
-    
-    // Predefined themes
-    static let original = AppTheme(
-        background: .black,
-        surface: .white.opacity(0.05),
-        elevated: .white.opacity(0.08),
-        overlay: .white.opacity(0.12),
-        accent: .white,
-        backgroundGradient: LinearGradient(colors: [.black], startPoint: .top, endPoint: .bottom)
-    )
-    
-    static let modern = AppTheme(
-        background: Color(hex: "1a1b26"),
-        surface: Color(hex: "24283b").opacity(0.95),
-        elevated: Color(hex: "414868").opacity(0.95),
-        overlay: Color(hex: "565f89").opacity(0.95),
-        accent: Color(hex: "7aa2f7"),
-        backgroundGradient: LinearGradient(
-            colors: [
-                Color(hex: "1a1b26"),
-                Color(hex: "24283b")
-            ],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-    )
-}
+// AppTheme replaced with IAMJARL Design Tokens
+// Use AdaptiveColor helper functions for color scheme-aware colors
 
-// Add Color extension for hex support
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
-        }
-
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
-}
-
-struct Spacing {
-    let xxs: CGFloat = 4
-    let xs: CGFloat = 8
-    let sm: CGFloat = 12
-    let md: CGFloat = 16
-    let lg: CGFloat = 24
-    let xl: CGFloat = 32
-    let xxl: CGFloat = 48
-}
+// Spacing and Color extensions moved to DesignTokens.swift
 
 struct AudioFile: Identifiable, Sendable {
     let id = UUID()
@@ -143,12 +52,12 @@ struct AudioFile: Identifiable, Sendable {
             }
         }
         
-        var color: Color {
+        func color(colorScheme: ColorScheme) -> Color {
             switch self {
-            case .pending: return .secondary
-            case .converting: return .blue
-            case .completed: return .green
-            case .failed: return .red
+            case .pending: return AdaptiveColor.textTertiary(colorScheme)
+            case .converting: return AdaptiveColor.primary(colorScheme)
+            case .completed: return DesignTokens.Colors.Shared.success
+            case .failed: return DesignTokens.Colors.Shared.error
             }
         }
     }
@@ -224,7 +133,7 @@ struct ContentView: View {
     @State private var isProcessing = false
     @State private var outputFolder: URL?
     @State private var customStatusMessage: String?
-    @State private var currentTheme: AppTheme = .original
+    @Environment(\.colorScheme) private var colorScheme
     @State private var showingUpdateAlert = false
     @State private var latestVersion: String = ""
     @State private var updateURL: String = ""
@@ -265,28 +174,29 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            currentTheme.backgroundGradient.ignoresSafeArea()
+            // Background - IAMJARL design system
+            AdaptiveColor.backgroundApp(colorScheme)
+                .ignoresSafeArea()
             
-            VStack(spacing: currentTheme.spacing.xl) {  // Using theme spacing
+            VStack(spacing: DesignTokens.Spacing.xl) {
                 // Progress indicators
                 HStack(spacing: 15) {
                     ForEach([ConversionStep.selectFiles, .selectOutput, .convert, .completed], id: \.self) { step in
                         Circle()
-                            .fill(currentStep == step ? .white : .gray)
+                            .fill(currentStep == step ? AdaptiveColor.primary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
                             .frame(width: 10, height: 10)
                             .animation(.easeInOut(duration: 0.3), value: currentStep)
                     }
                 }
-                .padding(.top, currentTheme.spacing.lg)
+                .padding(.top, DesignTokens.Spacing.lg)
                 
                 // Status message
                 if !statusMessage.isEmpty {
                     Text(statusMessage)
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                         .padding(.horizontal)
-                        .padding(.bottom, currentTheme.spacing.sm)
+                        .padding(.bottom, DesignTokens.Spacing.sm)
                 }
                 
                 // Current step content
@@ -299,8 +209,7 @@ struct ContentView: View {
                                 currentStep = .selectOutput
                                 clearStatusMessage()
                             }
-                        },
-                        theme: currentTheme  // Pass theme to child view
+                        }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
@@ -359,7 +268,7 @@ struct ContentView: View {
                     .transition(.scale.combined(with: .opacity))
                 }
             }
-            .foregroundColor(.white)
+            .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
             .animation(.easeInOut, value: currentStep)
         }
         // Add theme toggle button for testing
@@ -370,13 +279,7 @@ struct ContentView: View {
                         Label("Check for Updates", systemImage: "arrow.triangle.2.circlepath")
                     }
                     
-                    Button(action: {
-                        withAnimation {
-                            currentTheme = currentTheme === AppTheme.original ? .modern : .original
-                        }
-                    }) {
-                        Label("Toggle Theme", systemImage: "paintbrush.fill")
-                    }
+                    // Theme toggle removed - using system color scheme
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
@@ -590,20 +493,22 @@ struct FileRowView: View {
     var onRetry: (() -> Void)?
     var onReveal: (() -> Void)?
     @State private var isHovering = false
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: file.status.icon)
-                .foregroundColor(file.status.color)
+                .foregroundColor(file.status.color(colorScheme: colorScheme))
                 .frame(width: 16)
             
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                 Text(file.url.lastPathComponent)
                     .font(.system(.body))
+                    .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
                 if let format = file.format {
                     Text(format.description)
-                        .font(.system(size: 11))
-                        .foregroundColor(.secondary)
+                        .font(.system(size: DesignTokens.Typography.Size.xs))
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 }
             }
             
@@ -613,12 +518,13 @@ struct FileRowView: View {
                 ProgressView(value: file.progress)
                     .progressViewStyle(.linear)
                     .frame(width: 100)
+                    .accentColor(AdaptiveColor.primary(colorScheme))
             }
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
-        .background(Color.white.opacity(isHovering ? 0.08 : 0.03))
-        .cornerRadius(8)
+        .padding(.vertical, DesignTokens.Spacing.sm)
+        .padding(.horizontal, DesignTokens.Spacing.md)
+        .background(isHovering ? AdaptiveColor.backgroundCard(colorScheme) : AdaptiveColor.backgroundMuted(colorScheme))
+        .cornerRadius(DesignTokens.Radius.sm)
         .onHover { hovering in
             isHovering = hovering
         }
@@ -844,7 +750,7 @@ struct SelectFilesView: View {
     let onNext: () -> Void
     @State private var isDropTargeted = false
     @State private var isHovering = false
-    let theme: AppTheme
+    @Environment(\.colorScheme) private var colorScheme
     
     private let maxFiles = AppConstants.maxFiles
     
@@ -853,23 +759,23 @@ struct SelectFilesView: View {
             ScrollView {
                 VStack(spacing: geometry.size.height * 0.015) {  // Minimal spacing
                     // Icon and drop zone - moved up
-                    VStack(spacing: 8) {
+                    VStack(spacing: DesignTokens.Spacing.sm) {
                         Image(systemName: "plus.rectangle.fill")
                             .font(.system(size: min(35, geometry.size.width * 0.05), weight: .ultraLight))
-                            .foregroundColor(isDropTargeted || isHovering ? .white : .gray)
+                            .foregroundColor(isDropTargeted || isHovering ? AdaptiveColor.textPrimary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
                         
                         Text("Click to select WAV files\nor drag files here")
-                            .font(.system(size: min(14, geometry.size.width * 0.018)))
+                            .font(.system(size: min(DesignTokens.Typography.Size.sm, geometry.size.width * 0.018)))
                             .multilineTextAlignment(.center)
-                            .foregroundColor(isDropTargeted || isHovering ? .white : .gray)
+                            .foregroundColor(isDropTargeted || isHovering ? AdaptiveColor.textPrimary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: max(120, geometry.size.height * 0.15))  // Further reduced height
-                    .background(Color.white.opacity(isDropTargeted || isHovering ? 0.1 : 0.05))
-                    .cornerRadius(16)
+                    .background(isDropTargeted || isHovering ? AdaptiveColor.backgroundCard(colorScheme) : AdaptiveColor.backgroundMuted(colorScheme))
+                    .cornerRadius(DesignTokens.Radius.lg)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.white.opacity(isDropTargeted || isHovering ? 0.3 : 0.1), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: DesignTokens.Radius.lg)
+                            .stroke(isDropTargeted || isHovering ? AdaptiveColor.borderDefault(colorScheme) : AdaptiveColor.borderSubtle(colorScheme), lineWidth: 1)
                     )
                     .animation(.easeInOut(duration: 0.2), value: isDropTargeted)
                     .animation(.easeInOut(duration: 0.2), value: isHovering)
@@ -983,13 +889,13 @@ struct SelectFilesView: View {
                     if !audioFiles.isEmpty {
                         HStack {
                             Text("\(audioFiles.count) / \(maxFiles) files")
-                                .font(.system(size: min(14, geometry.size.width * 0.02)))
-                                .foregroundColor(audioFiles.count >= maxFiles ? .orange : .gray)
+                                .font(.system(size: min(DesignTokens.Typography.Size.sm, geometry.size.width * 0.02)))
+                                .foregroundColor(audioFiles.count >= maxFiles ? DesignTokens.Colors.Shared.warning : AdaptiveColor.textSecondary(colorScheme))
                             
                             if audioFiles.count >= maxFiles {
                                 Text("(Limit reached)")
-                                    .font(.system(size: min(12, geometry.size.width * 0.015)))
-                                    .foregroundColor(.orange)
+                                    .font(.system(size: min(DesignTokens.Typography.Size.xs, geometry.size.width * 0.015)))
+                                    .foregroundColor(DesignTokens.Colors.Shared.warning)
                             }
                         }
                         .padding(.horizontal)
@@ -1017,9 +923,9 @@ struct SelectFilesView: View {
                             }
                             .frame(maxHeight: geometry.size.height * 0.4)  // Relative height
                         }
-                        .padding(20)
-                        .background(Color.white.opacity(0.05))
-                        .cornerRadius(16)
+                        .padding(DesignTokens.Spacing.xl)
+                        .background(AdaptiveColor.backgroundMuted(colorScheme))
+                        .cornerRadius(DesignTokens.Radius.lg)
                     }
                     
                     // Next button with hover
@@ -1108,9 +1014,18 @@ struct HoverButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? Color.white.opacity(0.2) : 
-                        isHovering ? Color.white.opacity(0.15) : Color.white.opacity(0.1))
-            .cornerRadius(8)
+            .background(
+                Group {
+                    if configuration.isPressed {
+                        AdaptiveColor.backgroundCard(.light)
+                    } else if isHovering {
+                        AdaptiveColor.backgroundCard(.light).opacity(0.8)
+                    } else {
+                        AdaptiveColor.backgroundMuted(.light)
+                    }
+                }
+            )
+            .cornerRadius(DesignTokens.Radius.sm)
             .onHover { hovering in
                 isHovering = hovering
             }
@@ -1121,9 +1036,10 @@ struct HoverButtonStyle: ButtonStyle {
 
 extension View {
     @ViewBuilder
-    func applyProminentStyleAndTint() -> some View {
+    func applyProminentStyleAndTint(colorScheme: ColorScheme) -> some View {
         if #available(macOS 12.0, *) {
-            self.buttonStyle(.borderedProminent).tint(.white)
+            self.buttonStyle(.borderedProminent)
+                .accentColor(AdaptiveColor.primary(colorScheme))
         } else {
             self.buttonStyle(.bordered) // Fallback without tint
         }
@@ -1134,6 +1050,7 @@ struct SelectOutputView: View {
     @Binding var outputFolder: URL?
     let onBack: () -> Void
     let onNext: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 30) {
@@ -1148,20 +1065,21 @@ struct SelectOutputView: View {
                     .font(.system(size: 40, weight: .ultraLight))
                 
                 if let folder = outputFolder {
-                    VStack(spacing: 8) {
+                    VStack(spacing: DesignTokens.Spacing.sm) {
                         Text("Selected Folder:")
                             .fontWeight(.medium)
+                            .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
                         Text(folder.lastPathComponent)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                     }
                 } else {
                     Text("Click to select output folder")
-                        .foregroundColor(.gray)
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
-            .background(Color.white.opacity(0.05))
-            .cornerRadius(12)
+            .background(AdaptiveColor.backgroundMuted(colorScheme))
+            .cornerRadius(DesignTokens.Radius.md)
             .onTapGesture(perform: selectOutputFolder)
             
             // Navigation buttons
@@ -1178,7 +1096,7 @@ struct SelectOutputView: View {
                         .fontWeight(.medium)
                         .frame(width: 100)
                 }
-                .applyProminentStyleAndTint()
+                .applyProminentStyleAndTint(colorScheme: colorScheme)
                 .disabled(outputFolder == nil)
             }
             
@@ -1209,6 +1127,7 @@ struct ConvertView: View {
     let onBack: () -> Void
     @State private var isConverting = false
     @State private var errorMessage: String?
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 30) {
@@ -1228,15 +1147,16 @@ struct ConvertView: View {
                         Text("Converting files...")
                             .fontWeight(.medium)
                         Text("\(completed) of \(audioFiles.count) completed")
-                            .foregroundColor(.gray)
+                            .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                         
                         // Show current file progress
                         if let converting = audioFiles.first(where: { $0.status == .converting }) {
-                            VStack(spacing: 4) {
+                            VStack(spacing: DesignTokens.Spacing.xs) {
                                 Text(converting.url.lastPathComponent)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                                 ProgressView(value: converting.progress)
                                     .progressViewStyle(.linear)
+                                    .accentColor(AdaptiveColor.primary(colorScheme))
                                     .frame(width: 200)
                             }
                             .padding(.top)
@@ -1244,21 +1164,21 @@ struct ConvertView: View {
                     }
                 } else {
                     Text("Ready to convert \(audioFiles.count) files")
-                        .foregroundColor(.gray)
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
-            .background(Color.white.opacity(0.05))
-            .cornerRadius(12)
+            .background(AdaptiveColor.backgroundMuted(colorScheme))
+            .cornerRadius(DesignTokens.Radius.md)
             
             // Error message display
             if let errorMessage = errorMessage {
                 Text(errorMessage)
                     .font(.subheadline)
-                    .foregroundColor(.red)
+                    .foregroundColor(DesignTokens.Colors.Shared.error)
                     .padding()
-                    .background(Color.red.opacity(0.1))
-                    .cornerRadius(8)
+                    .background(DesignTokens.Colors.Shared.error.opacity(0.1))
+                    .cornerRadius(DesignTokens.Radius.sm)
             }
             
             // Buttons
@@ -1284,7 +1204,7 @@ struct ConvertView: View {
                             .fontWeight(.medium)
                             .frame(width: 100)
                     }
-                    .applyProminentStyleAndTint()
+                    .applyProminentStyleAndTint(colorScheme: colorScheme)
                 }
             }
             
@@ -1382,6 +1302,7 @@ struct CompletionView: View {
     let audioFiles: [AudioFile]
     let outputFolder: URL?
     let onStartOver: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 30) {
@@ -1399,33 +1320,34 @@ struct CompletionView: View {
                 let failed = audioFiles.filter { $0.status == .failed }.count
                 
                 Text("\(successful) files converted successfully")
-                    .foregroundColor(.gray)
+                    .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 
                 if failed > 0 {
-                    VStack(spacing: 8) {
+                    VStack(spacing: DesignTokens.Spacing.sm) {
                         Text("\(failed) files failed")
-                            .foregroundColor(.red)
+                            .foregroundColor(DesignTokens.Colors.Shared.error)
                             .fontWeight(.semibold)
                         
                         // Show error messages for failed files
                         ScrollView {
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                                 ForEach(audioFiles.filter { $0.status == .failed }) { file in
                                     if let errorMessage = file.errorMessage {
-                                        HStack(alignment: .top, spacing: 8) {
+                                        HStack(alignment: .top, spacing: DesignTokens.Spacing.sm) {
                                             Image(systemName: "exclamationmark.triangle.fill")
-                                                .foregroundColor(.red)
+                                                .foregroundColor(DesignTokens.Colors.Shared.error)
                                                 .font(.caption)
                                             VStack(alignment: .leading, spacing: 2) {
                                                 Text(file.url.lastPathComponent)
                                                     .font(.caption)
                                                     .fontWeight(.medium)
+                                                    .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
                                                 Text(errorMessage)
                                                     .font(.caption2)
-                                                    .foregroundColor(.secondary)
+                                                    .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                                             }
                                         }
-                                        .padding(.vertical, 4)
+                                        .padding(.vertical, DesignTokens.Spacing.xs)
                                     }
                                 }
                             }
@@ -1433,7 +1355,7 @@ struct CompletionView: View {
                         }
                         .frame(maxHeight: 150)
                     }
-                    .padding(.top, 8)
+                    .padding(.top, DesignTokens.Spacing.sm)
                 }
             }
             
@@ -1446,7 +1368,7 @@ struct CompletionView: View {
                     Label("Show in Finder", systemImage: "folder")
                         .frame(width: 200)
                 }
-                .applyProminentStyleAndTint()
+                .applyProminentStyleAndTint(colorScheme: colorScheme)
                 
                 Button(action: onStartOver) {
                     Label("Convert More Files", systemImage: "arrow.clockwise")
