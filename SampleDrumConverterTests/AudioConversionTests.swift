@@ -53,16 +53,24 @@ final class AudioConversionTests: XCTestCase {
     }
     
     func testFileSizeValidation() async throws {
-        // Create a large test file (> 100 MB)
+        // Create a large test file (> 100 MB) using sparse file to avoid memory allocation
         let largeFileURL = FileManager.default.temporaryDirectory.appendingPathComponent("large_test.wav")
         defer {
             try? FileManager.default.removeItem(at: largeFileURL)
         }
         
-        // Create a file larger than 100 MB
+        // Create a sparse file larger than 100 MB using FileHandle
+        // This avoids allocating 101MB in memory
         let largeFileSize: Int64 = 101 * 1024 * 1024 // 101 MB
-        let data = Data(count: Int(largeFileSize))
-        try data.write(to: largeFileURL)
+        FileManager.default.createFile(atPath: largeFileURL.path, contents: nil, attributes: nil)
+        
+        let fileHandle = try FileHandle(forWritingTo: largeFileURL)
+        defer { try? fileHandle.close() }
+        
+        // Seek to the end and write a single byte to create a sparse file
+        try fileHandle.seek(toOffset: UInt64(largeFileSize - 1))
+        fileHandle.write(Data([0]))
+        try fileHandle.synchronize()
         
         // Test validation
         do {

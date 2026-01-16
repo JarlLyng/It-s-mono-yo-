@@ -242,7 +242,7 @@ struct ContentView: View {
             return "Converting... (\(completed)/\(total) completed)"
         }
         if audioFiles.isEmpty {
-            return "Click 'Add WAV Files' button to get started"
+            return "Click to select WAV files or drag and drop files here"
         }
         if outputFolder == nil {
             return "Select output folder to start conversion"
@@ -294,7 +294,12 @@ struct ContentView: View {
                 case .selectFiles:
                     SelectFilesView(
                         audioFiles: $audioFiles,
-                        onNext: { withAnimation(.easeInOut) { currentStep = .selectOutput } },
+                        onNext: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .selectOutput
+                                clearStatusMessage()
+                            }
+                        },
                         theme: currentTheme  // Pass theme to child view
                     )
                     .transition(.asymmetric(
@@ -304,8 +309,18 @@ struct ContentView: View {
                 case .selectOutput:
                     SelectOutputView(
                         outputFolder: $outputFolder,
-                        onBack: { withAnimation(.easeInOut) { currentStep = .selectFiles } },
-                        onNext: { withAnimation(.easeInOut) { currentStep = .convert } }
+                        onBack: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .selectFiles
+                                clearStatusMessage()
+                            }
+                        },
+                        onNext: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .convert
+                                clearStatusMessage()
+                            }
+                        }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
@@ -316,7 +331,13 @@ struct ContentView: View {
                         audioFiles: $audioFiles,
                         currentStep: $currentStep,
                         outputFolder: outputFolder,
-                        onBack: { withAnimation(.easeInOut) { currentStep = .selectOutput } }
+                        isProcessing: $isProcessing,
+                        onBack: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .selectOutput
+                                clearStatusMessage()
+                            }
+                        }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
@@ -330,6 +351,8 @@ struct ContentView: View {
                             withAnimation(.easeInOut) { 
                                 currentStep = .selectFiles
                                 audioFiles.removeAll()
+                                isProcessing = false
+                                clearStatusMessage()
                             }
                         }
                     )
@@ -362,6 +385,18 @@ struct ContentView: View {
         .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
         .onAppear {
             checkForUpdates()
+        }
+        .onChange(of: isProcessing) { oldValue, newValue in
+            // Clear custom status message when processing state changes
+            if newValue && customStatusMessage != nil {
+                clearStatusMessage()
+            }
+        }
+        .onChange(of: currentStep) { oldValue, newValue in
+            // Clear custom status message on step transitions
+            if oldValue != newValue {
+                clearStatusMessage()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("OpenFiles"))) { _ in
             if currentStep == .selectFiles {
@@ -504,8 +539,14 @@ struct ContentView: View {
 
     /// Updates the status message shown to the user
     /// - Parameter message: The message to display
+    /// - Note: Message will be cleared when state changes (e.g., conversion starts/stops)
     private func setStatusMessage(_ message: String) {
         customStatusMessage = message
+    }
+    
+    /// Clears the custom status message to allow dynamic status messages
+    private func clearStatusMessage() {
+        customStatusMessage = nil
     }
 }
 
@@ -898,10 +939,12 @@ struct SelectFilesView: View {
                                         }
                                         
                                         // Validate and add file
+                                        // Note: The resolved URL maintains security-scoped access during the session
+                                        // For persistent access across app restarts, bookmark data would need to be stored
                                         try validateFile(at: resolvedURL)
                                         let format = getAudioFormat(for: resolvedURL)
                                         
-                                        // Store the resolved URL with bookmark - access will be re-established during conversion
+                                        // Store the resolved URL - access will be re-established during conversion
                                         audioFiles.append(AudioFile(url: resolvedURL, format: format))
                                     } catch {
                                         #if DEBUG
@@ -1108,6 +1151,7 @@ struct SelectOutputView: View {
 struct ConvertView: View {
     @Binding var audioFiles: [AudioFile]
     @Binding var currentStep: ConversionStep
+    @Binding var isProcessing: Bool
     let outputFolder: URL?
     let onBack: () -> Void
     @State private var isConverting = false
@@ -1199,6 +1243,7 @@ struct ConvertView: View {
     private func startConversion() {
         guard let outputFolder = outputFolder else { return }
         isConverting = true
+        isProcessing = true
         
         // Start conversion for first pending file
         Task {
@@ -1209,9 +1254,11 @@ struct ConvertView: View {
     private func convertNextFile(outputFolder: URL) async {
         // Find first pending file
         guard let index = audioFiles.firstIndex(where: { $0.status == .pending }) else {
-            isConverting = false
-            // Add this line to transition to completion view
-            currentStep = .completed
+            await MainActor.run {
+                isConverting = false
+                isProcessing = false
+                currentStep = .completed
+            }
             return
         }
         

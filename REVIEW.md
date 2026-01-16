@@ -1,22 +1,16 @@
 # App Review: It's mono, yo!
 
 ## Findings
-- High: Status and error messaging is never shown to the user, so failures are silent and UX guidance doesn't appear. `SampleDrumConverter/ContentView.swift:234`, `SampleDrumConverter/ContentView.swift:1064`, `SampleDrumConverter/ContentView.swift:1181`. Recommendation: render `statusMessage` in the main view and surface `errorMessage` in ConvertView/CompletionView (inline text or alert), and ensure `setStatusMessage` updates are visible.
-- Medium: Drag-and-drop file handling may fail in the sandbox because dropped URLs are not security-scoped; this can break conversion for files outside the app container. `SampleDrumConverter/ContentView.swift:833`. Recommendation: call `startAccessingSecurityScopedResource()`/`stopAccessingSecurityScopedResource()` around file access or resolve to a security-scoped bookmark before conversion.
-- Medium: "Show in Finder" during conversion does nothing; `showInFinder()` exists but is never called. `SampleDrumConverter/ContentView.swift:1108`, `SampleDrumConverter/ContentView.swift:1205`. Recommendation: wire the button to `showInFinder()` or remove it until conversion completes.
-- Low: Audio format display labels Hz values as kHz, which misreports sample rate. `SampleDrumConverter/ContentView.swift:162`. Recommendation: divide by 1000 and format (e.g. `44.1 kHz`) or label as Hz.
-- Low: Update check assumes release tags start with `v` and drops the first character, which breaks parsing if tags are `1.0.7`. `SampleDrumConverter/ContentView.swift:455`. Recommendation: only strip a leading `v`, otherwise use the tag as-is.
-- Low: Tests are currently unreliable/failing:
-  - Missing fixture `test_stereo.wav` means `testStereoToMonoConversion` cannot run. `SampleDrumConverterTests/AudioConversionTests.swift:10`.
-  - `testFileSizeValidation` never creates a large file, so it throws a file-not-found error instead of `fileSizeTooLarge`. `SampleDrumConverterTests/AudioConversionTests.swift:49`.
-  - `testErrorHandling` expects `ConversionError`, but `validateFile` can throw `NSError` for missing files. `SampleDrumConverterTests/AudioConversionTests.swift:36`.
-  - `testErrorStates` looks for a "Try Again" button that doesn't exist in the UI. `SampleDrumConverterUITests/SampleDrumConverterUITests.swift:63`.
-  Recommendation: add fixtures, fix the test setup (create/truncate file sizes), and align UI tests with the actual UI or implement the retry UI.
+- Medium: `customStatusMessage` bliver aldrig nulstillet, så den overskriver altid de dynamiske statusbeskeder (fx konverteringsstatus). Det gør statuslinjen permanent "stuck" efter første custom message. `SampleDrumConverter/ContentView.swift:235`, `SampleDrumConverter/ContentView.swift:505`. Anbefaling: nulstil `customStatusMessage` ved state-skift (fx når konvertering starter/slutter) eller drop den som override.
+- Low: Status-teksten refererer til en "Add WAV Files"-knap, som ikke findes i UI’et. `SampleDrumConverter/ContentView.swift:245`. Anbefaling: opdater teksten til den faktiske handling (fx "Select WAV Files" eller "Click to select WAV files").
+- Low: `isProcessing` bliver aldrig sat, så statuslinjen viser ikke "Converting..." under faktisk konvertering og kan vise misvisende tekst. `SampleDrumConverter/ContentView.swift:224`, `SampleDrumConverter/ContentView.swift:239`. Anbefaling: sæt `isProcessing` når konvertering starter/stopper, eller fjern logikken helt.
+- Low: Der oprettes security-scoped bookmark-data med kommentar om "persistent access", men data gemmes aldrig, så adgangen kan ikke overleve en app-genstart. `SampleDrumConverter/ContentView.swift:875`, `SampleDrumConverter/ContentView.swift:904`. Anbefaling: gem bookmark-data (fx i UserDefaults/Keychain) eller fjern "persistent"-delen og kommentaren.
+- Low: `testFileSizeValidation` allokerer en 101MB `Data` i hukommelsen, hvilket kan gøre tests tunge i CI. `SampleDrumConverterTests/AudioConversionTests.swift:62`. Anbefaling: lav en sparse fil via `FileHandle`/`truncate` i stedet for at allokere hele filen i RAM.
 
 ## Open Questions / Assumptions
-- Are GitHub release tags guaranteed to be `vX.Y.Z`? If not, the version parsing needs to be tolerant.
-- The README mentions "retry option" and "context menu actions"; should those be available after conversion, or should the README be updated?
+- Skal security-scoped adgang være vedvarende på tværs af app-genstarter, eller er det kun relevant for den aktuelle session?
 
 ## Testing Gaps
-- No tests cover drag-and-drop in sandboxed environments or security-scoped access.
-- No tests assert error/status messaging in the UI (which currently isn't displayed).
+- `testStereoToMonoConversion` bliver altid skippet, fordi `test_stereo.wav` ikke findes i repoet. `SampleDrumConverterTests/AudioConversionTests.swift:10`.
+- `testErrorStates` er reelt tom og validerer ikke UI-fejlflowet. `SampleDrumConverterUITests/SampleDrumConverterUITests.swift:63`.
+- Ingen tests dækker drag-and-drop med sandboxede security-scoped URL’er.
