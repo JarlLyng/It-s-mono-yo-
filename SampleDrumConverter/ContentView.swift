@@ -851,20 +851,20 @@ struct SelectFilesView: View {
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
-                VStack(spacing: geometry.size.height * 0.03) {  // Reduced spacing
+                VStack(spacing: geometry.size.height * 0.015) {  // Minimal spacing
                     // Icon and drop zone - moved up
-                    VStack(spacing: geometry.size.height * 0.02) {
+                    VStack(spacing: 8) {
                         Image(systemName: "plus.rectangle.fill")
-                            .font(.system(size: min(40, geometry.size.width * 0.06), weight: .ultraLight))
+                            .font(.system(size: min(35, geometry.size.width * 0.05), weight: .ultraLight))
                             .foregroundColor(isDropTargeted || isHovering ? .white : .gray)
                         
                         Text("Click to select WAV files\nor drag files here")
-                            .font(.system(size: min(16, geometry.size.width * 0.02)))
+                            .font(.system(size: min(14, geometry.size.width * 0.018)))
                             .multilineTextAlignment(.center)
                             .foregroundColor(isDropTargeted || isHovering ? .white : .gray)
                     }
                     .frame(maxWidth: .infinity)
-                    .frame(height: max(150, geometry.size.height * 0.2))  // Reduced height
+                    .frame(height: max(120, geometry.size.height * 0.15))  // Further reduced height
                     .background(Color.white.opacity(isDropTargeted || isHovering ? 0.1 : 0.05))
                     .cornerRadius(16)
                     .overlay(
@@ -1036,7 +1036,8 @@ struct SelectFilesView: View {
                     
                     Spacer(minLength: 0)
                 }
-                .padding(min(24, geometry.size.width * 0.03))
+                .padding(.horizontal, min(24, geometry.size.width * 0.03))
+                .padding(.top, min(12, geometry.size.height * 0.01))
             }
         }
     }
