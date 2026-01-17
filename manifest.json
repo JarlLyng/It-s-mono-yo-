@@ -1,0 +1,31 @@
+{
+  "name": "It's mono, yo! - Free WAV to Mono Converter for macOS",
+  "short_name": "It's mono, yo!",
+  "description": "Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00FF7B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/256x265.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["music", "utilities", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
