@@ -793,7 +793,6 @@ struct SelectFilesView: View {
                         print("Received \(providers.count) dropped file(s)")
                         #endif
                         
-                        var hasValidFiles = false
                         for provider in providers {
                             let _ = provider.loadObject(ofClass: URL.self) { url, error in
                                 if let error = error {
@@ -817,8 +816,6 @@ struct SelectFilesView: View {
                                     #endif
                                     return
                                 }
-                                
-                                hasValidFiles = true
                                 
                                 // Access security-scoped resource for sandboxed environments
                                 let isAccessing = url.startAccessingSecurityScopedResource()
@@ -880,9 +877,8 @@ struct SelectFilesView: View {
                                 }
                             }
                         }
-                        
-                        // Return true if we have valid files to process
-                        return hasValidFiles
+                        // Accept drop so UI feedback is correct; files are added asynchronously
+                        return true
                     }
                     
                     // File count indicator
@@ -935,7 +931,7 @@ struct SelectFilesView: View {
                             .frame(width: min(120, geometry.size.width * 0.15),
                                    height: min(36, geometry.size.height * 0.06))
                     }
-                    .buttonStyle(HoverButtonStyle())  // Custom button style
+                    .buttonStyle(HoverButtonStyle(colorScheme: colorScheme))
                     .disabled(audioFiles.isEmpty)
                     .opacity(audioFiles.isEmpty ? 0.5 : 1.0)
                     .animation(.easeInOut, value: audioFiles.isEmpty)
@@ -1008,8 +1004,9 @@ struct SelectFilesView: View {
     }
 }
 
-// Add this custom button style
+// Custom button style with color-scheme support for light/dark mode
 struct HoverButtonStyle: ButtonStyle {
+    var colorScheme: ColorScheme
     @State private var isHovering = false
     
     func makeBody(configuration: Configuration) -> some View {
@@ -1017,11 +1014,11 @@ struct HoverButtonStyle: ButtonStyle {
             .background(
                 Group {
                     if configuration.isPressed {
-                        AdaptiveColor.backgroundCard(.light)
+                        AdaptiveColor.backgroundCard(colorScheme)
                     } else if isHovering {
-                        AdaptiveColor.backgroundCard(.light).opacity(0.8)
+                        AdaptiveColor.backgroundCard(colorScheme).opacity(0.8)
                     } else {
-                        AdaptiveColor.backgroundMuted(.light)
+                        AdaptiveColor.backgroundMuted(colorScheme)
                     }
                 }
             )

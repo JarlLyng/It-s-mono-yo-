@@ -3,11 +3,11 @@
 ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
 ![Release](https://img.shields.io/github/v/release/JarlLyng/It-s-mono-yo-)
 ![License](https://img.shields.io/github/license/JarlLyng/It-s-mono-yo-)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fjarllyng.github.io%2FIt-s-mono-yo-)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmonoyo.iamjarl.com)
 
 A macOS application for batch converting WAV audio files to mono format while preserving original sample rates.
 
-[🌐 Visit Website](https://jarllyng.github.io/It-s-mono-yo-) | [⬇️ Download Latest Release](https://github.com/JarlLyng/It-s-mono-yo-/releases/latest)
+[🌐 Visit Website](https://itsmonoyo.iamjarl.com) | [⬇️ Download Latest Release](https://github.com/JarlLyng/It-s-mono-yo-/releases/latest)
 
 ![App Screenshot](screenshots/Screenshot.png)
 
@@ -22,7 +22,7 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
 - Keyboard shortcuts (⌘O, ESC)
 - Context menu actions for individual files
 - Direct access to converted files in Finder
-- Dark mode with two themes
+- Light and dark mode (follows system appearance)
 - Step-by-step conversion process
 - Drag and drop support
 - Automatic update checking
@@ -49,7 +49,7 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
   - Built with SwiftUI
   - MVVM-inspired architecture
   - Responsive design adapting to window size
-  - Theme system with support for multiple themes
+  - Follows system light/dark appearance (IAMJARL Design System)
 
 ### Key Features Implementation
 
@@ -61,7 +61,7 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
 - **State Management**
   - Step-based conversion flow
   - File status tracking
-  - Theme persistence
+  - Step and file state
 
 ### Data Flow
 
@@ -114,11 +114,9 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
 - ESC: Go back/cancel
 - More shortcuts coming soon
 
-## Themes
+## Appearance
 
-The app comes with two built-in themes:
-- Classic Dark: Simple, elegant dark interface
-- Modern Dark: Rich, gradient-based theme with accent colors
+The app follows your system light or dark mode and uses the IAMJARL Design System for consistent colors and spacing.
 
 ## Known Issues
 
