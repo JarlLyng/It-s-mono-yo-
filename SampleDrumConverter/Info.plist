@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleIdentifier</key>
-    <string>com.jarllyng.itsmonoyo</string>
+    <string>com.iamjarl.itsmonoyo</string>
     <key>CFBundleName</key>
     <string>It's mono, yo!</string>
     <key>CFBundlePackageType</key>

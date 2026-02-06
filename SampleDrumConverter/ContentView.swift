@@ -283,6 +283,7 @@ struct ContentView: View {
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
+                .accessibilityLabel("More options")
             }
         }
         .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
