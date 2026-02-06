@@ -1,6 +1,7 @@
-# App Accessibility – App Store Connect (macOS)
+# App Accessibility (App Store Connect)
 
-Brug denne liste, når du udfylder **App Accessibility** / **Accessibility Nutrition Labels** for **It's mono, yo!** i App Store Connect (under **App Information** → **Accessibility**).
+Checklist for filling in **App Accessibility** / **Accessibility Nutrition Labels** for **It's mono, yo!** in App Store Connect (App Information → Accessibility).  
+*Brug denne liste ved udfyldning af tilgængelighedslabels i App Store Connect.*
 
 ---
 
@@ -20,13 +21,13 @@ Brug denne liste, når du udfylder **App Accessibility** / **Accessibility Nutri
 
 ---
 
-## Valgfri: Accessibility URL
+## Accessibility URL
 
-Du kan angive en **Accessibility URL** (fx din support-/marketing-side eller en dedikeret tilgængelighedsside), hvor brugerne kan læse mere om appens tilgængelighed. Fx:
+Use this URL in App Store Connect so users can read about the app’s accessibility support:
 
-- `https://itsmonoyo.iamjarl.com`  
-eller  
-- `https://github.com/JarlLyng/It-s-mono-yo-#readme`  
+- **https://itsmonoyo.iamjarl.com/#accessibility**
+
+The website footer contains a short accessibility statement (VoiceOver, dark mode, icons and text).  
 
 ---
 

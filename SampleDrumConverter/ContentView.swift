@@ -11,7 +11,7 @@ enum AppConstants {
     static let githubRepository = "JarlLyng/It-s-mono-yo-"
     static let githubReleasesURL = "https://api.github.com/repos/\(githubRepository)/releases/latest"
     static let githubReleasesPageURL = "https://github.com/\(githubRepository)/releases/latest"
-    static let defaultAppVersion = "1.0.7"
+    static let defaultAppVersion = "1.0.8"
 }
 
 // AppTheme replaced with IAMJARL Design Tokens

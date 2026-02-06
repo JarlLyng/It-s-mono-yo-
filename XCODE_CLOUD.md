@@ -1,4 +1,10 @@
-# Xcode Cloud – hvor du finder det
+# Xcode Cloud
+
+This document is for **maintainers** setting up or using Xcode Cloud CI for this repository. Xcode Cloud is not under the Product menu; use the steps below.
+
+---
+
+## Hvor finder du Xcode Cloud? (Where to find it)
 
 Xcode Cloud ligger **ikke** under Product-menuen. Du finder det her:
 

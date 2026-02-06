@@ -5,13 +5,11 @@
 ![License](https://img.shields.io/github/license/JarlLyng/It-s-mono-yo-)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmonoyo.iamjarl.com)
 
-A macOS application for batch converting WAV audio files to mono format while preserving original sample rates.
+**Open-source** macOS app for batch converting WAV audio files to mono while preserving sample rate. Ideal for hardware like the Erica Synths Sample Drum and other sample-based instruments.
 
-[🌐 Visit Website](https://itsmonoyo.iamjarl.com) | [⬇️ Download Latest Release](https://github.com/JarlLyng/It-s-mono-yo-/releases/latest)
+[🌐 Website](https://itsmonoyo.iamjarl.com) · [⬇️ Download](https://github.com/JarlLyng/It-s-mono-yo-/releases/latest) · [🐛 Report issue](https://github.com/JarlLyng/It-s-mono-yo-/issues)
 
 ![App Screenshot](screenshots/Screenshot.png)
-
-Perfect for preparing samples for hardware like the Erica Synths Sample Drum module.
 
 ## Features
 
@@ -27,6 +25,7 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
 - Drag and drop support
 - Automatic update checking
 - Responsive design
+- [Accessibility](https://itsmonoyo.iamjarl.com/#accessibility): VoiceOver, system dark mode, status by icons and text
 
 ## System Requirements
 
@@ -82,13 +81,11 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
 
 ## Installation
 
-### Download from GitHub
-1. Go to the [Releases](https://github.com/JarlLyng/It-s-mono-yo-/releases) page
-2. Download the latest version
-3. Move the app to your Applications folder
-4. Right-click and select "Open" the first time you run it
+### Download
+- **Mac App Store (paid):** The newest version is always on the Mac App Store — paid download with automatic updates.
+- **GitHub (free):** [Releases](https://github.com/JarlLyng/It-s-mono-yo-/releases) — free builds when we publish them. Move to Applications, then right-click → Open the first time (Gatekeeper).
 
-### Building from Source
+### Build from source
 1. Clone the repository:
    ```bash
    git clone https://github.com/JarlLyng/It-s-mono-yo-.git
@@ -110,9 +107,8 @@ Perfect for preparing samples for hardware like the Erica Synths Sample Drum mod
 
 ## Keyboard Shortcuts
 
-- ⌘O: Open file picker
-- ESC: Go back/cancel
-- More shortcuts coming soon
+- **⌘O** — Open file picker
+- **ESC** — Go back / cancel
 
 ## Appearance
 
@@ -125,6 +121,12 @@ The app follows your system light or dark mode and uses the IAMJARL Design Syste
 - System audio dialogs may appear behind the app window
 
 ## Release Notes
+
+### Version 1.0.8
+- App Store release: sandbox, encryption declaration, accessibility (VoiceOver, dark mode, Accessibility URL)
+- Export compliance: `ITSAppUsesNonExemptEncryption` set to NO (HTTPS only)
+- Documentation: README, Xcode Cloud, App Accessibility; support and accessibility links
+- Same app available free on GitHub and paid on Mac App Store
 
 ### Version 1.0.7
 - Fixed version comparison bug (now uses proper semantic versioning)
@@ -150,20 +152,34 @@ The app follows your system light or dark mode and uses the IAMJARL Design Syste
 - Dark mode interface
 - Step-by-step UI
 
+## Support
+
+- **Bugs & feature requests:** [GitHub Issues](https://github.com/JarlLyng/It-s-mono-yo-/issues)
+- **Website & accessibility info:** [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com)
+
 ## Contributing
 
+Contributions are welcome. Please:
+
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a [Pull Request](https://github.com/JarlLyng/It-s-mono-yo-/compare)
+
+See [.github/pull_request_template.md](.github/pull_request_template.md) when submitting a PR.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Documentation (maintainers)
+
+- [XCODE_CLOUD.md](XCODE_CLOUD.md) — Setting up Xcode Cloud CI for this repo
+- [APP_ACCESSIBILITY.md](APP_ACCESSIBILITY.md) — App Store Accessibility Nutrition Labels checklist
+
 ## Acknowledgments
 
-- Built with SwiftUI and AVFoundation
-- Icons from SF Symbols
-- Testing support from the macOS developer community
+- SwiftUI and AVFoundation
+- SF Symbols for icons
+- [IAMJARL Design System](https://iamjarl.com) for UI tokens
