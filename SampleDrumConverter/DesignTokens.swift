@@ -1,6 +1,6 @@
 //
 //  DesignTokens.swift
-//  SampleDrumConverter
+//  It's mono, yo!
 //
 //  IAMJARL Design System Tokens
 //  Source: https://jarllyng.github.io/iamjarl-design/tokens.json

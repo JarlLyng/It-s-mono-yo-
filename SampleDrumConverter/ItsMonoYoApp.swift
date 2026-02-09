@@ -1,6 +1,6 @@
 //
-//  SampleDrumConverterApp.swift
-//  SampleDrumConverter
+//  ItsMonoYoApp.swift
+//  It's mono, yo!
 //
 //  Created by Jarl Lyng on 27/12/2024.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct SampleDrumConverterApp: App {
+struct ItsMonoYoApp: App {
     @StateObject private var appState = AppState()
     
     var body: some Scene {

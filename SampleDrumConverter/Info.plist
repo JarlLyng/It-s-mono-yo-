@@ -2,23 +2,23 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleIdentifier</key>
-    <string>com.iamjarl.itsmonoyo</string>
-    <key>CFBundleName</key>
-    <string>It's mono, yo!</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.0.8</string>
-    <key>CFBundleVersion</key>
-    <string>4</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>11.0</string>
-    <key>LSApplicationCategoryType</key>
-    <string>public.app-category.utilities</string>
-    <key>NSHumanReadableCopyright</key>
-    <string>Copyright © 2024–2025 Jarl Lyng. All rights reserved.</string>
-    <key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
+	<key>CFBundleIdentifier</key>
+	<string>com.iamjarl.itsmonoyo</string>
+	<key>CFBundleName</key>
+	<string>It&apos;s mono, yo!</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.8</string>
+	<key>CFBundleVersion</key>
+	<string>4</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>11.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © IAMJARL. All rights reserved.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
-</plist> 
+</plist>

@@ -40,7 +40,7 @@ Xcode Cloud ligger **ikke** under Product-menuen. Du finder det her:
 
 ### 3. Scheme er delt
 
-- **Product → Scheme → Manage Schemes** → "SampleDrumConverter" skal have **Shared** slået til (projektet har allerede scheme i `xcshareddata/xcschemes/`).
+- **Product → Scheme → Manage Schemes** → scheme for hovedappen (**"It's mono, yo!"**) skal have **Shared** slået til (projektet har allerede scheme i `xcshareddata/xcschemes/`).
 
 ---
 

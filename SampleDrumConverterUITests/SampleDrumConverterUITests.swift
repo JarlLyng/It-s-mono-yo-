@@ -1,13 +1,13 @@
 //
 //  SampleDrumConverterUITests.swift
-//  SampleDrumConverterUITests
+//  It's mono, yo!UITests
 //
 //  Created by Jarl Lyng on 27/12/2024.
 //
 
 import XCTest
 
-final class SampleDrumConverterUITests: XCTestCase {
+final class ItsMonoYoUITests: XCTestCase {
     var app: XCUIApplication!
     
     override func setUpWithError() throws {
