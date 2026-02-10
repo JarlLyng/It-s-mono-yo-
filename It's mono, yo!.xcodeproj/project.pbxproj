@@ -29,22 +29,9 @@
 		3BDF76092D1F625D00189ABE /* It's mono, yo!UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "It's mono, yo!UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		3B469F512D1E18C2004E5EDE /* Exceptions for "Resources" in "It's mono, yo!" */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 3B469F152D1E18C2004E5EDE /* Resources */;
-			membershipExceptions = (
-				Info.plist,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3B469F192D1E18C2004E5EDE /* SampleDrumConverter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				3B469F512D1E18C2004E5EDE /* Exceptions for "Resources" in "It's mono, yo!" */,
-			);
 			path = SampleDrumConverter;
 			sourceTree = "<group>";
 		};
@@ -416,6 +403,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "It's mono, yo!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSMinimumSystemVersion = 11.0;
@@ -450,6 +438,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "It's mono, yo!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSMinimumSystemVersion = 11.0;
