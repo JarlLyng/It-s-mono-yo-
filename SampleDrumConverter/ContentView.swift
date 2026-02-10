@@ -287,9 +287,7 @@ struct ContentView: View {
             }
         }
         .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
-        .onAppear {
-            checkForUpdates()
-        }
+        // Update check disabled: app uses only user-selected file access (no network entitlement) for App Store compliance.
         .onChange(of: isProcessing) { _ in
             // Clear custom status message when processing state changes
             if isProcessing && customStatusMessage != nil {
@@ -387,37 +385,11 @@ struct ContentView: View {
         #endif
     }
 
-    /// Checks GitHub for available updates
-    /// - Note: Compares semantic versions to determine if an update is available
+    /// Shows user where to get updates (App Store). No network access – app uses minimal entitlements for App Review.
     private func checkForUpdates() {
-        Task {
-            let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? AppConstants.defaultAppVersion
-            
-            do {
-                guard let url = URL(string: AppConstants.githubReleasesURL) else { return }
-                
-                let (data, _) = try await URLSession.shared.data(from: url)
-                let release = try JSONDecoder().decode(GitHubRelease.self, from: data)
-                
-                // Handle version tags with or without 'v' prefix
-                let latestVersionString = release.tagName.hasPrefix("v") 
-                    ? String(release.tagName.dropFirst()) 
-                    : release.tagName
-                
-                if compareVersions(latestVersionString, currentVersion) > 0 {
-                    await MainActor.run {
-                        latestVersion = latestVersionString
-                        updateURL = AppConstants.githubReleasesPageURL
-                        showingUpdateAlert = true
-                    }
-                }
-            } catch {
-                #if DEBUG
-                log("Error checking for updates: \(error.localizedDescription)")
-                #endif
-                // Silently fail - update checking is not critical
-            }
-        }
+        latestVersion = ""
+        updateURL = ""
+        showingUpdateAlert = true
     }
     
     /// Compares two semantic version strings
@@ -459,28 +431,30 @@ private struct UpdateAlertModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         if #available(macOS 12.0, *) {
-            content.alert("Update Available", isPresented: $showing) {
-                Button("Download") {
-                    if let url = URL(string: updateURL) {
-                        NSWorkspace.shared.open(url)
-                    }
-                }
-                Button("Later", role: .cancel) { }
-            } message: {
-                Text("Version \(latestVersion) is available.")
-            }
-        } else {
-            // Fallback for macOS < 12: simpler alert without roles/message closure
-            content.alert(isPresented: $showing) {
-                Alert(
-                    title: Text("Update Available"),
-                    message: Text("Version \(latestVersion) is available."),
-                    primaryButton: .default(Text("Download"), action: {
-                        if let url = URL(string: updateURL) {
+            content.alert(latestVersion.isEmpty ? "Updates" : "Update Available", isPresented: $showing) {
+                if latestVersion.isEmpty {
+                    Button("OK", role: .cancel) { }
+                } else {
+                    Button("Download") {
+                        if let url = URL(string: updateURL), !url.absoluteString.isEmpty {
                             NSWorkspace.shared.open(url)
                         }
-                    }),
-                    secondaryButton: .cancel(Text("Later"))
+                    }
+                    Button("Later", role: .cancel) { }
+                }
+            } message: {
+                Text(latestVersion.isEmpty
+                     ? "Check the App Store for the latest version."
+                     : "Version \(latestVersion) is available.")
+            }
+        } else {
+            content.alert(isPresented: $showing) {
+                Alert(
+                    title: Text(latestVersion.isEmpty ? "Updates" : "Update Available"),
+                    message: Text(latestVersion.isEmpty
+                                 ? "Check the App Store for the latest version."
+                                 : "Version \(latestVersion) is available."),
+                    dismissButton: .default(Text("OK"))
                 )
             }
         }

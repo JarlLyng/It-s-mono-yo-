@@ -23,7 +23,7 @@
 - Light and dark mode (follows system appearance)
 - Step-by-step conversion process
 - Drag and drop support
-- Automatic update checking
+- “Check for Updates” (directs to App Store)
 - Responsive design
 - [Accessibility](https://itsmonoyo.iamjarl.com/#accessibility): VoiceOver, system dark mode, status by icons and text
 
