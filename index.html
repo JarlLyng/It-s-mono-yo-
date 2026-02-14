@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production. Batch processing, preserves sample rates, drag &amp; drop support. Download now.">
-    <meta name="keywords" content="WAV to mono converter, stereo to mono, audio converter macOS, sample drum converter, erica synths sample drum, hardware sampler preparation, batch audio conversion, mono audio converter, WAV file converter, audio utility macOS, music production tool, eurorack sampler, modular synth samples">
+    <meta name="description"
+        content="Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production. Batch processing, preserves sample rates, drag &amp; drop support. Download now.">
+    <meta name="keywords"
+        content="WAV to mono converter, stereo to mono, audio converter macOS, sample drum converter, erica synths sample drum, hardware sampler preparation, batch audio conversion, mono audio converter, WAV file converter, audio utility macOS, music production tool, eurorack sampler, modular synth samples">
     <meta name="author" content="Jarl Lyng">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     <meta name="language" content="English">
     <meta name="revisit-after" content="7 days">
     <meta name="rating" content="general">
-    
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="It's mono, yo! - Free WAV to Mono Converter for macOS">
-    <meta property="og:description" content="Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production. Batch processing, preserves sample rates.">
+    <meta property="og:description"
+        content="Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production. Batch processing, preserves sample rates.">
     <!-- Open Graph image: Dedicated og-image.png (1200x630) -->
     <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
     <meta property="og:image:secure_url" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="It's mono, yo! - Free WAV to Mono Converter for macOS. Perfect for Erica Synths Sample Drum and hardware samplers.">
+    <meta property="og:image:alt"
+        content="It's mono, yo! - Free WAV to Mono Converter for macOS. Perfect for Erica Synths Sample Drum and hardware samplers.">
     <meta property="og:image:type" content="image/png">
     <meta property="og:url" content="https://itsmonoyo.iamjarl.com/">
     <meta property="og:site_name" content="It's mono, yo!">
@@ -30,18 +35,20 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:determiner" content="the">
     <meta property="og:see_also" content="https://github.com/JarlLyng/It-s-mono-yo-">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="It's mono, yo! - Free WAV to Mono Converter for macOS">
-    <meta name="twitter:description" content="Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production.">
+    <meta name="twitter:description"
+        content="Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production.">
     <meta name="twitter:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
-    <meta name="twitter:image:alt" content="It's mono, yo! - Free WAV to Mono Converter for macOS. Perfect for Erica Synths Sample Drum and hardware samplers.">
+    <meta name="twitter:image:alt"
+        content="It's mono, yo! - Free WAV to Mono Converter for macOS. Perfect for Erica Synths Sample Drum and hardware samplers.">
     <meta name="twitter:creator" content="@JarlLyng">
     <meta name="twitter:site" content="@JarlLyng">
 
     <title>It's mono, yo! - Free WAV to Mono Converter for macOS | Batch Audio Conversion</title>
-    
+
     <!-- Resource Hints for Performance -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -50,7 +57,7 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://buttons.github.io">
     <link rel="preload" href="screenshots/Screenshot.png" as="image" type="image/png">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -62,7 +69,7 @@
         }
 
         // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'true' || 
+        if (localStorage.getItem('darkMode') === 'true' ||
             (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
@@ -83,6 +90,7 @@
             --iamjarl-warning: #FF6B35;
             --iamjarl-error: #FF3B30;
         }
+
         .dark {
             /* IAMJARL Design System - Dark Mode */
             --iamjarl-primary: #D0FF00;
@@ -150,17 +158,20 @@
     </script>
     <!-- Canonical URL -->
     <link rel="canonical" href="https://itsmonoyo.iamjarl.com/">
-    
+
     <!-- Alternate language links -->
     <link rel="alternate" hreflang="en" href="https://itsmonoyo.iamjarl.com/">
     <link rel="alternate" hreflang="x-default" href="https://itsmonoyo.iamjarl.com/">
-    
+
     <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png">
     <link rel="manifest" href="/manifest.json">
-    
+
     <!-- More meta tags -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -174,9 +185,11 @@
     <meta name="geo.region" content="DK">
     <meta name="language" content="English">
 </head>
+
 <body class="bg-white dark:bg-black transition-colors duration-200">
     <!-- Skip to main content link for accessibility -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
         Skip to main content
     </a>
     <style>
@@ -191,6 +204,7 @@
             white-space: nowrap;
             border-width: 0;
         }
+
         .focus\:not-sr-only:focus {
             position: static;
             width: auto;
@@ -204,21 +218,20 @@
     </style>
     <main id="main-content">
         <!-- Navigation -->
-        <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <nav
+            class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="text-2xl font-bold dark:text-primary-dark text-primary-light">
                     It's mono, yo!
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button onclick="toggleDarkMode()" 
-                            aria-label="Toggle dark mode"
-                            class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200">
+                    <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                        class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200">
                         <i class="fas fa-moon dark:hidden text-black/70" aria-hidden="true"></i>
                         <i class="fas fa-sun hidden dark:block text-primary-dark" aria-hidden="true"></i>
                     </button>
-                    <a href="https://github.com/JarlLyng/It-s-mono-yo-" 
-                       aria-label="View source code on GitHub"
-                       class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black dark:text-black hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 font-semibold">
+                    <a href="https://github.com/JarlLyng/It-s-mono-yo-" aria-label="View source code on GitHub"
+                        class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black dark:text-black hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 font-semibold">
                         <i class="fab fa-github" aria-hidden="true"></i>
                         <span class="font-medium">GitHub</span>
                     </a>
@@ -233,27 +246,28 @@
                     <h1 class="text-6xl md:text-7xl font-extrabold mb-6 text-black dark:text-white leading-tight">
                         It's mono, yo!
                     </h1>
-                    <p class="text-xl md:text-2xl text-black/70 dark:text-white/75 mb-12 max-w-3xl mx-auto leading-relaxed">
-                        Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production. Batch processing with sample rate preservation.
+                    <p
+                        class="text-xl md:text-2xl text-black/70 dark:text-white/75 mb-12 max-w-3xl mx-auto leading-relaxed">
+                        Free macOS app to convert stereo WAV files to mono format. Perfect for Erica Synths Sample Drum,
+                        hardware samplers, and music production. Batch processing with sample rate preservation.
                     </p>
                 </div>
-                
+
                 <div class="relative group animate-float max-w-5xl mx-auto mb-12" style="background: transparent;">
-                    <div class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
-                    <img src="screenshots/Screenshot.png" 
-                         alt="It's mono, yo! macOS app interface showing WAV file conversion process with drag and drop support, batch processing, and IAMJARL Design System" 
-                         width="544"
-                         height="464"
-                         loading="eager"
-                         fetchpriority="high"
-                         class="relative rounded-2xl w-full transform transition-transform duration-500 group-hover:scale-[1.02]"
-                         style="background: transparent; display: block; image-rendering: -webkit-optimize-contrast;">
+                    <div
+                        class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300">
+                    </div>
+                    <img src="screenshots/Screenshot.png"
+                        alt="It's mono, yo! macOS app interface showing WAV file conversion process with drag and drop support, batch processing, and IAMJARL Design System"
+                        width="544" height="464" loading="eager" fetchpriority="high"
+                        class="relative rounded-2xl w-full transform transition-transform duration-500 group-hover:scale-[1.02]"
+                        style="background: transparent; display: block; image-rendering: -webkit-optimize-contrast;">
                 </div>
-                
+
                 <div class="animate-slide-up">
-                    <a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest" 
-                       aria-label="Download the latest version of It's mono, yo! from GitHub releases"
-                       class="inline-flex items-center space-x-3 px-8 py-4 bg-primary-light dark:bg-primary-dark text-black rounded-lg font-semibold text-lg
+                    <a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest"
+                        aria-label="Download the latest version of It's mono, yo! from GitHub releases"
+                        class="inline-flex items-center space-x-3 px-8 py-4 bg-primary-light dark:bg-primary-dark text-black rounded-lg font-semibold text-lg
                               hover:shadow-2xl hover:scale-105 transform transition-all duration-300 
                               focus:outline-none focus:ring-4 focus:ring-primary-light/50 dark:focus:ring-primary-dark/50">
                         <i class="fas fa-download" aria-hidden="true"></i>
@@ -267,33 +281,42 @@
         <!-- What's New -->
         <section class="py-20 bg-white dark:bg-black" aria-label="What's new">
             <div class="container mx-auto px-6 text-center">
-                <span class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12">
+                <span
+                    class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12">
                     ✨ New in Version 1.0.7
                 </span>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
-                        <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-bug text-white text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Bug Fixes</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Fixed version check &amp; shortcuts</p>
                     </div>
-                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
-                        <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-rocket text-white text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Performance</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Async/await conversion</p>
                     </div>
-                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
-                        <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-weight-hanging text-white text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Smaller Size</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Removed unused dependencies</p>
                     </div>
-                    <div class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
-                        <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-eye text-white text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Better UI</h3>
@@ -306,10 +329,14 @@
         <!-- GitHub Stats -->
         <section class="py-16 bg-white dark:bg-black" aria-label="GitHub statistics">
             <div class="container mx-auto px-6 text-center">
-                <div class="github-buttons space-x-4 flex flex-wrap justify-center gap-4" role="group" aria-label="GitHub actions">
-                    <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-" data-size="large" data-show-count="true" aria-label="Star this repository on GitHub">Star</a>
-                    <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-/fork" data-size="large" data-show-count="true" aria-label="Fork this repository on GitHub">Fork</a>
-                    <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-/issues" data-size="large" data-show-count="true" aria-label="View issues on GitHub">Issue</a>
+                <div class="github-buttons space-x-4 flex flex-wrap justify-center gap-4" role="group"
+                    aria-label="GitHub actions">
+                    <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-" data-size="large"
+                        data-show-count="true" aria-label="Star this repository on GitHub">Star</a>
+                    <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-/fork" data-size="large"
+                        data-show-count="true" aria-label="Fork this repository on GitHub">Fork</a>
+                    <a class="github-button" href="https://github.com/JarlLyng/It-s-mono-yo-/issues" data-size="large"
+                        data-show-count="true" aria-label="View issues on GitHub">Issue</a>
                 </div>
             </div>
         </section>
@@ -326,40 +353,52 @@
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-hand-pointer text-black text-2xl"></i>
                             </div>
                             <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Drag &amp; Drop</h3>
-                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Simply drag your WAV files directly into the app</p>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Simply drag your WAV files
+                                directly into the app</p>
                         </div>
                     </div>
-                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-paint-brush text-black text-2xl"></i>
                             </div>
                             <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Modern Theme</h3>
-                            <p class="text-black/70 dark:text-white/75 leading-relaxed">IAMJARL Design System with light &amp; dark mode</p>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">IAMJARL Design System with light
+                                &amp; dark mode</p>
                         </div>
                     </div>
-                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-layer-group text-black text-2xl"></i>
                             </div>
                             <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Batch Processing</h3>
-                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Convert multiple files simultaneously with real-time progress tracking</p>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Convert multiple files
+                                simultaneously with real-time progress tracking</p>
                         </div>
                     </div>
-                    <div class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <div class="relative">
-                            <div class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-keyboard text-black text-2xl"></i>
                             </div>
                             <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Keyboard Shortcuts</h3>
-                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Quick access with ⌘O and ESC shortcuts</p>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Quick access with ⌘O and ESC
+                                shortcuts</p>
                         </div>
                     </div>
                 </div>
@@ -370,15 +409,20 @@
         <section class="py-24 bg-white dark:bg-black" aria-label="System requirements">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">Perfect for Hardware Samplers and Music Production</h2>
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">Perfect for Hardware
+                        Samplers and Music Production</h2>
                     <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
-                        Designed specifically for music producers, hardware enthusiasts, and eurorack modular synth users
+                        Designed specifically for music producers, hardware enthusiasts, and eurorack modular synth
+                        users
                     </p>
                 </div>
                 <div class="max-w-3xl mx-auto">
-                    <div class="bg-white dark:bg-black p-10 rounded-lg shadow-xl border border-black/10 dark:border-white/12">
+                    <div
+                        class="bg-white dark:bg-black p-10 rounded-lg shadow-xl border border-black/10 dark:border-white/12">
                         <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
-                            Specifically designed for preparing samples for hardware like the <span class="font-semibold text-primary-light dark:text-primary-dark">Erica Synths Sample Drum</span> module 
+                            Specifically designed for preparing samples for hardware like the <span
+                                class="font-semibold text-primary-light dark:text-primary-dark">Erica Synths Sample
+                                Drum</span> module
                             and other equipment that requires mono files.
                         </p>
                         <h3 class="text-2xl font-bold mb-6 text-black dark:text-white flex items-center">
@@ -386,23 +430,30 @@
                             System Requirements
                         </h3>
                         <ul class="space-y-4">
-                            <li class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
-                                <div class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
+                            <li
+                                class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
                                 <span class="text-black/70 dark:text-white/75 font-medium">macOS 11.0 or later</span>
                             </li>
-                            <li class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
-                                <div class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
+                            <li
+                                class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
                                 <span class="text-black/70 dark:text-white/75 font-medium">64-bit processor</span>
                             </li>
-                            <li class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
-                                <div class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
+                            <li
+                                class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
-                                <span class="text-black/70 dark:text-white/75 font-medium">WAV file format support</span>
+                                <span class="text-black/70 dark:text-white/75 font-medium">WAV file format
+                                    support</span>
                             </li>
                         </ul>
                     </div>
@@ -416,45 +467,71 @@
                 <div>
                     <h3 class="text-xl font-bold mb-6 text-primary-dark">Quick Links</h3>
                     <ul class="space-y-3">
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
-                            <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
-                            GitHub Repository
-                        </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
-                            <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
-                            Latest Release
-                        </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/issues" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
-                            <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
-                            Report an Issue
-                        </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                GitHub Repository
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                Latest Release
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/issues"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                Report an Issue
+                            </a></li>
                     </ul>
                 </div>
+
                 <div>
                     <h3 class="text-xl font-bold mb-6 text-primary-dark">Resources</h3>
                     <ul class="space-y-3">
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-#readme" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
-                            <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
-                            Documentation
-                        </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
-                            <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
-                            License
-                        </a></li>
-                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest" class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
-                            <i class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
-                            Download
-                        </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-#readme"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                Documentation
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                License
+                            </a></li>
+                        <li><a href="privacy.html"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                Privacy Policy
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <i
+                                    class="fas fa-arrow-right mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"></i>
+                                Download
+                            </a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-xl font-bold mb-6 text-primary-dark">Connect</h3>
-                    <p class="mb-6 text-white/75">Created with <span class="text-error">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 transition-colors duration-200 font-semibold">IAMJARL</a></p>
-                    <p class="mb-6 text-white/75 text-sm" id="accessibility"><strong class="text-primary-dark">Accessibility:</strong> The app supports VoiceOver, system dark mode, and status shown by icons and text. For support and feedback, see <a href="https://github.com/JarlLyng/It-s-mono-yo-/issues" class="text-primary-dark hover:opacity-80 transition-colors duration-200">GitHub Issues</a>.</p>
+                    <p class="mb-6 text-white/75">Created with <span class="text-error">♥️</span> by <a
+                            href="https://iamjarl.com"
+                            class="text-primary-dark hover:opacity-80 transition-colors duration-200 font-semibold">IAMJARL</a>
+                    </p>
+                    <p class="mb-6 text-white/75 text-sm" id="accessibility"><strong
+                            class="text-primary-dark">Accessibility:</strong> The app supports VoiceOver, system dark
+                        mode, and status shown by icons and text. For support and feedback, see <a
+                            href="https://github.com/JarlLyng/It-s-mono-yo-/issues"
+                            class="text-primary-dark hover:opacity-80 transition-colors duration-200">GitHub Issues</a>.
+                    </p>
                     <div class="flex space-x-4">
-                        <a href="https://github.com/JarlLyng" 
-                           aria-label="Visit Jarl Lyng's GitHub profile"
-                           class="w-12 h-12 rounded-lg bg-primary-dark flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all duration-300">
+                        <a href="https://github.com/JarlLyng" aria-label="Visit Jarl Lyng's GitHub profile"
+                            class="w-12 h-12 rounded-lg bg-primary-dark flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all duration-300">
                             <i class="fab fa-github text-xl text-black"></i>
                         </a>
                     </div>
@@ -527,7 +604,7 @@
       "isAccessibleForFree": true
     }
     </script>
-    
+
     <!-- Structured data for Organization -->
     <script type="application/ld+json">
     {
@@ -549,7 +626,7 @@
       ]
     }
     </script>
-    
+
     <!-- Structured data for WebSite -->
     <script type="application/ld+json">
     {
@@ -572,7 +649,7 @@
       }
     }
     </script>
-    
+
     <!-- Breadcrumb structured data -->
     <script type="application/ld+json">
     {
@@ -589,4 +666,5 @@
     }
     </script>
 </body>
-</html> 
+
+</html>

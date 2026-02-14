@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Privacy Policy for It's mono, yo!. We respect your privacy and do not collect any personal data.">
+    <meta name="author" content="Jarl Lyng">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    
+    <title>Privacy Policy - It's mono, yo!</title>
+    
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://buttons.github.io" crossorigin>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <style>
+        :root {
+            /* IAMJARL Design System - Light Mode */
+            --iamjarl-primary: #00FF7B;
+            --iamjarl-text-primary: #000000;
+            --iamjarl-text-secondary: rgba(0, 0, 0, 0.70);
+            --iamjarl-text-tertiary: rgba(0, 0, 0, 0.55);
+            --iamjarl-bg-app: #FFFFFF;
+            --iamjarl-bg-muted: rgba(0, 0, 0, 0.04);
+            --iamjarl-bg-card: rgba(0, 0, 0, 0.04);
+            --iamjarl-border-subtle: rgba(0, 0, 0, 0.10);
+            --iamjarl-border-default: rgba(0, 0, 0, 0.16);
+        }
+        .dark {
+            /* IAMJARL Design System - Dark Mode */
+            --iamjarl-primary: #D0FF00;
+            --iamjarl-text-primary: #FFFFFF;
+            --iamjarl-text-secondary: rgba(255, 255, 255, 0.75);
+            --iamjarl-text-tertiary: rgba(255, 255, 255, 0.60);
+            --iamjarl-bg-app: #000000;
+            --iamjarl-bg-muted: rgba(255, 255, 255, 0.05);
+            --iamjarl-bg-card: rgba(255, 255, 255, 0.05);
+            --iamjarl-border-subtle: rgba(255, 255, 255, 0.12);
+            --iamjarl-border-default: rgba(255, 255, 255, 0.18);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-light': '#00FF7B',
+                        'primary-dark': '#D0FF00',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/16x16.png">
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light hover:opacity-80 transition-opacity">
+                It's mono, yo!
+            </a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" 
+                        aria-label="Toggle dark mode"
+                        class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70" aria-hidden="true"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 min-h-screen">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-8 text-black dark:text-white">Privacy Policy</h1>
+            <div class="prose dark:prose-invert max-w-none text-black/80 dark:text-white/80">
+                <p class="text-lg mb-8">
+                    Last updated: February 14, 2026
+                </p>
+
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Introduction</h2>
+                <p class="mb-6">
+                    "It's mono, yo!" ("we", "us", or "our") respects your privacy. This Privacy Policy explains that we do not collect, store, or share any of your personal information or data when you use our macOS application.
+                </p>
+
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Data Collection and Usage</h2>
+                <p class="mb-6">
+                    <strong>We do not collect any personal data.</strong> The "It's mono, yo!" application operates entirely locally on your macOS device.
+                </p>
+                <ul class="list-disc pl-6 mb-6 space-y-2">
+                    <li>We do not track your usage of the app.</li>
+                    <li>We do not collect any personal information (such as name, email, or IP address).</li>
+                    <li>We do not use any third-party analytics services.</li>
+                    <li>We do not use cookies or tracking technologies in the app.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Local File Processing</h2>
+                <p class="mb-6">
+                    All audio file conversions are performed locally on your Mac using macOS system frameworks (AVFoundation). Your audio files are never uploaded to any server or cloud service. They remain on your device at all times.
+                </p>
+
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Changes to This Policy</h2>
+                <p class="mb-6">
+                    We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
+                </p>
+
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Contact Us</h2>
+                <p class="mb-6">
+                    If you have any questions about this Privacy Policy, please contact us by opening an issue on our <a href="https://github.com/JarlLyng/It-s-mono-yo-/issues" class="text-primary-light dark:text-primary-dark hover:underline">GitHub repository</a>.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="mb-4">&copy; 2026 It's mono, yo!. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 text-sm text-white/60">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="https://github.com/JarlLyng/It-s-mono-yo-" class="hover:text-primary-dark transition-colors">GitHub</a>
+                <a href="/privacy.html" class="text-primary-dark">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
