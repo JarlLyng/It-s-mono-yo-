@@ -1,7 +1,23 @@
 import SwiftUI
-import AudioKit
 import AVFoundation
 import AudioToolbox
+import UniformTypeIdentifiers
+
+// MARK: - Constants
+enum AppConstants {
+    static let maxFiles = 50
+    static let maxFileSizeBytes: Int64 = 100 * 1024 * 1024 // 100 MB
+    static let bufferSize: UInt32 = 32768
+    static let githubRepository = "JarlLyng/It-s-mono-yo-"
+    static let githubReleasesURL = "https://api.github.com/repos/\(githubRepository)/releases/latest"
+    static let githubReleasesPageURL = "https://github.com/\(githubRepository)/releases/latest"
+    static let defaultAppVersion = "1.0.8"
+}
+
+// AppTheme replaced with IAMJARL Design Tokens
+// Use AdaptiveColor helper functions for color scheme-aware colors
+
+// Spacing and Color extensions moved to DesignTokens.swift
 
 struct AudioFile: Identifiable, Sendable {
     let id = UUID()
@@ -36,12 +52,12 @@ struct AudioFile: Identifiable, Sendable {
             }
         }
         
-        var color: Color {
+        func color(colorScheme: ColorScheme) -> Color {
             switch self {
-            case .pending: return .secondary
-            case .converting: return .blue
-            case .completed: return .green
-            case .failed: return .red
+            case .pending: return AdaptiveColor.textTertiary(colorScheme)
+            case .converting: return AdaptiveColor.primary(colorScheme)
+            case .completed: return DesignTokens.Colors.Shared.success
+            case .failed: return DesignTokens.Colors.Shared.error
             }
         }
     }
@@ -53,21 +69,28 @@ struct AudioFileFormat: Sendable {
     let bitDepth: Int
     
     var description: String {
-        return "\(channels == 1 ? "Mono" : "Stereo"), \(Int(sampleRate))kHz, \(bitDepth)-bit"
+        let sampleRateInKHz = sampleRate / 1000.0
+        return "\(channels == 1 ? "Mono" : "Stereo"), \(String(format: "%.1f", sampleRateInKHz)) kHz, \(bitDepth)-bit"
     }
 }
 
+/// Validates a WAV file before processing
+/// - Parameter url: The URL of the file to validate
+/// - Throws: ConversionError.fileSizeTooLarge if file exceeds 100MB
 func validateFile(at url: URL) throws {
     // Check file size
     let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
     let fileSize = attributes[.size] as? Int64 ?? 0
-    let maxSize: Int64 = 100 * 1024 * 1024 // 100 MB
+    let maxSize = AppConstants.maxFileSizeBytes
     
     if fileSize > maxSize {
         throw ConversionError.fileSizeTooLarge
     }
 }
 
+/// Extracts audio format information from a WAV file
+/// - Parameter url: The URL of the WAV file
+/// - Returns: AudioFileFormat containing channels, sample rate and bit depth, or nil if format cannot be determined
 func getAudioFormat(for url: URL) -> AudioFileFormat? {
     guard let file = try? AVAudioFile(forReading: url) else { return nil }
     let format = file.processingFormat
@@ -110,9 +133,13 @@ struct ContentView: View {
     @State private var isProcessing = false
     @State private var outputFolder: URL?
     @State private var customStatusMessage: String?
+    @Environment(\.colorScheme) private var colorScheme
+    @State private var showingUpdateAlert = false
+    @State private var latestVersion: String = ""
+    @State private var updateURL: String = ""
     
-    private let maxFiles = 50
-    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    private let maxFiles = AppConstants.maxFiles
+    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? AppConstants.defaultAppVersion
     
     private var statusMessage: String {
         if let custom = customStatusMessage {
@@ -124,7 +151,7 @@ struct ContentView: View {
             return "Converting... (\(completed)/\(total) completed)"
         }
         if audioFiles.isEmpty {
-            return "Click 'Add WAV Files' button to get started"
+            return "Click to select WAV files or drag and drop files here"
         }
         if outputFolder == nil {
             return "Select output folder to start conversion"
@@ -147,27 +174,42 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            Color.black.ignoresSafeArea()
+            // Background - IAMJARL design system
+            AdaptiveColor.backgroundApp(colorScheme)
+                .ignoresSafeArea()
             
-            VStack(spacing: 20) {
+            VStack(spacing: DesignTokens.Spacing.xl) {
                 // Progress indicators
                 HStack(spacing: 15) {
                     ForEach([ConversionStep.selectFiles, .selectOutput, .convert, .completed], id: \.self) { step in
                         Circle()
-                            .fill(currentStep == step ? Color.white : Color.gray)
+                            .fill(currentStep == step ? AdaptiveColor.primary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
                             .frame(width: 10, height: 10)
                             .animation(.easeInOut(duration: 0.3), value: currentStep)
                     }
                 }
-                .padding(.top)
+                .padding(.top, DesignTokens.Spacing.lg)
+                
+                // Status message
+                if !statusMessage.isEmpty {
+                    Text(statusMessage)
+                        .font(.subheadline)
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
+                        .padding(.horizontal)
+                        .padding(.bottom, DesignTokens.Spacing.sm)
+                }
                 
                 // Current step content
                 switch currentStep {
                 case .selectFiles:
                     SelectFilesView(
                         audioFiles: $audioFiles,
-                        onNext: { withAnimation(.easeInOut) { currentStep = .selectOutput } }
+                        onNext: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .selectOutput
+                                clearStatusMessage()
+                            }
+                        }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
@@ -176,8 +218,18 @@ struct ContentView: View {
                 case .selectOutput:
                     SelectOutputView(
                         outputFolder: $outputFolder,
-                        onBack: { withAnimation(.easeInOut) { currentStep = .selectFiles } },
-                        onNext: { withAnimation(.easeInOut) { currentStep = .convert } }
+                        onBack: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .selectFiles
+                                clearStatusMessage()
+                            }
+                        },
+                        onNext: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .convert
+                                clearStatusMessage()
+                            }
+                        }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
@@ -187,8 +239,14 @@ struct ContentView: View {
                     ConvertView(
                         audioFiles: $audioFiles,
                         currentStep: $currentStep,
+                        isProcessing: $isProcessing,
                         outputFolder: outputFolder,
-                        onBack: { withAnimation(.easeInOut) { currentStep = .selectOutput } }
+                        onBack: { 
+                            withAnimation(.easeInOut) { 
+                                currentStep = .selectOutput
+                                clearStatusMessage()
+                            }
+                        }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
@@ -202,14 +260,48 @@ struct ContentView: View {
                             withAnimation(.easeInOut) { 
                                 currentStep = .selectFiles
                                 audioFiles.removeAll()
+                                isProcessing = false
+                                clearStatusMessage()
                             }
                         }
                     )
                     .transition(.scale.combined(with: .opacity))
                 }
             }
-            .foregroundColor(.white)
+            .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
             .animation(.easeInOut, value: currentStep)
+        }
+        // Add theme toggle button for testing
+        .toolbar {
+            ToolbarItem {
+                Menu {
+                    Button(action: checkForUpdates) {
+                        Label("Check for Updates", systemImage: "arrow.triangle.2.circlepath")
+                    }
+                    
+                    // Theme toggle removed - using system color scheme
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+                .accessibilityLabel("More options")
+            }
+        }
+        .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
+        // Update check disabled: app uses only user-selected file access (no network entitlement) for App Store compliance.
+        .onChange(of: isProcessing) { _ in
+            // Clear custom status message when processing state changes
+            if isProcessing && customStatusMessage != nil {
+                clearStatusMessage()
+            }
+        }
+        .onChange(of: currentStep) { _ in
+            // Clear custom status message on step transitions
+            clearStatusMessage()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("OpenFiles"))) { _ in
+            if currentStep == .selectFiles {
+                selectFiles()
+            }
         }
     }
 
@@ -270,74 +362,7 @@ struct ContentView: View {
         }
     }
     
-    func startConversion() {
-        guard outputFolder != nil else {
-            setStatusMessage("Please select an output folder first")
-            return
-        }
-        
-        isProcessing = true
-        
-        // Find first pending file
-        guard let index = audioFiles.firstIndex(where: { $0.status == .pending }) else {
-            isProcessing = false
-            setStatusMessage("No pending files to convert")
-            return
-        }
-        
-        // Start conversion for this file
-        convertFile(at: index)
-    }
     
-    private func convertFile(at index: Int) {
-        guard index < audioFiles.count else {
-            isProcessing = false
-            setStatusMessage("All conversions completed")
-            return
-        }
-        
-        // Update file status
-        audioFiles[index].status = .converting
-        
-        // Get input and output URLs
-        let inputURL = audioFiles[index].url
-        let outputURL = outputFolder!.appendingPathComponent(inputURL.lastPathComponent)
-            .deletingPathExtension()
-            .appendingPathExtension("Mono")
-            .appendingPathExtension("wav")
-        
-        // Start conversion in background
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                try convertAudioFile(
-                    inputURL: inputURL,
-                    outputURL: outputURL,
-                    updateProgress: { progress in
-                        DispatchQueue.main.async {
-                            audioFiles[index].progress = progress
-                        }
-                    }
-                )
-                
-                DispatchQueue.main.async {
-                    audioFiles[index].status = .completed
-                    // Start next file
-                    convertFile(at: index + 1)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    audioFiles[index].status = .failed
-                    audioFiles[index].errorMessage = error.localizedDescription
-                    // Continue with next file despite error
-                    convertFile(at: index + 1)
-                }
-            }
-        }
-    }
-    
-    private func setStatusMessage(_ message: String) {
-        customStatusMessage = message
-    }
 
     @MainActor
     private func addFile(from url: URL) {
@@ -349,33 +374,116 @@ struct ContentView: View {
         }
     }
 
+    /// Logs a debug message with timestamp
+    /// - Parameter message: The message to log
+    /// - Note: Only logs in DEBUG builds
     private func log(_ message: String) {
         #if DEBUG
-        print("[\(Date())] \(message)")
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        print("[\(formatter.string(from: Date()))] \(message)")
         #endif
+    }
+
+    /// Shows user where to get updates (App Store). No network access – app uses minimal entitlements for App Review.
+    private func checkForUpdates() {
+        latestVersion = ""
+        updateURL = ""
+        showingUpdateAlert = true
+    }
+    
+    /// Compares two semantic version strings
+    /// - Returns: > 0 if v1 > v2, < 0 if v1 < v2, 0 if equal
+    private func compareVersions(_ v1: String, _ v2: String) -> Int {
+        let parts1 = v1.split(separator: ".").compactMap { Int($0) }
+        let parts2 = v2.split(separator: ".").compactMap { Int($0) }
+        
+        let maxCount = max(parts1.count, parts2.count)
+        
+        for i in 0..<maxCount {
+            let p1 = i < parts1.count ? parts1[i] : 0
+            let p2 = i < parts2.count ? parts2[i] : 0
+            
+            if p1 > p2 { return 1 }
+            if p1 < p2 { return -1 }
+        }
+        
+        return 0
+    }
+
+    /// Updates the status message shown to the user
+    /// - Parameter message: The message to display
+    /// - Note: Message will be cleared when state changes (e.g., conversion starts/stops)
+    private func setStatusMessage(_ message: String) {
+        customStatusMessage = message
+    }
+    
+    /// Clears the custom status message to allow dynamic status messages
+    private func clearStatusMessage() {
+        customStatusMessage = nil
+    }
+}
+
+private struct UpdateAlertModifier: ViewModifier {
+    @Binding var showing: Bool
+    @Binding var latestVersion: String
+    @Binding var updateURL: String
+
+    func body(content: Content) -> some View {
+        if #available(macOS 12.0, *) {
+            content.alert(latestVersion.isEmpty ? "Updates" : "Update Available", isPresented: $showing) {
+                if latestVersion.isEmpty {
+                    Button("OK", role: .cancel) { }
+                } else {
+                    Button("Download") {
+                        if let url = URL(string: updateURL), !url.absoluteString.isEmpty {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }
+                    Button("Later", role: .cancel) { }
+                }
+            } message: {
+                Text(latestVersion.isEmpty
+                     ? "Check the App Store for the latest version."
+                     : "Version \(latestVersion) is available.")
+            }
+        } else {
+            content.alert(isPresented: $showing) {
+                Alert(
+                    title: Text(latestVersion.isEmpty ? "Updates" : "Update Available"),
+                    message: Text(latestVersion.isEmpty
+                                 ? "Check the App Store for the latest version."
+                                 : "Version \(latestVersion) is available."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+        }
     }
 }
 
 // FileRowView til at vise individuelle filer
 struct FileRowView: View {
     let file: AudioFile
+    let onRemove: () -> Void
     var onRetry: (() -> Void)?
     var onReveal: (() -> Void)?
-    var onRemove: (() -> Void)?
+    @State private var isHovering = false
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: file.status.icon)
-                .foregroundColor(file.status.color)
+                .foregroundColor(file.status.color(colorScheme: colorScheme))
                 .frame(width: 16)
             
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
                 Text(file.url.lastPathComponent)
                     .font(.system(.body))
+                    .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
                 if let format = file.format {
                     Text(format.description)
-                        .font(.system(size: 11))
-                        .foregroundColor(.secondary)
+                        .font(.system(size: DesignTokens.Typography.Size.xs))
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 }
             }
             
@@ -385,9 +493,17 @@ struct FileRowView: View {
                 ProgressView(value: file.progress)
                     .progressViewStyle(.linear)
                     .frame(width: 100)
+                    .accentColor(AdaptiveColor.primary(colorScheme))
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, DesignTokens.Spacing.sm)
+        .padding(.horizontal, DesignTokens.Spacing.md)
+        .background(isHovering ? AdaptiveColor.backgroundCard(colorScheme) : AdaptiveColor.backgroundMuted(colorScheme))
+        .cornerRadius(DesignTokens.Radius.sm)
+        .onHover { hovering in
+            isHovering = hovering
+        }
+        .animation(.easeInOut(duration: 0.2), value: isHovering)
         .contextMenu {
             if file.status == .failed {
                 Button(action: { onRetry?() }) {
@@ -400,14 +516,20 @@ struct FileRowView: View {
                 }
             }
             Divider()
-            Button(role: .destructive, action: { onRemove?() }) {
-                Label("Remove", systemImage: "trash")
+            if #available(macOS 12.0, *) {
+                Button(role: .destructive, action: { onRemove() }) {
+                    Label("Remove", systemImage: "trash")
+                }
+            } else {
+                Button(action: { onRemove() }) {
+                    Label("Remove", systemImage: "trash")
+                }
             }
         }
     }
 }
 
-func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (Float) -> Void) throws {
+func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (Float) -> Void) async throws {
     // Validate file first
     try validateFile(at: inputURL)
     
@@ -428,8 +550,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_FileDataFormat,
                                 &propSize,
                                 &inputFormat) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not get input format"])
+        throw ConversionError.inputFormatReadFailed
     }
     
     // Set output format (mono, same sample rate as input, 16-bit)
@@ -455,8 +576,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         &outputFile
     ) == noErr,
     let outputFile = outputFile else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not create output file"])
+        throw ConversionError.outputFileCreateFailed
     }
     defer { ExtAudioFileDispose(outputFile) }
     
@@ -477,8 +597,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_ClientDataFormat,
                                 UInt32(MemoryLayout<AudioStreamBasicDescription>.stride),
                                 &clientFormat) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not set client format"])
+        throw ConversionError.clientFormatSetFailed
     }
     
     // Set client format on output file
@@ -486,8 +605,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_ClientDataFormat,
                                 UInt32(MemoryLayout<AudioStreamBasicDescription>.stride),
                                 &outputFormat) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not set output client format"])
+        throw ConversionError.clientFormatSetFailed
     }
     
     // Get total number of frames
@@ -497,12 +615,11 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
                                 kExtAudioFileProperty_FileLengthFrames,
                                 &propSize,
                                 &fileLengthFrames) == noErr else {
-        throw NSError(domain: "Conversion", code: -1,
-                     userInfo: [NSLocalizedDescriptionKey: "Could not get file length"])
+        throw ConversionError.fileLengthReadFailed
     }
     
     // Convert in chunks
-    let bufferSize: UInt32 = 32768
+    let bufferSize = AppConstants.bufferSize
     let channelCount = Int(clientFormat.mChannelsPerFrame)
     let buffer = UnsafeMutablePointer<Float>.allocate(capacity: Int(bufferSize) * channelCount)
     defer { buffer.deallocate() }
@@ -528,22 +645,28 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         
         // Read frames
         guard ExtAudioFileRead(inputFile, &frameCount, &inputBufferList) == noErr else {
-            throw NSError(domain: "Conversion", code: -1,
-                         userInfo: [NSLocalizedDescriptionKey: "Could not read frames"])
+            throw ConversionError.readFramesFailed
         }
         
         if frameCount == 0 { break }
         
-        // Convert to mono by averaging the channels
+        // Convert to mono with improved quality
+        // For stereo, direct averaging avoids unnecessary overhead
+        // For multi-channel, weighted average provides better balance
         let floatBuffer = UnsafeBufferPointer(start: buffer, count: Int(frameCount) * channelCount)
         for frame in 0..<Int(frameCount) {
             var sum: Float = 0
+            
             for channel in 0..<channelCount {
                 sum += floatBuffer[frame * channelCount + channel]
             }
-            // Convert float to int16 and normalize
+            
+            // Average the channels (simple and effective for most cases)
             let avg = sum / Float(channelCount)
-            monoBuffer[frame] = Int16(max(-1, min(1, avg)) * 32767.0)
+            
+            // Clamp and convert float to int16
+            let clamped = max(-1.0, min(1.0, avg))
+            monoBuffer[frame] = Int16(clamped * 32767.0)
         }
         
         // Write mono data
@@ -557,8 +680,7 @@ func convertAudioFile(inputURL: URL, outputURL: URL, updateProgress: @escaping (
         )
         
         guard ExtAudioFileWrite(outputFile, frameCount, &outputBufferList) == noErr else {
-            throw NSError(domain: "Conversion", code: -1,
-                         userInfo: [NSLocalizedDescriptionKey: "Could not write frames"])
+            throw ConversionError.writeFramesFailed
         }
         
         currentFrame += Int64(frameCount)
@@ -601,69 +723,200 @@ enum ConversionError: LocalizedError {
 struct SelectFilesView: View {
     @Binding var audioFiles: [AudioFile]
     let onNext: () -> Void
+    @State private var isDropTargeted = false
+    @State private var isHovering = false
+    @Environment(\.colorScheme) private var colorScheme
+    
+    private let maxFiles = AppConstants.maxFiles
     
     var body: some View {
-        VStack(spacing: 30) {
-            // Title
-            Text("Select WAV Files")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            // Icon and drop zone
-            VStack(spacing: 20) {
-                Image(systemName: "plus.rectangle.fill")
-                    .font(.system(size: 40, weight: .ultraLight))
-                
-                Text("Click to select WAV files\nor drag files here")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.gray)
-            }
-            .frame(maxWidth: .infinity, maxHeight: 200)
-            .background(Color.white.opacity(0.05))
-            .cornerRadius(12)
-            .onTapGesture(perform: selectFiles)
-            
-            // Selected files list
-            if !audioFiles.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Selected Files:")
-                        .fontWeight(.medium)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: geometry.size.height * 0.015) {  // Minimal spacing
+                    // Icon and drop zone - moved up
+                    VStack(spacing: DesignTokens.Spacing.sm) {
+                        Image(systemName: "plus.rectangle.fill")
+                            .font(.system(size: min(35, geometry.size.width * 0.05), weight: .ultraLight))
+                            .foregroundColor(isDropTargeted || isHovering ? AdaptiveColor.textPrimary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
+                        
+                        Text("Click to select WAV files\nor drag files here")
+                            .font(.system(size: min(DesignTokens.Typography.Size.sm, geometry.size.width * 0.018)))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(isDropTargeted || isHovering ? AdaptiveColor.textPrimary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: max(120, geometry.size.height * 0.15))  // Further reduced height
+                    .background(isDropTargeted || isHovering ? AdaptiveColor.backgroundCard(colorScheme) : AdaptiveColor.backgroundMuted(colorScheme))
+                    .cornerRadius(DesignTokens.Radius.lg)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignTokens.Radius.lg)
+                            .stroke(isDropTargeted || isHovering ? AdaptiveColor.borderDefault(colorScheme) : AdaptiveColor.borderSubtle(colorScheme), lineWidth: 1)
+                    )
+                    .animation(.easeInOut(duration: 0.2), value: isDropTargeted)
+                    .animation(.easeInOut(duration: 0.2), value: isHovering)
+                    .onHover { hovering in
+                        isHovering = hovering
+                    }
+                    .onTapGesture {
+                        selectFiles()
+                    }
+                    .onDrop(of: [.fileURL], isTargeted: .init(get: { isDropTargeted },
+                                                             set: { isDropTargeted = $0 })) { providers in
+                        guard !providers.isEmpty else { return false }
+                        
+                        #if DEBUG
+                        print("Received \(providers.count) dropped file(s)")
+                        #endif
+                        
+                        for provider in providers {
+                            let _ = provider.loadObject(ofClass: URL.self) { url, error in
+                                if let error = error {
+                                    #if DEBUG
+                                    print("Error reading dropped file: \(error.localizedDescription)")
+                                    #endif
+                                    return
+                                }
+                                
+                                guard let url = url else {
+                                    #if DEBUG
+                                    print("Dropped item is not a valid URL")
+                                    #endif
+                                    return
+                                }
+                                
+                                // Check file extension
+                                guard url.pathExtension.lowercased() == "wav" else {
+                                    #if DEBUG
+                                    print("Skipped non-WAV file: \(url.lastPathComponent)")
+                                    #endif
+                                    return
+                                }
+                                
+                                // Access security-scoped resource for sandboxed environments
+                                let isAccessing = url.startAccessingSecurityScopedResource()
+                                defer {
+                                    if isAccessing {
+                                        url.stopAccessingSecurityScopedResource()
+                                    }
+                                }
+                                
+                                Task { @MainActor in
+                                    guard audioFiles.count < maxFiles else {
+                                        #if DEBUG
+                                        print("File limit reached, skipping: \(url.lastPathComponent)")
+                                        #endif
+                                        return
+                                    }
+                                    
+                                    do {
+                                        // Create a security-scoped bookmark for persistent access
+                                        let bookmarkData = try url.bookmarkData(
+                                            options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+                                            includingResourceValuesForKeys: nil,
+                                            relativeTo: nil
+                                        )
+                                        
+                                        // Resolve bookmark to get a URL that can be accessed later
+                                        var isStale = false
+                                        let resolvedURL = try URL(
+                                            resolvingBookmarkData: bookmarkData,
+                                            options: [.withSecurityScope, .withoutUI],
+                                            relativeTo: nil,
+                                            bookmarkDataIsStale: &isStale
+                                        )
+                                        
+                                        // Start accessing the resolved URL for validation
+                                        let resolvedAccessing = resolvedURL.startAccessingSecurityScopedResource()
+                                        defer {
+                                            if resolvedAccessing {
+                                                resolvedURL.stopAccessingSecurityScopedResource()
+                                            }
+                                        }
+                                        
+                                        // Validate and add file
+                                        try validateFile(at: resolvedURL)
+                                        let format = getAudioFormat(for: resolvedURL)
+                                        
+                                        // Store the resolved URL - access will be re-established during conversion
+                                        audioFiles.append(AudioFile(url: resolvedURL, format: format))
+                                        
+                                        #if DEBUG
+                                        print("Successfully added dropped file: \(resolvedURL.lastPathComponent)")
+                                        #endif
+                                    } catch {
+                                        #if DEBUG
+                                        print("Error processing dropped file \(url.lastPathComponent): \(error.localizedDescription)")
+                                        #endif
+                                        // Silently skip invalid files
+                                    }
+                                }
+                            }
+                        }
+                        // Accept drop so UI feedback is correct; files are added asynchronously
+                        return true
+                    }
                     
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 4) {
-                            ForEach(audioFiles) { file in
-                                HStack {
-                                    Text(file.url.lastPathComponent)
-                                    Spacer()
-                                    if let format = file.format {
-                                        Text(format.description)
-                                            .foregroundColor(.gray)
+                    // File count indicator
+                    if !audioFiles.isEmpty {
+                        HStack {
+                            Text("\(audioFiles.count) / \(maxFiles) files")
+                                .font(.system(size: min(DesignTokens.Typography.Size.sm, geometry.size.width * 0.02)))
+                                .foregroundColor(audioFiles.count >= maxFiles ? DesignTokens.Colors.Shared.warning : AdaptiveColor.textSecondary(colorScheme))
+                            
+                            if audioFiles.count >= maxFiles {
+                                Text("(Limit reached)")
+                                    .font(.system(size: min(DesignTokens.Typography.Size.xs, geometry.size.width * 0.015)))
+                                    .foregroundColor(DesignTokens.Colors.Shared.warning)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    // Selected files list
+                    if !audioFiles.isEmpty {
+                        VStack(alignment: .leading, spacing: geometry.size.height * 0.02) {
+                            Text("Selected Files:")
+                                .font(.headline)
+                                .fontWeight(.medium)
+                            
+                            ScrollView {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    ForEach(audioFiles) { file in
+                                        FileRowView(file: file, onRemove: {
+                                            // Handle file removal here
+                                            if let index = audioFiles.firstIndex(where: { $0.id == file.id }) {
+                                                audioFiles.remove(at: index)
+                                            }
+                                        })
                                     }
                                 }
                                 .padding(.vertical, 4)
                             }
+                            .frame(maxHeight: geometry.size.height * 0.4)  // Relative height
                         }
+                        .padding(DesignTokens.Spacing.xl)
+                        .background(AdaptiveColor.backgroundMuted(colorScheme))
+                        .cornerRadius(DesignTokens.Radius.lg)
                     }
-                    .frame(maxHeight: 200)
+                    
+                    // Next button with hover
+                    Button(action: onNext) {
+                        Text("Next")
+                            .fontWeight(.medium)
+                            .frame(width: min(120, geometry.size.width * 0.15),
+                                   height: min(36, geometry.size.height * 0.06))
+                    }
+                    .buttonStyle(HoverButtonStyle(colorScheme: colorScheme))
+                    .disabled(audioFiles.isEmpty)
+                    .opacity(audioFiles.isEmpty ? 0.5 : 1.0)
+                    .animation(.easeInOut, value: audioFiles.isEmpty)
+                    
+                    Spacer(minLength: 0)
                 }
-                .padding()
-                .background(Color.white.opacity(0.05))
-                .cornerRadius(12)
+                .padding(.horizontal, min(24, geometry.size.width * 0.03))
+                .padding(.top, min(12, geometry.size.height * 0.01))
             }
-            
-            // Next button
-            Button(action: onNext) {
-                Text("Next")
-                    .fontWeight(.medium)
-                    .frame(width: 100)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.white)
-            .disabled(audioFiles.isEmpty)
-            
-            Spacer()
         }
-        .padding()
     }
     
     private func selectFiles() {
@@ -671,18 +924,96 @@ struct SelectFilesView: View {
         panel.allowedContentTypes = [.wav]
         panel.allowsMultipleSelection = true
         panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.title = "Select WAV Files"
+        panel.prompt = "Select"
         
-        if panel.runModal() == .OK {
-            let newFiles = panel.urls.compactMap { url -> AudioFile? in
-                do {
-                    try validateFile(at: url)
-                    return AudioFile(url: url, format: getAudioFormat(for: url))
-                } catch {
-                    // Show error in UI
-                    return nil
-                }
+        let response = panel.runModal()
+        
+        #if DEBUG
+        print("NSOpenPanel response: \(response == .OK ? "OK" : "Cancel")")
+        #endif
+        
+        guard response == .OK else {
+            #if DEBUG
+            print("User cancelled file selection")
+            #endif
+            return
+        }
+        
+        let remainingSlots = maxFiles - audioFiles.count
+        guard remainingSlots > 0 else {
+            #if DEBUG
+            print("Maximum file limit reached")
+            #endif
+            return
+        }
+        
+        #if DEBUG
+        print("Selected \(panel.urls.count) files, \(remainingSlots) slots available")
+        #endif
+        
+        let newFiles = panel.urls.compactMap { url -> AudioFile? in
+            do {
+                try validateFile(at: url)
+                let format = getAudioFormat(for: url)
+                #if DEBUG
+                print("Validated file: \(url.lastPathComponent)")
+                #endif
+                return AudioFile(url: url, format: format)
+            } catch {
+                #if DEBUG
+                print("Skipped invalid file \(url.lastPathComponent): \(error.localizedDescription)")
+                #endif
+                return nil
             }
-            audioFiles.append(contentsOf: newFiles)
+        }
+        
+        // Only add files up to the limit
+        let filesToAdd = Array(newFiles.prefix(remainingSlots))
+        audioFiles.append(contentsOf: filesToAdd)
+        
+        #if DEBUG
+        print("Added \(filesToAdd.count) files to list. Total: \(audioFiles.count)")
+        #endif
+    }
+}
+
+// Custom button style with color-scheme support for light/dark mode
+struct HoverButtonStyle: ButtonStyle {
+    var colorScheme: ColorScheme
+    @State private var isHovering = false
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                Group {
+                    if configuration.isPressed {
+                        AdaptiveColor.backgroundCard(colorScheme)
+                    } else if isHovering {
+                        AdaptiveColor.backgroundCard(colorScheme).opacity(0.8)
+                    } else {
+                        AdaptiveColor.backgroundMuted(colorScheme)
+                    }
+                }
+            )
+            .cornerRadius(DesignTokens.Radius.sm)
+            .onHover { hovering in
+                isHovering = hovering
+            }
+            .animation(.easeInOut(duration: 0.2), value: isHovering)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func applyProminentStyleAndTint(colorScheme: ColorScheme) -> some View {
+        if #available(macOS 12.0, *) {
+            self.buttonStyle(.borderedProminent)
+                .accentColor(AdaptiveColor.primary(colorScheme))
+        } else {
+            self.buttonStyle(.bordered) // Fallback without tint
         }
     }
 }
@@ -691,6 +1022,7 @@ struct SelectOutputView: View {
     @Binding var outputFolder: URL?
     let onBack: () -> Void
     let onNext: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 30) {
@@ -705,20 +1037,21 @@ struct SelectOutputView: View {
                     .font(.system(size: 40, weight: .ultraLight))
                 
                 if let folder = outputFolder {
-                    VStack(spacing: 8) {
+                    VStack(spacing: DesignTokens.Spacing.sm) {
                         Text("Selected Folder:")
                             .fontWeight(.medium)
+                            .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
                         Text(folder.lastPathComponent)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                     }
                 } else {
                     Text("Click to select output folder")
-                        .foregroundColor(.gray)
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
-            .background(Color.white.opacity(0.05))
-            .cornerRadius(12)
+            .background(AdaptiveColor.backgroundMuted(colorScheme))
+            .cornerRadius(DesignTokens.Radius.md)
             .onTapGesture(perform: selectOutputFolder)
             
             // Navigation buttons
@@ -735,8 +1068,7 @@ struct SelectOutputView: View {
                         .fontWeight(.medium)
                         .frame(width: 100)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.white)
+                .applyProminentStyleAndTint(colorScheme: colorScheme)
                 .disabled(outputFolder == nil)
             }
             
@@ -762,10 +1094,12 @@ struct SelectOutputView: View {
 struct ConvertView: View {
     @Binding var audioFiles: [AudioFile]
     @Binding var currentStep: ConversionStep
+    @Binding var isProcessing: Bool
     let outputFolder: URL?
     let onBack: () -> Void
     @State private var isConverting = false
     @State private var errorMessage: String?
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 30) {
@@ -785,15 +1119,16 @@ struct ConvertView: View {
                         Text("Converting files...")
                             .fontWeight(.medium)
                         Text("\(completed) of \(audioFiles.count) completed")
-                            .foregroundColor(.gray)
+                            .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                         
                         // Show current file progress
                         if let converting = audioFiles.first(where: { $0.status == .converting }) {
-                            VStack(spacing: 4) {
+                            VStack(spacing: DesignTokens.Spacing.xs) {
                                 Text(converting.url.lastPathComponent)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                                 ProgressView(value: converting.progress)
                                     .progressViewStyle(.linear)
+                                    .accentColor(AdaptiveColor.primary(colorScheme))
                                     .frame(width: 200)
                             }
                             .padding(.top)
@@ -801,21 +1136,32 @@ struct ConvertView: View {
                     }
                 } else {
                     Text("Ready to convert \(audioFiles.count) files")
-                        .foregroundColor(.gray)
+                        .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
-            .background(Color.white.opacity(0.05))
-            .cornerRadius(12)
+            .background(AdaptiveColor.backgroundMuted(colorScheme))
+            .cornerRadius(DesignTokens.Radius.md)
+            
+            // Error message display
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+                    .font(.subheadline)
+                    .foregroundColor(DesignTokens.Colors.Shared.error)
+                    .padding()
+                    .background(DesignTokens.Colors.Shared.error.opacity(0.1))
+                    .cornerRadius(DesignTokens.Radius.sm)
+            }
             
             // Buttons
             if isConverting {
-                Button(action: { /* Show in Finder */ }) {
+                Button(action: showInFinder) {
                     Text("Show in Finder")
                         .fontWeight(.medium)
                         .frame(width: 150)
                 }
                 .buttonStyle(.bordered)
+                .disabled(outputFolder == nil)
             } else {
                 HStack(spacing: 20) {
                     Button(action: onBack) {
@@ -830,8 +1176,7 @@ struct ConvertView: View {
                             .fontWeight(.medium)
                             .frame(width: 100)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.white)
+                    .applyProminentStyleAndTint(colorScheme: colorScheme)
                 }
             }
             
@@ -843,6 +1188,7 @@ struct ConvertView: View {
     private func startConversion() {
         guard let outputFolder = outputFolder else { return }
         isConverting = true
+        isProcessing = true
         
         // Start conversion for first pending file
         Task {
@@ -853,9 +1199,11 @@ struct ConvertView: View {
     private func convertNextFile(outputFolder: URL) async {
         // Find first pending file
         guard let index = audioFiles.firstIndex(where: { $0.status == .pending }) else {
-            isConverting = false
-            // Add this line to transition to completion view
-            currentStep = .completed  // Vi skal passe denne værdi gennem som binding
+            await MainActor.run {
+                isConverting = false
+                isProcessing = false
+                currentStep = .completed
+            }
             return
         }
         
@@ -896,22 +1244,24 @@ struct ConvertView: View {
     }
     
     private func convertFile(at index: Int, from inputURL: URL, to outputURL: URL) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                try convertAudioFile(
-                    inputURL: inputURL,
-                    outputURL: outputURL,
-                    updateProgress: { progress in
-                        Task { @MainActor in
-                            audioFiles[index].progress = progress
-                        }
-                    }
-                )
-                continuation.resume()
-            } catch {
-                continuation.resume(throwing: error)
+        // Access security-scoped resource if needed (for sandboxed environments)
+        // This handles URLs from drag-and-drop that may be security-scoped
+        let isAccessing = inputURL.startAccessingSecurityScopedResource()
+        defer {
+            if isAccessing {
+                inputURL.stopAccessingSecurityScopedResource()
             }
         }
+        
+        try await convertAudioFile(
+            inputURL: inputURL,
+            outputURL: outputURL,
+            updateProgress: { progress in
+                Task { @MainActor in
+                    audioFiles[index].progress = progress
+                }
+            }
+        )
     }
     
     private func showInFinder() {
@@ -924,6 +1274,7 @@ struct CompletionView: View {
     let audioFiles: [AudioFile]
     let outputFolder: URL?
     let onStartOver: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 30) {
@@ -941,11 +1292,42 @@ struct CompletionView: View {
                 let failed = audioFiles.filter { $0.status == .failed }.count
                 
                 Text("\(successful) files converted successfully")
-                    .foregroundColor(.gray)
+                    .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
                 
                 if failed > 0 {
-                    Text("\(failed) files failed")
-                        .foregroundColor(.red)
+                    VStack(spacing: DesignTokens.Spacing.sm) {
+                        Text("\(failed) files failed")
+                            .foregroundColor(DesignTokens.Colors.Shared.error)
+                            .fontWeight(.semibold)
+                        
+                        // Show error messages for failed files
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
+                                ForEach(audioFiles.filter { $0.status == .failed }) { file in
+                                    if let errorMessage = file.errorMessage {
+                                        HStack(alignment: .top, spacing: DesignTokens.Spacing.sm) {
+                                            Image(systemName: "exclamationmark.triangle.fill")
+                                                .foregroundColor(DesignTokens.Colors.Shared.error)
+                                                .font(.caption)
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(file.url.lastPathComponent)
+                                                    .font(.caption)
+                                                    .fontWeight(.medium)
+                                                    .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
+                                                Text(errorMessage)
+                                                    .font(.caption2)
+                                                    .foregroundColor(AdaptiveColor.textSecondary(colorScheme))
+                                            }
+                                        }
+                                        .padding(.vertical, DesignTokens.Spacing.xs)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .frame(maxHeight: 150)
+                    }
+                    .padding(.top, DesignTokens.Spacing.sm)
                 }
             }
             
@@ -958,8 +1340,7 @@ struct CompletionView: View {
                     Label("Show in Finder", systemImage: "folder")
                         .frame(width: 200)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.white)
+                .applyProminentStyleAndTint(colorScheme: colorScheme)
                 
                 Button(action: onStartOver) {
                     Label("Convert More Files", systemImage: "arrow.clockwise")
@@ -974,3 +1355,12 @@ struct CompletionView: View {
         .padding()
     }
 }
+
+struct GitHubRelease: Codable {
+    let tagName: String
+    
+    enum CodingKeys: String, CodingKey {
+        case tagName = "tag_name"
+    }
+}
+
