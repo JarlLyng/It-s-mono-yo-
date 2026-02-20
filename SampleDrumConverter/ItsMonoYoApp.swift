@@ -6,9 +6,18 @@
 //
 
 import SwiftUI
+import AppKit
+
+/// AppDelegate for App Store Guideline 4 (Design): quit when main window is closed.
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
+    }
+}
 
 @main
 struct ItsMonoYoApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var appState = AppState()
     
     var body: some Scene {
