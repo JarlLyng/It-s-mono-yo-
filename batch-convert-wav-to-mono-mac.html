@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Batch convert multiple WAV files from stereo to mono on macOS. Free app with drag and drop, real-time progress tracking, and sample rate preservation. Up to 50 files at once.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Batch Convert WAV to Mono on Mac">
+    <meta property="og:description"
+        content="Convert multiple stereo WAV files to mono at once on macOS. Free app with batch processing for up to 50 files.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/batch-convert-wav-to-mono-mac.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <title>Batch Convert WAV to Mono on Mac – It's mono, yo!</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/batch-convert-wav-to-mono-mac.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { 'primary-light': '#00FF7B', 'primary-dark': '#D0FF00' } } }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Batch Convert WAV Files to Mono on Mac
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                When you need to convert an entire sample library from stereo to mono, doing it one file at a time is not practical. Here is how to batch convert multiple WAV files to mono on macOS in seconds.
+            </p>
+
+            <div class="my-12">
+                <img src="app store images/mac-image02.png"
+                    alt="It's mono, yo! batch conversion progress view"
+                    class="rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12" loading="lazy">
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How Batch Conversion Works</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                <strong>It's mono, yo!</strong> supports batch conversion of up to 50 WAV files at once. The process is simple:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Open the app and drag in all your WAV files (or use ⌘O to select multiple files)</li>
+                <li>The app shows each file with its format info (sample rate, bit depth, stereo/mono)</li>
+                <li>Click "Next" and select your output folder</li>
+                <li>Watch the real-time progress as each file is converted</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">What Gets Preserved</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                During batch conversion, every file keeps its original audio quality:
+            </p>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Sample rate:</strong> 44.1 kHz stays 44.1 kHz, 48 kHz stays 48 kHz, etc.</li>
+                <li><strong>Bit depth:</strong> 16-bit, 24-bit, and 32-bit files all maintain their original depth</li>
+                <li><strong>File names:</strong> Output files keep the original file name</li>
+                <li><strong>Audio content:</strong> Left and right channels are mixed into a balanced mono signal</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">When You Need Batch Conversion</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                Batch conversion is essential when:
+            </p>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Preparing a complete sample pack for <a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Erica Synths Sample Drum</a></li>
+                <li>Loading samples onto <a href="prepare-samples-eurorack-samplers.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Eurorack sampler modules</a></li>
+                <li>Converting an entire folder of recordings to mono</li>
+                <li>Processing downloaded sample packs that come in stereo format</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Error Handling</h2>
+            <p class="text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                If a file fails during batch conversion (for example, if it is corrupted or not a valid WAV file), the app continues converting the remaining files. Failed files are marked with an error status, and you can retry them individually. Your successfully converted files are not affected.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Tips for Efficient Batch Processing</h2>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Process files in batches of 50 if you have a large library</li>
+                <li>Output directly to your SD card to save a copy step</li>
+                <li>The app shows file info before conversion — check that your files are actually stereo before converting</li>
+                <li>Original files are never modified, so you can safely experiment</li>
+            </ul>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Batch Convert Your Samples</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Up to 50 files at once. Free on the Mac App Store.</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="prepare-samples-erica-synths-sample-drum.html" class="hover:text-primary-dark transition-colors">Erica Synths</a>
+                <a href="prepare-samples-eurorack-samplers.html" class="hover:text-primary-dark transition-colors">Eurorack</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>

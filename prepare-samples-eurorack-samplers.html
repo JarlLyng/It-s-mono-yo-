@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to prepare WAV samples for Eurorack and modular synth samplers. Convert stereo to mono, set correct sample rates, and format files for your modules.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Preparing Samples for Eurorack Samplers">
+    <meta property="og:description"
+        content="Guide to preparing WAV samples for Eurorack sampler modules. Learn the correct format and how to convert stereo to mono.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-eurorack-samplers.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <title>Preparing Samples for Eurorack Samplers – It's mono, yo!</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-eurorack-samplers.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { 'primary-light': '#00FF7B', 'primary-dark': '#D0FF00' } } }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Preparing Samples for Eurorack Samplers
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                Eurorack sampler modules open up a world of creative possibilities in modular synthesis. But getting your samples into the right format can be frustrating. This guide covers what you need to know about preparing WAV files for Eurorack samplers.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why Eurorack Samplers Need Mono</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                Most Eurorack sampler modules have a single audio output per voice. This is by design — in a modular system, you route audio through patch cables to mixers, effects, and other modules. A single mono output per voice gives you the most flexibility in your patches. Because of this, <a href="why-hardware-samplers-need-mono.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">these modules expect mono WAV files</a>.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Popular Eurorack Samplers</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                Here are some popular Eurorack sampler modules and their sample requirements:
+            </p>
+            <div class="space-y-4 mb-8">
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white"><a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Erica Synths Sample Drum</a></h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono WAV, 44.1 kHz, 16/24-bit. Reads from micro SD card.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">Squid Salmple</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono or stereo WAV, 44.1 kHz. 8 channels of sample playback.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">1010music Bitbox</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Supports stereo, but mono files save memory and simplify routing.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">Tiptop Audio ONE</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono WAV samples from SD card. Simple one-shot sample player.</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Preparation Workflow</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                Here is a typical workflow for preparing samples for Eurorack modules:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Collect your source samples (from sample packs, recordings, or synthesizers)</li>
+                <li><a href="convert-stereo-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Convert stereo files to mono</a> using It's mono, yo!</li>
+                <li>Trim silence from the start and end of samples</li>
+                <li>Normalize volume levels for consistency</li>
+                <li>Rename files with short, descriptive names</li>
+                <li>Copy to your SD card and test on your module</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Batch Converting for Large Libraries</h2>
+            <p class="text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                If you have a large sample library to prepare, <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch conversion</a> saves a lot of time. It's mono, yo! lets you convert up to 50 files at once with real-time progress tracking. Just drag your files in, select the output folder, and the app handles the rest.
+            </p>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Get Your Samples Ready</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Free stereo to mono converter on the Mac App Store.</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="prepare-samples-erica-synths-sample-drum.html" class="hover:text-primary-dark transition-colors">Erica Synths</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>

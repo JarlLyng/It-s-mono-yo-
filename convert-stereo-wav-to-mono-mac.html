@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to convert stereo WAV files to mono on Mac. Free macOS app with drag and drop, batch processing, and sample rate preservation. Perfect for hardware samplers.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="How to Convert Stereo WAV to Mono on Mac">
+    <meta property="og:description"
+        content="Step-by-step guide to converting stereo WAV files to mono on macOS. Free app available on the Mac App Store.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/convert-stereo-wav-to-mono-mac.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <title>How to Convert Stereo WAV to Mono on Mac – It's mono, yo!</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/convert-stereo-wav-to-mono-mac.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-light': '#00FF7B',
+                        'primary-dark': '#D0FF00',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                How to Convert Stereo WAV Files to Mono on Mac
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                Many hardware samplers and music production workflows require mono WAV files. If you have stereo samples that need to be converted, here is how to do it quickly on macOS.
+            </p>
+
+            <div class="my-12">
+                <img src="screenshots/Screenshot.png"
+                    alt="It's mono, yo! app interface showing stereo to mono WAV conversion"
+                    class="rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12" loading="lazy">
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why Convert Stereo to Mono?</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                Hardware samplers like the <a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Erica Synths Sample Drum</a> and many <a href="prepare-samples-eurorack-samplers.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Eurorack samplers</a> only accept mono WAV files. When you load a stereo file into these devices, it may play only one channel, sound distorted, or not load at all. Converting to mono ensures compatibility and consistent playback.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Step-by-Step: Convert Stereo WAV to Mono</h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="flex gap-4 p-6 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <div class="w-10 h-10 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center flex-shrink-0 text-black font-bold">1</div>
+                    <div>
+                        <h3 class="font-bold text-black dark:text-white mb-1">Download the app</h3>
+                        <p class="text-black/70 dark:text-white/75">Get <strong>It's mono, yo!</strong> for free from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a>. It requires macOS 11.0 or later.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <div class="w-10 h-10 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center flex-shrink-0 text-black font-bold">2</div>
+                    <div>
+                        <h3 class="font-bold text-black dark:text-white mb-1">Add your WAV files</h3>
+                        <p class="text-black/70 dark:text-white/75">Drag and drop your stereo WAV files into the app, or press ⌘O to open a file browser. You can add up to 50 files at once for <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch conversion</a>.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <div class="w-10 h-10 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center flex-shrink-0 text-black font-bold">3</div>
+                    <div>
+                        <h3 class="font-bold text-black dark:text-white mb-1">Select an output folder</h3>
+                        <p class="text-black/70 dark:text-white/75">Choose where you want the converted mono files to be saved. The original files are never modified.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <div class="w-10 h-10 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center flex-shrink-0 text-black font-bold">4</div>
+                    <div>
+                        <h3 class="font-bold text-black dark:text-white mb-1">Convert</h3>
+                        <p class="text-black/70 dark:text-white/75">The app converts each file to mono while preserving the original sample rate and bit depth. You can track progress in real time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">What Happens During Conversion?</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                The app mixes the left and right channels of each stereo WAV file into a single mono channel. The original sample rate (44.1 kHz, 48 kHz, 96 kHz, etc.) and bit depth (16-bit, 24-bit, 32-bit) are preserved. This means your converted files maintain the same audio quality, just in mono format.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Who Is This For?</h2>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Musicians preparing samples for <a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Erica Synths Sample Drum</a></li>
+                <li>Eurorack users who need mono files for <a href="prepare-samples-eurorack-samplers.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">modular samplers</a></li>
+                <li>Producers preparing sample packs for hardware devices</li>
+                <li>Anyone who needs to <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch convert WAV files to mono</a> on macOS</li>
+            </ul>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Download for Free</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Available on the Mac App Store. No ads, no in-app purchases.</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="prepare-samples-erica-synths-sample-drum.html" class="hover:text-primary-dark transition-colors">Erica Synths</a>
+                <a href="prepare-samples-eurorack-samplers.html" class="hover:text-primary-dark transition-colors">Eurorack</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>

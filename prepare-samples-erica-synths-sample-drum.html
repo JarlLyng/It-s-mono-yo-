@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to prepare WAV samples for the Erica Synths Sample Drum. Convert stereo to mono, correct sample rates, and format files for your Eurorack drum module.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Preparing Samples for Erica Synths Sample Drum">
+    <meta property="og:description"
+        content="Complete guide to preparing WAV samples for the Erica Synths Sample Drum module. Convert stereo to mono with the right format.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-erica-synths-sample-drum.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <title>Preparing Samples for Erica Synths Sample Drum – It's mono, yo!</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-erica-synths-sample-drum.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { 'primary-light': '#00FF7B', 'primary-dark': '#D0FF00' } } }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Preparing Samples for Erica Synths Sample Drum
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                The Erica Synths Sample Drum is a powerful Eurorack drum module that plays WAV samples from a micro SD card. To get the best results, your samples need to be in the right format. Here is everything you need to know.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Requirements</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                The Sample Drum expects files in a specific format:
+            </p>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Format:</strong> WAV (uncompressed)</li>
+                <li><strong>Channels:</strong> Mono (single channel)</li>
+                <li><strong>Sample rate:</strong> 44.1 kHz recommended</li>
+                <li><strong>Bit depth:</strong> 16-bit or 24-bit</li>
+                <li><strong>Storage:</strong> Micro SD card (FAT32 formatted)</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">The Mono Requirement</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                The most common issue people run into is loading stereo samples. The Sample Drum has a single audio output per channel, so it needs mono files. If you load a stereo file, the module may play it at the wrong speed or produce unexpected results. Read more about <a href="why-hardware-samplers-need-mono.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">why hardware samplers require mono files</a>.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How to Convert Your Samples</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                If you have stereo samples that you want to use with the Sample Drum, you need to <a href="convert-stereo-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">convert them to mono</a>. The fastest way on macOS is with <strong>It's mono, yo!</strong>:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Download the free app from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a></li>
+                <li>Drag your stereo WAV files into the app</li>
+                <li>Select your micro SD card as the output folder</li>
+                <li>The app converts all files to mono, preserving the sample rate</li>
+            </ol>
+            <p class="text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                You can convert <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">up to 50 files at once</a>, which makes it easy to prepare entire sample libraries for the Sample Drum.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Organizing Files on the SD Card</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                The Sample Drum reads WAV files from folders on the micro SD card. You can organize your samples into folders by type (kicks, snares, hi-hats, etc.) or by kit. Use short, descriptive file names since the module display has limited space.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Tips for Great Sounding Drums</h2>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Trim silence from the beginning of samples for tight timing</li>
+                <li>Normalize your samples so volume levels are consistent</li>
+                <li>Use 44.1 kHz sample rate for the best compatibility</li>
+                <li>Keep samples short for percussion — long ambient samples use more memory</li>
+                <li>Create multiple folders to switch between kits easily</li>
+            </ul>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Ready to Prepare Your Samples?</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Convert stereo WAV to mono in seconds. Free on the Mac App Store.</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="prepare-samples-eurorack-samplers.html" class="hover:text-primary-dark transition-colors">Eurorack</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>
