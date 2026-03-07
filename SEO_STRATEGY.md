@@ -342,21 +342,28 @@ These communities are highly relevant and likely to drive qualified traffic.
 
 # 10. Content Roadmap
 
-Phase 1
+Phase 1 ✅ DONE
 
-• How to convert stereo wav to mono mac
-• Why hardware samplers require mono samples
-
-
-Phase 2
-
-• Preparing samples for Erica Synths Sample Drum
-• Preparing samples for Eurorack samplers
+• How to convert stereo wav to mono mac → /convert-stereo-wav-to-mono-mac.html
+• Why hardware samplers require mono samples → /why-hardware-samplers-need-mono.html
 
 
-Phase 3
+Phase 2 ✅ DONE
 
-• Batch converting WAV files to mono on macOS
+• Preparing samples for Erica Synths Sample Drum → /prepare-samples-erica-synths-sample-drum.html
+• Preparing samples for Eurorack samplers → /prepare-samples-eurorack-samplers.html
+
+
+Phase 3 ✅ DONE
+
+• Batch converting WAV files to mono on macOS → /batch-convert-wav-to-mono-mac.html
+
+
+Phase 4 (Next)
+
+• Preparing samples for Elektron samplers
+• Preparing samples for modular samplers
+• Best way to convert WAV to mono on Mac (comparison page)
 
 ---
 
@@ -377,7 +384,27 @@ Important signals:
 
 ---
 
-# 12. Long Term Vision
+# 12. Implementation Status
+
+Completed:
+
+• Homepage SEO: title tag, meta description, hero text optimised for primary keywords
+• Structured data: SoftwareApplication, FAQPage, Organization, BreadcrumbList, WebSite
+• FAQ section with 5 questions targeting long‑tail searches
+• App Store links as primary CTA throughout site
+• 5 supporting pages with full internal linking (topic cluster)
+• Sitemap updated with all 7 pages
+• Google Search Console connected
+
+Not yet done:
+
+• Backlink outreach (Reddit, Elektronauts, Modwiggler, Product Hunt)
+• Phase 4 content (Elektron, modular, comparison pages)
+• Programmatic SEO keyword variations
+
+---
+
+# 13. Long Term Vision
 
 The site becomes a small resource hub for:
 
