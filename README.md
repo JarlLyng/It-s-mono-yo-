@@ -34,8 +34,8 @@
 - macOS 11.0 or later
 - 64-bit processor
 - Audio files in WAV format
-- Maximum file size: 100 MB per file
-- Up to 50 files can be converted in one batch
+- No file size limits
+- Unlimited files can be converted in one batch
 
 ## Technical Architecture
 
@@ -85,7 +85,7 @@
 
 ### Download
 - **Mac App Store (paid):** The newest version is always on the Mac App Store — paid download with automatic updates.
-- **GitHub (free):** [Releases](https://github.com/JarlLyng/It-s-mono-yo-/releases) — free builds when we publish them. Move to Applications, then right-click → Open the first time (Gatekeeper).
+- **GitHub:** [Releases](https://github.com/JarlLyng/It-s-mono-yo-/releases) — builds published here periodically. Move to Applications, then right-click → Open the first time (Gatekeeper).
 
 ### Build from source
 1. Clone the repository:
@@ -99,10 +99,9 @@
 ## Usage
 
 1. Launch the app
-2. Add WAV files:
-   - Click the "Select WAV Files" button or use ⌘O
-   - Or drag and drop WAV files directly into the app
-   - Select one or more WAV files (up to 50 files)
+2. Add audio files:
+   - Click the "Select Files" button or use ⌘O
+   - Or drag and drop WAV or AIFF files directly into the app
 3. Choose output folder
 4. Start conversion
 5. Access converted files directly from the completion screen using "Show in Finder"
@@ -118,8 +117,6 @@ The app follows your system light or dark mode and uses the IAMJARL Design Syste
 
 ## Known Issues
 
-- Large files (>100MB) are not supported
-- Only WAV files are supported
 - System audio dialogs may appear behind the app window
 
 ## Release Notes
@@ -128,7 +125,7 @@ The app follows your system light or dark mode and uses the IAMJARL Design Syste
 - App Store release: sandbox, encryption declaration, accessibility (VoiceOver, dark mode, Accessibility URL)
 - Export compliance: `ITSAppUsesNonExemptEncryption` set to NO (HTTPS only)
 - Documentation: README, Xcode Cloud, App Accessibility; support and accessibility links
-- Same app available free on GitHub and paid on Mac App Store
+- Same app available on GitHub and Mac App Store
 
 ### Version 1.0.7
 - Fixed version comparison bug (now uses proper semantic versioning)

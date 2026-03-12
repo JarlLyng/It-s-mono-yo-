@@ -142,7 +142,7 @@ These target the main search intent behind the tool.
 • Convert stereo WAV to mono on macOS
 • Stereo to mono WAV converter for Mac
 • Batch convert WAV to mono on Mac
-• Free WAV to mono converter for macOS
+• WAV to mono converter for macOS
 
 
 ## "How To" Workflow Pages
