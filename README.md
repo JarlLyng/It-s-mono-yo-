@@ -5,6 +5,8 @@
 ![License](https://img.shields.io/github/license/JarlLyng/It-s-mono-yo-)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmonoyo.iamjarl.com)
 
+![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)
+
 **Open-source** macOS app for batch converting WAV audio files to mono while preserving sample rate. Ideal for hardware like the Erica Synths Sample Drum and other sample-based instruments.
 
 [🌐 Website](https://itsmonoyo.iamjarl.com) · [⬇️ Download](https://github.com/JarlLyng/It-s-mono-yo-/releases/latest) · [🐛 Report issue](https://github.com/JarlLyng/It-s-mono-yo-/issues)
