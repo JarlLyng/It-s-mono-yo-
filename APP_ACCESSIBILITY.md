@@ -15,7 +15,7 @@ Checklist for filling in **App Accessibility** / **Accessibility Nutrition Label
 | **Dark Interface** | Ja | Appen følger systemets lys/mørk-tilstand. |
 | **Differentiate Without Color Alone** | Ja | Status vises med ikoner (fx checkmark, exclamationmark.triangle) samt farve. |
 | **Sufficient Contrast** | Ja | IAMJARL design tokens med tydelig kontrast mellem tekst og baggrund. |
-| **Reduced Motion** | Nej (med mindre du tester det) | Appen bruger animationer (.animation). Der er ikke implementeret respekt for "Reduce motion". Angiv **Nej** med mindre du tilføjer det og tester. |
+| **Reduced Motion** | Ja | Appen respekterer systemets "Reduce Motion"-indstilling via `adaptiveAnimation()`. Animationer deaktiveres når brugeren har slået Reduce Motion til. |
 | **Captions** | Lad stå uangivet / Nej | Ingen video i appen. Ikke relevant. |
 | **Audio Descriptions** | Lad stå uangivet / Nej | Ingen video. Ikke relevant. |
 
@@ -37,4 +37,4 @@ The website footer contains a short accessibility statement (VoiceOver, dark mod
 2. **Dark Interface:** Skift system til mørk tilstand og tjek at UI er læsbart.
 3. **Differentiate Without Color Alone:** Tjek at du kan skelne "Pending / Converting / Completed / Failed" ud fra ikoner og tekst, ikke kun farve.
 
-Når det er ok, kan du med god samvittighed angive **VoiceOver**, **Voice Control**, **Dark Interface**, **Differentiate Without Color Alone** og **Sufficient Contrast** som understøttet for Mac i App Store Connect.
+Når det er ok, kan du med god samvittighed angive **VoiceOver**, **Voice Control**, **Dark Interface**, **Differentiate Without Color Alone**, **Sufficient Contrast** og **Reduced Motion** som understøttet for Mac i App Store Connect.

@@ -6,7 +6,7 @@ labels: bug
 assignees: ''
 ---
 
-Thanks for reporting. The newest version is on the Mac App Store; you can also try the latest [GitHub release](https://github.com/JarlLyng/It-s-mono-yo-/releases) to see if the issue is already fixed.
+Thanks for reporting. Make sure you're on the latest version from the [Mac App Store](https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12).
 
 **Describe the bug**
 A clear and concise description of what the bug is.
@@ -22,9 +22,8 @@ A clear and concise description of what you expected to happen.
 
 **System Information**
 - macOS version: [e.g. 14.0]
-- App version: [e.g. 1.0.8]
-- Where you got the app: [Mac App Store / GitHub release]
-- File type (if relevant): [e.g. WAV 44.1 kHz 16-bit]
+- App version: [e.g. 1.2.0]
+- File type (if relevant): [e.g. WAV 44.1 kHz 16-bit stereo]
 
 **Additional context**
 Add any other context about the problem here. 
