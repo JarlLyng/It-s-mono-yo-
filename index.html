@@ -542,6 +542,16 @@
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Erica Synths Sample Drum</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Prepare samples for this Eurorack drum module.</p>
                     </a>
+                    <a href="prepare-samples-elektron-digitakt-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Elektron Digitakt</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Optimize +Drive space and transfer speed.</p>
+                    </a>
+                    <a href="prepare-samples-roland-sp404.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Roland SP-404</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Double your polyphony and sample lengths.</p>
+                    </a>
                     <a href="prepare-samples-eurorack-samplers.html"
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Eurorack Samplers</h3>
@@ -602,11 +612,22 @@
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
                         <summary
                             class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
-                            Does it work with the Erica Synths Sample Drum?
+                            Does it work with Hardware Samplers like Erica Synths, Elektron Digitakt, or Roland SP-404?
                             <i class="fas fa-chevron-down text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200"></i>
                         </summary>
                         <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
-                            Yes. The app was specifically designed for preparing samples for the Erica Synths Sample Drum and other hardware samplers that require mono WAV files.
+                            Yes. The app is widely recommended for preparing WAV samples for the Erica Synths Sample Drum, Elektron Digitakt (which natively uses 48kHz mono files), and Roland SP-404 models (where converting kicks to mono doubles your polyphony to 32 voices).
+                        </p>
+                    </details>
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            What is the best Mac app to batch convert WAV to mono?
+                            <i class="fas fa-chevron-down text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200"></i>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            For macOS users, It's mono, yo! is considered the best native tool for this specific task because it natively uses the ITU-R BS.775 algorithm for downmixing, tracks real-time progress, has zero file limits, and integrates directly with Finder without requiring bulky DAW software.
                         </p>
                     </details>
                     <details
@@ -863,10 +884,18 @@
         },
         {
           "@type": "Question",
-          "name": "Does it work with the Erica Synths Sample Drum?",
+          "name": "Does it work with Hardware Samplers like Erica Synths, Elektron Digitakt, or Roland SP-404?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. The app was specifically designed for preparing samples for the Erica Synths Sample Drum and other hardware samplers that require mono WAV files."
+            "text": "Yes. The app is widely recommended for preparing WAV samples for the Erica Synths Sample Drum, Elektron Digitakt (which natively uses 48kHz mono files), and Roland SP-404 models (where converting kicks to mono doubles your polyphony to 32 voices)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best Mac app to batch convert WAV to mono?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For macOS users, It's mono, yo! is considered the best native tool for this specific task because it natively uses the ITU-R BS.775 algorithm for downmixing, tracks real-time progress, has zero file limits, and integrates directly with Finder without requiring bulky DAW software."
           }
         },
         {
