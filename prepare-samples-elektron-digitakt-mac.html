@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Complete guide on how to prepare WAV samples for the Erica Synths Sample Drum. Learn how to convert stereo to mono on Mac in seconds.">
+        content="Complete guide on how to prepare WAV samples for the Elektron Digitakt. Learn how to convert stereo to mono on Mac to save +Drive space and transfer time.">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="Preparing Samples for Erica Synths Sample Drum">
+    <meta property="og:title" content="How to Prepare Samples for Elektron Digitakt (WAV to Mono)">
     <meta property="og:description"
-        content="Complete guide to preparing WAV samples for the Erica Synths Sample Drum module. Convert stereo to mono with the right format.">
-    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-erica-synths-sample-drum.html">
+        content="Convert your stereo samples to mono before sending them to the Digitakt. Save space and control the downmix phase with our Mac app.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-elektron-digitakt-mac.html">
     <meta property="og:type" content="article">
     <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
-    <title>How to Prepare Samples for Erica Synths Sample Drum (WAV to Mono)</title>
-    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-erica-synths-sample-drum.html">
+    <title>How to Prepare Samples for Elektron Digitakt (WAV to Mono)</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-elektron-digitakt-mac.html">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
@@ -66,61 +66,54 @@
             </div>
 
             <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
-                Preparing Samples for Erica Synths Sample Drum
+                Preparing Samples for Elektron Digitakt
             </h1>
 
             <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
-                The Erica Synths Sample Drum is a powerful Eurorack drum module that plays WAV samples from a micro SD card. To get the best results, your samples need to be in the right format. Here is everything you need to know.
+                The Elektron Digitakt is a legendary 8-voice drum computer and sampler. To get the best out of its 1 GB +Drive storage, preparing your samples before transferring them is crucial. Here is how to format your library perfectly on macOS.
             </p>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Requirements</h2>
             <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
-                The Sample Drum expects files in a specific format:
+                The original Digitakt expects audio in this pristine format:
             </p>
             <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
                 <li><strong>Format:</strong> WAV (uncompressed)</li>
                 <li><strong>Channels:</strong> Mono (single channel)</li>
-                <li><strong>Sample rate:</strong> 44.1 kHz recommended</li>
-                <li><strong>Bit depth:</strong> 16-bit or 24-bit</li>
-                <li><strong>Storage:</strong> Micro SD card (FAT32 formatted)</li>
+                <li><strong>Sample rate:</strong> 48 kHz natively</li>
+                <li><strong>Bit depth:</strong> 16-bit</li>
             </ul>
 
-            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">The Mono Requirement</h2>
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why Convert to Mono BEFORE Transferring?</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                The most common issue people run into is loading stereo samples. The Sample Drum has a single audio output per channel, so it needs mono files. If you load a stereo file, the module may play it at the wrong speed or produce unexpected results. Read more about <a href="why-hardware-samplers-need-mono.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">why hardware samplers require mono files</a>.
+                While the Elektron Transfer app automatically converts stereo files to mono on upload, doing it beforehand with an app like <strong>It's mono, yo!</strong> offers two massive advantages:
             </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>File size is halved:</strong> A mono WAV file takes up exactly half the hard drive space on your Mac. Transferring hundreds of samples via USB goes much faster when not sending heavy stereo files.</li>
+                <li><strong>Better Downmix Algorithm:</strong> It's mono, yo! uses an intelligent algorithm to sum stereo space to mono, capturing the depth that a quick default mono downmix might lose.</li>
+            </ol>
 
-            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How to Convert Your Samples</h2>
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How to Batch Convert for Digitakt</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                If you have stereo samples that you want to use with the Sample Drum, you need to <a href="convert-stereo-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">convert them to mono</a>. The fastest way on macOS is with <strong>It's mono, yo!</strong>:
+                If you have gigabytes of ambient samples and drum packs, you can <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch convert them to mono</a> in seconds:
             </p>
             <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
                 <li>Download the app from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a></li>
-                <li>Drag your stereo WAV files into the app</li>
-                <li>Select your micro SD card as the output folder</li>
-                <li>The app converts all files to mono, preserving the sample rate</li>
+                <li>Drag all your stereo WAVs directly onto the app window</li>
+                <li>In Output Settings (if applicable), configure them to 48 kHz / 16-bit.</li>
+                <li>Choose a dedicated output folder (e.g. "Digitakt Ready Samples")</li>
+                <li>Hit Convert. Once done, open the Elektron Transfer app and drag the new folder.</li>
             </ol>
-            <p class="text-black/70 dark:text-white/75 mb-8 leading-relaxed">
-                You can <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch convert</a> as many files as you need, making it easy to prepare entire sample libraries for the Sample Drum.
-            </p>
 
-            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Organizing Files on the SD Card</h2>
-            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                The Sample Drum reads WAV files from folders on the micro SD card. You can organize your samples into folders by type (kicks, snares, hi-hats, etc.) or by kit. Use short, descriptive file names since the module display has limited space.
-            </p>
-
-            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Tips for Great Sounding Drums</h2>
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Preparation Tips</h2>
             <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
-                <li>Trim silence from the beginning of samples for tight timing</li>
-                <li>Normalize your samples so volume levels are consistent</li>
-                <li>Use 44.1 kHz sample rate for the best compatibility</li>
-                <li>Keep samples short for percussion — long ambient samples use more memory</li>
-                <li>Create multiple folders to switch between kits easily</li>
+                <li>Truncate extreme silences at the start and end of drums to save RAM.</li>
+                <li>Remember that the Digitakt pitch engine interpolates heavily — uploading extremely clean 48kHz masters gives the filter the best possible starting point!</li>
             </ul>
 
             <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
-                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Ready to Prepare Your Samples?</h2>
-                <p class="text-black/70 dark:text-white/75 mb-6">Convert stereo WAV to mono in seconds. Available on the Mac App Store.</p>
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Ready to fill your +Drive?</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Convert entire libraries to mono in a flash. Try It's mono, yo!</p>
                 <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
                     class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
                     <i class="fab fa-apple text-2xl"></i>
@@ -139,7 +132,7 @@
                 <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
                 <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
                 <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
-                <a href="prepare-samples-eurorack-samplers.html" class="hover:text-primary-dark transition-colors">Eurorack</a>
+                <a href="prepare-samples-erica-synths-sample-drum.html" class="hover:text-primary-dark transition-colors">Erica Synths</a>
                 <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
             </div>
             <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
