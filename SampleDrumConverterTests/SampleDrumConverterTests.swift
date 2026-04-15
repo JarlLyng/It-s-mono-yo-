@@ -6,7 +6,7 @@
 //
 
 import Testing
-@testable import SampleDrumConverter
+@testable import It_s_mono__yo_
 
 struct ItsMonoYoTests {
 
