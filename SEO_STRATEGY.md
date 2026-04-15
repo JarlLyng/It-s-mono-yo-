@@ -1,414 +1,230 @@
-# SEO Strategy – It's Mono, Yo!
+# SEO, ASO & GEO Strategy — It's mono, yo!
 
-Site: https://itsmonoyo.iamjarl.com/
-Owner: IAMJARL
-Product: macOS utility that converts stereo WAV files to mono for hardware samplers.
-
-Goal: Attract users who need to prepare audio samples for hardware samplers and music production workflows.
-
----
-
-# 1. SEO Goal
-
-Primary goal:
-Rank for highly specific long‑tail queries from producers who need to convert stereo WAV files to mono.
-
-Typical users:
-
-• hardware sampler users
-• Eurorack musicians
-• sample pack creators
-• electronic music producers
-
-The site should target **problem‑driven searches** such as converting stereo samples to mono for samplers.
+Site: https://itsmonoyo.iamjarl.com  
+Mac App Store: https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12  
+GitHub: https://github.com/JarlLyng/It-s-mono-yo-  
+Google Search Console: Connected  
+Umami Analytics: Connected  
+Last updated: 2026-04-15
 
 ---
 
-# 2. Core SEO Positioning
+## 1. Product positioning
 
-The product solves a simple problem:
+Open-source macOS app til batch-konvertering af stereo WAV/AIFF til mono. Konfigurerbar bit-dybde (16/24/32-bit float), sample rate-konvertering og overwrite-beskyttelse. Bygget til hardware-samplere (SP-404, Digitakt, Model:Samples, Erica Synths Sample Drum, Eurorack). Betalt på Mac App Store, gratis at bygge fra kildekoden.
 
-**"Convert stereo WAV files to mono for hardware samplers on macOS."**
-
-Primary keyword focus:
-
-• convert stereo wav to mono mac
-• wav to mono converter macOS
-• convert wav to mono mac
-• stereo to mono wav mac
-
-
-Secondary keyword focus:
-
-• prepare samples for hardware sampler
-• mono samples for sampler
-• sampler sample preparation
-
-
-Hardware‑specific keywords:
-
-• erica synths sample drum samples
-• mono samples eurorack sampler
-• prepare samples for sample drum
+SEO positioning: **den specialiserede mono-konverter til hardware-samplere og musikproduktion** — differentierer fra generelle DAW'er (Logic, Audacity) og CLI-værktøjer (ffmpeg) via single-purpose design, drag-and-drop og hardware-sampler fokus.
 
 ---
 
-# 3. Target Audience
+## 2. Hvad der allerede er på plads
 
-## 1. Hardware Sampler Users
+### Website technical SEO (done)
 
-Musicians using samplers that require mono samples.
+- [x] Statisk HTML, GitHub Pages (gh-pages branch)
+- [x] `robots.txt` + `sitemap.xml` (9 URL'er)
+- [x] SoftwareApplication + WebSite + BreadcrumbList + FAQPage JSON-LD på homepage
+- [x] OG tags, Twitter cards, canonical URL på homepage og alle undersider
+- [x] `meta name="keywords"` på homepage
+- [x] Dark mode toggle
+- [x] Google Search Console connected
+- [x] Umami analytics
 
-Examples:
+### Homepage (done)
 
-• Erica Synths Sample Drum
-• Elektron samplers
-• Eurorack samplers
+- [x] Titel: "Convert Stereo WAV to Mono on Mac – It's mono, yo! | macOS Converter"
+- [x] Stærk meta description med sampler-keywords
+- [x] 6-item FAQ med FAQPage JSON-LD
+- [x] Feature-sektion, hardware-kompatibilitets-sektion
+- [x] App Store + GitHub CTA'er
+- [x] Screenshot
+- [x] GitHub star-badge
 
-Example searches:
+### SEO landing pages — 8 undersider (done)
 
-• erica synths sample drum samples
-• prepare samples for eurorack sampler
+| Side | Målsøgning |
+|------|-------------|
+| `convert-stereo-wav-to-mono-mac.html` | convert stereo wav to mono mac |
+| `why-hardware-samplers-need-mono.html` | why hardware samplers need mono |
+| `prepare-samples-erica-synths-sample-drum.html` | erica synths sample drum preparation |
+| `prepare-samples-eurorack-samplers.html` | eurorack sample preparation |
+| `prepare-samples-elektron-digitakt-mac.html` | digitakt sample preparation |
+| `prepare-samples-roland-sp404.html` | sp404 sample preparation |
+| `batch-convert-wav-to-mono-mac.html` | batch convert wav to mono mac |
+| `privacy.html` | — |
 
+### Off-site (done)
 
-## 2. Electronic Music Producers
-
-Producers preparing samples for hardware workflows.
-
-Example searches:
-
-• convert stereo wav to mono mac
-• wav to mono converter mac
-
-
-## 3. Sample Pack Creators
-
-People creating sample packs for hardware devices.
-
-Example searches:
-
-• convert samples to mono
-• batch convert wav mono mac
-
----
-
-# 4. Homepage SEO
-
-The homepage should clearly explain the tool.
-
-Suggested structure:
-
-H1
-Convert Stereo WAV Files to Mono on macOS
-
-First paragraph should contain the primary keyword.
-
-Example:
-
-"It's Mono, Yo! is a simple macOS tool that converts stereo WAV files to mono so they work perfectly with hardware samplers like Erica Synths Sample Drum."
-
-
-Suggested sections:
-
-• Why hardware samplers need mono samples
-• How to convert stereo WAV to mono
-• Built for macOS producers
-• Prepare samples for hardware samplers
-
-
-Example title tag:
-
-Convert Stereo WAV to Mono on Mac – It's Mono, Yo!
-
-
-Example meta description:
-
-Convert stereo WAV files to mono on macOS. Perfect for preparing samples for hardware samplers like Erica Synths Sample Drum.
+- [x] Product Hunt lanceret
+- [x] Reddit r/modular
+- [x] Reddit r/SP404
+- [x] Reddit r/elektron
+- [x] Elektronauts (Digitakt + Model:Samples)
+- [x] Elektron Discord
+- [x] GitHub README med topics og keywords
 
 ---
 
-# 5. Supporting SEO Pages
+## 3. DU SKAL: Ret fejl i koden
 
-To maximise SEO reach, the site should include many small pages targeting very specific problems producers search for.
+Se `RETTELSER.md` i projektets rod. Opsummering:
 
-These pages should be simple, practical, and focused on solving one task.
-
-
-## Core Problem Pages
-
-These target the main search intent behind the tool.
-
-• How to convert stereo WAV to mono on Mac
-• Convert stereo WAV to mono on macOS
-• Stereo to mono WAV converter for Mac
-• Batch convert WAV to mono on Mac
-• WAV to mono converter for macOS
-
-
-## "How To" Workflow Pages
-
-These capture tutorial‑style searches.
-
-• How to prepare samples for hardware samplers
-• Preparing samples for Eurorack samplers
-• Preparing samples for hardware drum samplers
-• How to convert stereo samples to mono
-
-
-## Hardware‑Specific Pages
-
-These pages can rank very well because competition is lower and users search for specific devices.
-
-Create one page per sampler type.
-
-Examples:
-
-• Preparing samples for Erica Synths Sample Drum
-• Preparing samples for Eurorack samplers
-• Preparing samples for Elektron samplers
-• Preparing samples for modular samplers
-
-Each page should explain:
-
-• why mono samples are needed
-• how to prepare files
-• how to convert stereo WAV to mono
-• how the app solves the problem
-
-
-## Sample Preparation Guides
-
-These pages build topical authority around sample preparation.
-
-• How to prepare samples for hardware samplers
-• Sample preparation workflow for modular synths
-• Converting stereo samples for samplers
-• Why many hardware samplers require mono samples
-
-
-## Utility / Tool Comparison Pages
-
-These pages capture comparison traffic.
-
-• Best way to convert WAV to mono on Mac
-• WAV to mono converter for macOS
-• How to convert audio files to mono on Mac
-
-
-## Programmatic SEO Opportunity
-
-This project is perfect for programmatic SEO.
-
-You can create pages automatically for variations like:
-
-/convert-wav-to-mono-mac
-/convert-stereo-wav-to-mono-mac
-/stereo-to-mono-wav-mac
-/wav-to-mono-macos
-/batch-wav-to-mono-mac
-
-Each page can share the same core content but target a specific keyword variation.
-
-
-Each page should:
-
-• contain the keyword in the title
-• contain the keyword in the H1
-• explain the problem
-• show screenshots of the app
-• include a download link
-
-
-Recommended length:
-
-500–900 words per page.
-
-Short, practical pages tend to rank well for utility tools.
+1. **SoftwareApplication JSON-LD pris** → Offers mangler `price`-felt. Tilføj den faktiske pris (fx `"price": "1.99"`)
+2. **AggregateRating** → Har kun 1 anmeldelse (`ratingCount: 1`). Fjern indtil der er 5+ anmeldelser, eller opdater med faktisk App Store-rating
+3. **apple-itunes-app meta tag** → Mangler på ALLE sider. Tilføj `<meta name="apple-itunes-app" content="app-id=6758866918">` overalt
+4. **JSON-LD på undersider** → Alle 8 undersider har NULV JSON-LD. Tilføj BreadcrumbList til alle + HowTo til guide-siderne + Article til "why hardware samplers need mono"
+5. **Sitemap lastmod** → Opdater datostemplerne hvis siderne er ændret
 
 ---
 
-# 6. Long‑Tail Keywords
+## 4. ASO — Mac App Store Optimization
 
-High priority keywords:
+### Nuværende metadata (fra SEO_STRATEGY.md/APP_STORE_CONNECT)
 
-• convert stereo wav to mono mac
-• wav to mono converter macOS
-• convert wav to mono mac
+**App name:** It's Mono, Yo!  
+**Subtitle:** `Stereo to Mono in Seconds` (26 tegn)  
+**Keywords (91 tegn):** `mono,stereo,WAV,AIFF,converter,audio,sample,drum,batch,16-bit,24-bit,sampler,downmix,music`
 
+### DU SKAL: Udvid keyword-felt til 100 tegn
 
-Medium priority keywords:
+Nuværende bruger 91 tegn. Tilføj 9 tegn:
 
-• batch convert wav to mono mac
-• stereo to mono wav converter mac
+```
+mono,stereo,WAV,AIFF,converter,audio,sample,drum,batch,16-bit,24-bit,sampler,downmix,music,SP-404
+```
 
+### DU SKAL: Overvej tysk lokalisering
 
-Hardware sampler keywords:
+Musikproduktion er internationalt engelsksproget, men tysk marked er stort for Eurorack/modularsynthesizere. Opret tysk storefront:
 
-• erica synths sample drum samples
-• prepare samples for hardware sampler
-• mono samples for eurorack sampler
+**Tysk (DE) keywords:**
+```
+audio converter,WAV,AIFF,mono,batch,sample rate,bit depth,hardware sampler,Eurorack,musikproduktion
+```
 
+### Screenshots-strategi
 
-These keywords have lower competition and match the actual problem the tool solves.
-
----
-
-# 7. Internal Linking
-
-Homepage links to:
-
-• convert stereo wav to mono mac
-• preparing samples for hardware sampler
-
-
-Hardware pages link back to:
-
-• the converter tool
-• download page
-
-
-Goal:
-
-Create a **topic cluster around preparing samples for hardware samplers**.
+- Screenshot 1: "Drag and drop WAV files — batch conversion"
+- Screenshot 2: "Configure bit depth and sample rate"
+- Screenshot 3: "Perfect for SP-404, Digitakt, Eurorack"
+- App Preview Video: 15 sek drag-and-drop → conversion → result
 
 ---
 
-# 8. Technical SEO
+## 5. Keyword-strategi
 
-Important technical items:
+### Tier 1 — Højeste relevans
 
-## Fast loading
+- mono audio converter mac
+- stereo to mono converter
+- WAV to mono converter
+- batch audio converter mac
+- sample drum converter
 
-The site should stay lightweight and static.
+### Tier 2 — Hardware-specifik (niche, high intent)
 
+- SP-404 sample preparation
+- Digitakt sample converter
+- Eurorack sample preparation
+- Erica Synths Sample Drum files
+- Model:Samples mono conversion
 
-## Metadata
+### Tier 3 — Teknisk
 
-Every page should include:
+- bit depth converter
+- sample rate converter mac
+- AIFF to mono
+- ITU-R BS.775 downmix
 
-• unique title
-• meta description
-• Open Graph tags
+### Tier 4 — Long-tail
 
-
-## Structured Data
-
-Use schema type:
-
-SoftwareApplication
-
-
-## Sitemap
-
-Add:
-
-/sitemap.xml
-
-
-## Robots
-
-Add:
-
-/robots.txt
+- "convert stereo samples to mono for hardware sampler"
+- "batch WAV conversion macOS"
+- "open source audio converter macOS"
 
 ---
 
-# 9. Backlink Opportunities
+## 6. DU SKAL: Udvid cross-linking
 
-Target niche communities.
+### Footer-links til andre IAMJARL-projekter
 
+Tilføj på alle sider:
 
-## Music Production Communities
+- [iamjarl.com](https://iamjarl.com) — allerede til stede
+- [Wean Nicotine](https://weannicotine.iamjarl.com) — relateret IAMJARL-projekt
+- [WODrounds](https://wodrounds.iamjarl.com) — relateret IAMJARL-projekt
+- [Made by Human](https://madebyhuman.iamjarl.com) — IAMJARL brand
 
-• Reddit (r/modular, r/synthesizers, r/eurorack)
-• Elektronauts forum
+### Intern cross-linking
 
+Tilføj "Related guides"-links i bunden af hver landing page. Alle sampler-guides bør linke til hinanden:
 
-## Modular Synth Communities
-
-• Modwiggler
-• Eurorack Facebook groups
-
-
-## Indie Developer Platforms
-
-• Product Hunt
-• Hacker News
-
-
-These communities are highly relevant and likely to drive qualified traffic.
+- SP-404 → Digitakt → Erica Synths → Eurorack (ring-link)
+- Alle → "Why Hardware Samplers Need Mono" og "Batch Convert" guide
+- "Convert Stereo WAV" → alle sampler-specifikke sider
 
 ---
 
-# 10. Content Roadmap
+## 7. GEO — Generative Engine Optimization
 
-Phase 1 ✅ DONE
+### Hvad der er på plads
 
-• How to convert stereo wav to mono mac → /convert-stereo-wav-to-mono-mac.html
-• Why hardware samplers require mono samples → /why-hardware-samplers-need-mono.html
+Homepage FAQ er velstruktureret (6 spørgsmål med direkte svar, FAQPage JSON-LD). Hardware-kompatibilitets-sektionen er god til AI-passage-ekstraktion.
 
+### DU SKAL: Optimér undersider for AI-passage-ekstraktion
 
-Phase 2 ✅ DONE
+Undersiderne mangler den passage-struktur AI-motorer foretrækker:
 
-• Preparing samples for Erica Synths Sample Drum → /prepare-samples-erica-synths-sample-drum.html
-• Preparing samples for Eurorack samplers → /prepare-samples-eurorack-samplers.html
+1. **Direkte åbningssætning** — svar på søgeforespørgslen i første sætning
+2. **Selvstændige sektioner** — forståelige uden kontekst
+3. **Konkrete datapunkter** per sektion
 
+**Target queries for AI-citation:**
 
-Phase 3 ✅ DONE
+- "Best way to convert stereo to mono on Mac" → `convert-stereo-wav-to-mono-mac.html`
+- "How to prepare samples for Digitakt" → `prepare-samples-elektron-digitakt-mac.html`
+- "Why convert samples to mono for hardware" → `why-hardware-samplers-need-mono.html`
+- "Batch audio converter for Mac" → `batch-convert-wav-to-mono-mac.html`
+- "SP-404 sample preparation" → `prepare-samples-roland-sp404.html`
 
-• Batch converting WAV files to mono on macOS → /batch-convert-wav-to-mono-mac.html
+### DU SKAL: Tilføj konkrete datapunkter
 
-
-Phase 4 (Next)
-
-• Preparing samples for Elektron samplers
-• Preparing samples for modular samplers
-• Best way to convert WAV to mono on Mac (comparison page)
-
----
-
-# 11. Measurement
-
-Track with:
-
-• Google Search Console
-• impressions
-• clicks
-• ranking for primary keywords
-
-
-Important signals:
-
-• impressions for "convert stereo wav to mono mac"
-• ranking for "wav to mono converter macOS"
+- "Mono samples reduce file size by 50% compared to stereo"
+- "The Digitakt takes the left channel only — a proper mono mixdown preserves the full sound"
+- "Supports WAV and AIFF with 16-bit, 24-bit, and 32-bit float output"
+- "ITU-R BS.775 weighted downmix for multi-channel (surround) audio"
+- "Open source — code available on GitHub"
 
 ---
 
-# 12. Implementation Status
+## 8. Opgaver
 
-Completed:
+Alle opgaver trackes som GitHub Issues: https://github.com/JarlLyng/It-s-mono-yo-/issues
 
-• Homepage SEO: title tag, meta description, hero text optimised for primary keywords
-• Structured data: SoftwareApplication, FAQPage, Organization, BreadcrumbList, WebSite
-• FAQ section with 5 questions targeting long‑tail searches
-• App Store links as primary CTA throughout site
-• 5 supporting pages with full internal linking (topic cluster)
-• Sitemap updated with all 7 pages
-• Google Search Console connected
-
-Not yet done:
-
-• Backlink outreach (Reddit, Elektronauts, Modwiggler, Product Hunt)
-• Phase 4 content (Elektron, modular, comparison pages)
-• Programmatic SEO keyword variations
+Labels: `SEO`, `ASO`, `marketing`, `content`
 
 ---
 
-# 13. Long Term Vision
+## 9. Where to make noise
 
-The site becomes a small resource hub for:
+### Completed
 
-• preparing samples for hardware samplers
-• simple audio utilities for producers
+- [x] Product Hunt
+- [x] Reddit r/modular, r/SP404, r/elektron
+- [x] Elektronauts (Digitakt, Model:Samples)
+- [x] Elektron Discord
 
-This supports future IAMJARL tools aimed at music production workflows.
+### Potential — se GitHub Issues for konkrete opgaver
+
+- r/synthesizers, r/WeAreTheMusicMakers, r/macapps
+- Hacker News (Show HN), LinkedIn
+- Gearspace, ModularGrid, KVR Audio
+- YouTube demo video
+
+---
+
+## 10. Monitoring
+
+- **Google Search Console**: Ugentlig check — impressions, clicks, average position, crawl errors
+- **Umami Analytics**: Sidevisninger, referral sources, top sider
+- **Nøgletal**: Organisk trafik til hardware-specifikke sider, App Store downloads, GitHub stars/forks
