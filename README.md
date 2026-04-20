@@ -1,5 +1,7 @@
 # It's mono, yo!
 
+[![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)](https://madebyhuman.iamjarl.com)
+
 ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
 ![License](https://img.shields.io/github/license/JarlLyng/It-s-mono-yo-)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmonoyo.iamjarl.com)
