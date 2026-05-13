@@ -2,8 +2,8 @@
 //  DesignTokens.swift
 //  It's mono, yo!
 //
-//  IAMJARL Design System Tokens
-//  Source: https://jarllyng.github.io/iamjarl-design/tokens.json
+//  IAMJARL Design System Tokens (v0.5.0)
+//  Source: https://github.com/JarlLyng/iamjarl-design
 //
 
 import SwiftUI
@@ -27,6 +27,35 @@ struct DesignTokens {
         static let sm: CGFloat = 8
         static let md: CGFloat = 12
         static let lg: CGFloat = 16
+    }
+
+    // MARK: - Motion
+    struct Motion {
+        struct Duration {
+            static let fast: Double = 0.150
+            static let normal: Double = 0.250
+            static let slow: Double = 0.400
+        }
+    }
+
+    // MARK: - Shadows
+    struct Shadow {
+        // Use as .shadow(color:radius:x:y:) in SwiftUI
+        struct Small {
+            static let color = Color.black.opacity(0.05)
+            static let radius: CGFloat = 1
+            static let y: CGFloat = 1
+        }
+        struct Medium {
+            static let color = Color.black.opacity(0.08)
+            static let radius: CGFloat = 4
+            static let y: CGFloat = 4
+        }
+        struct Large {
+            static let color = Color.black.opacity(0.12)
+            static let radius: CGFloat = 12
+            static let y: CGFloat = 8
+        }
     }
     
     // MARK: - Typography
@@ -66,13 +95,17 @@ struct DesignTokens {
         // Shared state colors
         struct Shared {
             static let success = Color(hex: "4CAF50")
+            static let onSuccess = Color(hex: "000000")
             static let warning = Color(hex: "FF6B35")
-            static let error = Color(hex: "FF3B30")
+            static let onWarning = Color(hex: "000000")
+            static let error = Color(hex: "D70015")
+            static let onError = Color(hex: "FFFFFF")
         }
-        
+
         // Mode-specific colors
         struct Light {
-            static let primary = Color(hex: "00FF7B")
+            static let primary = Color(hex: "A435D2")
+            static let onPrimary = Color(hex: "FFFFFF")
             
             struct Text {
                 static let primary = Color(hex: "000000")
@@ -100,6 +133,7 @@ struct DesignTokens {
         
         struct Dark {
             static let primary = Color(hex: "D0FF00")
+            static let onPrimary = Color(hex: "000000")
             
             struct Text {
                 static let primary = Color(hex: "FFFFFF")
@@ -142,6 +176,10 @@ extension ColorScheme {
 struct AdaptiveColor {
     static func primary(_ colorScheme: ColorScheme) -> Color {
         colorScheme == .dark ? DesignTokens.Colors.Dark.primary : DesignTokens.Colors.Light.primary
+    }
+
+    static func onPrimary(_ colorScheme: ColorScheme) -> Color {
+        colorScheme == .dark ? DesignTokens.Colors.Dark.onPrimary : DesignTokens.Colors.Light.onPrimary
     }
     
     static func textPrimary(_ colorScheme: ColorScheme) -> Color {
