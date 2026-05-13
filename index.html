@@ -75,48 +75,20 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    <style>
-        :root {
-            /* IAMJARL Design System - Light Mode */
-            --iamjarl-primary: #00FF7B;
-            --iamjarl-text-primary: #000000;
-            --iamjarl-text-secondary: rgba(0, 0, 0, 0.70);
-            --iamjarl-text-tertiary: rgba(0, 0, 0, 0.55);
-            --iamjarl-bg-app: #FFFFFF;
-            --iamjarl-bg-muted: rgba(0, 0, 0, 0.04);
-            --iamjarl-bg-card: rgba(0, 0, 0, 0.04);
-            --iamjarl-border-subtle: rgba(0, 0, 0, 0.10);
-            --iamjarl-border-default: rgba(0, 0, 0, 0.16);
-            --iamjarl-success: #4CAF50;
-            --iamjarl-warning: #FF6B35;
-            --iamjarl-error: #FF3B30;
-        }
-
-        .dark {
-            /* IAMJARL Design System - Dark Mode */
-            --iamjarl-primary: #D0FF00;
-            --iamjarl-text-primary: #FFFFFF;
-            --iamjarl-text-secondary: rgba(255, 255, 255, 0.75);
-            --iamjarl-text-tertiary: rgba(255, 255, 255, 0.60);
-            --iamjarl-bg-app: #000000;
-            --iamjarl-bg-muted: rgba(255, 255, 255, 0.05);
-            --iamjarl-bg-card: rgba(255, 255, 255, 0.05);
-            --iamjarl-border-subtle: rgba(255, 255, 255, 0.12);
-            --iamjarl-border-default: rgba(255, 255, 255, 0.18);
-        }
-    </style>
+    <!-- IAMJARL Design System v0.5.0 — design tokens (colors, spacing, radius, typography) -->
+    <link rel="stylesheet" href="/assets/design-tokens.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        // IAMJARL Design System Colors
-                        'primary-light': '#00FF7B',
+                        // IAMJARL Design System v0.5.0
+                        'primary-light': '#A435D2',
                         'primary-dark': '#D0FF00',
                         'success': '#4CAF50',
                         'warning': '#FF6B35',
-                        'error': '#FF3B30',
+                        'error': '#D70015',
                     },
                     spacing: {
                         // IAMJARL Design System Spacing
@@ -180,7 +152,7 @@
     <meta name="apple-mobile-web-app-title" content="It's mono, yo!">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#00FF7B" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#A435D2" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <meta name="format-detection" content="telephone=no">
     <meta name="geo.region" content="DK">
@@ -344,8 +316,8 @@
                     <div
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-sliders-h text-white text-xl"></i>
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-sliders-h text-primary-light dark:text-primary-dark text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Output Control</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Choose 16-bit, 24-bit, or 32-bit float output</p>
@@ -353,8 +325,8 @@
                     <div
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-file-audio text-white text-xl"></i>
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-file-audio text-primary-light dark:text-primary-dark text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">AIFF Support</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Import and export WAV or AIFF files</p>
@@ -362,8 +334,8 @@
                     <div
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-infinity text-white text-xl"></i>
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-infinity text-primary-light dark:text-primary-dark text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">No Limits</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">No file size or batch limits anymore</p>
@@ -371,8 +343,8 @@
                     <div
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-tachometer-alt text-white text-xl"></i>
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-tachometer-alt text-primary-light dark:text-primary-dark text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Sample Rate</h3>
                         <p class="text-sm text-black/70 dark:text-white/75">Resample to 44.1, 48, or 96 kHz</p>

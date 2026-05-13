@@ -33,39 +33,15 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    <style>
-        :root {
-            /* IAMJARL Design System - Light Mode */
-            --iamjarl-primary: #00FF7B;
-            --iamjarl-text-primary: #000000;
-            --iamjarl-text-secondary: rgba(0, 0, 0, 0.70);
-            --iamjarl-text-tertiary: rgba(0, 0, 0, 0.55);
-            --iamjarl-bg-app: #FFFFFF;
-            --iamjarl-bg-muted: rgba(0, 0, 0, 0.04);
-            --iamjarl-bg-card: rgba(0, 0, 0, 0.04);
-            --iamjarl-border-subtle: rgba(0, 0, 0, 0.10);
-            --iamjarl-border-default: rgba(0, 0, 0, 0.16);
-        }
-        .dark {
-            /* IAMJARL Design System - Dark Mode */
-            --iamjarl-primary: #D0FF00;
-            --iamjarl-text-primary: #FFFFFF;
-            --iamjarl-text-secondary: rgba(255, 255, 255, 0.75);
-            --iamjarl-text-tertiary: rgba(255, 255, 255, 0.60);
-            --iamjarl-bg-app: #000000;
-            --iamjarl-bg-muted: rgba(255, 255, 255, 0.05);
-            --iamjarl-bg-card: rgba(255, 255, 255, 0.05);
-            --iamjarl-border-subtle: rgba(255, 255, 255, 0.12);
-            --iamjarl-border-default: rgba(255, 255, 255, 0.18);
-        }
-    </style>
+    <!-- IAMJARL Design System v0.5.0 -->
+    <link rel="stylesheet" href="/assets/design-tokens.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        'primary-light': '#00FF7B',
+                        'primary-light': '#A435D2',
                         'primary-dark': '#D0FF00',
                     }
                 }
