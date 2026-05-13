@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to prepare WAV samples for the Polyend Tracker on Mac. The Tracker is mono-only — batch convert your stereo library properly with full output control.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="How to Prepare Samples for Polyend Tracker (Mac Guide)">
+    <meta property="og:description"
+        content="The Polyend Tracker plays mono samples only. Batch convert your stereo library to mono on Mac with proper stereo summing and 44.1 kHz output.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-polyend-tracker-mac.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <meta name="apple-itunes-app" content="app-id=6758866918">
+    <title>How to Prepare Samples for Polyend Tracker on Mac</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-polyend-tracker-mac.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <!-- IAMJARL Design System v0.5.0 -->
+    <link rel="stylesheet" href="/assets/design-tokens.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { 'primary-light': '#A435D2', 'primary-dark': '#D0FF00' } } }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Preparing Samples for Polyend Tracker
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                The Polyend Tracker is a tracker-style groovebox with 8 tracks of sampling, synthesis, and granular processing. But here is the key constraint: <strong>every track plays mono samples</strong>. Here is how to prep your stereo library properly on macOS.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Format Requirements</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                The Polyend Tracker expects samples in this format:
+            </p>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Format:</strong> WAV (uncompressed)</li>
+                <li><strong>Channels:</strong> Mono only — stereo files are auto-downmixed</li>
+                <li><strong>Sample rate:</strong> 44.1 kHz native (48 kHz also supported)</li>
+                <li><strong>Bit depth:</strong> 16-bit</li>
+                <li><strong>Storage:</strong> Onboard storage + SD card</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why Convert to Mono Beforehand</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                The Tracker auto-downmixes stereo files when you load them, but you get no control over <em>how</em> the downmix happens. By converting on your Mac first with <strong>It's mono, yo!</strong>, you get:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Proper stereo summing:</strong> Both channels combined into one signal, preserving information from both sides.</li>
+                <li><strong>Half the SD card usage:</strong> Mono WAVs are exactly 50% smaller — fit twice as many samples on your card.</li>
+                <li><strong>Faster transfers:</strong> Smaller files copy faster over USB or to SD card.</li>
+                <li><strong>Library matches hardware:</strong> What you preview in Finder sounds the same as on the Tracker.</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How to Batch Convert for Polyend Tracker</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Batch convert</a> your sample packs in one go:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Download <strong>It's mono, yo!</strong> from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a></li>
+                <li>Drag your stereo WAVs into the app (or a whole sample pack folder)</li>
+                <li>Set Output Settings to <strong>WAV / 16-bit / 44.1 kHz</strong> for Tracker native format</li>
+                <li>Pick an output folder (e.g. "Tracker Mono Samples")</li>
+                <li>Hit Convert, then copy the folder to your SD card</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Polyend Tracker Prep Tips</h2>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Organize before transferring:</strong> The Tracker browser is easier to navigate when samples are in well-named folders (Kicks, Snares, Hats, FX, etc.).</li>
+                <li><strong>Trim silence:</strong> The Tracker has limited per-pattern sample RAM. Pre-trimmed samples leave more headroom for granular processing.</li>
+                <li><strong>Pre-bake stereo width:</strong> If your stereo sample has chorus or wide reverb, mix it down to mono carefully in your DAW first to preserve the perceived width.</li>
+                <li><strong>16-bit is fine:</strong> The Tracker's effects and granular engine sound great at 16-bit. Higher bit depths just take more storage.</li>
+                <li><strong>Tracker Mini works the same:</strong> Same format requirements, just with more storage.</li>
+            </ul>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Fill your Tracker with mono perfection</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Batch convert entire sample packs to mono. Try It's mono, yo!</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="prepare-samples-elektron-digitakt-mac.html" class="hover:text-primary-dark transition-colors">Digitakt</a>
+                <a href="prepare-samples-elektron-model-samples-mac.html" class="hover:text-primary-dark transition-colors">Model:Samples</a>
+                <a href="prepare-samples-akai-mpc-mac.html" class="hover:text-primary-dark transition-colors">Akai MPC</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://itsmonoyo.iamjarl.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Prepare Samples for Polyend Tracker", "item": "https://itsmonoyo.iamjarl.com/prepare-samples-polyend-tracker-mac.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Prepare Samples for Polyend Tracker on Mac",
+  "description": "The Polyend Tracker is mono-only. Batch convert your stereo sample library to mono with proper stereo summing at 44.1 kHz, 16-bit.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open the app", "text": "Launch It's mono, yo! on your Mac." },
+    { "@type": "HowToStep", "name": "Add samples", "text": "Drag and drop your stereo WAV files into the app." },
+    { "@type": "HowToStep", "name": "Set output to 16-bit WAV at 44.1 kHz", "text": "Select WAV format, 16-bit depth, and 44.1 kHz sample rate for Tracker compatibility." },
+    { "@type": "HowToStep", "name": "Convert and transfer", "text": "Convert your samples, then copy the folder to your SD card or transfer via USB." }
+  ],
+  "tool": { "@type": "SoftwareApplication", "name": "It's mono, yo!", "url": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" }
+}
+</script>
+</body>
+
+</html>

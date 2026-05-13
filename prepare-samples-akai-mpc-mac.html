@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to prepare WAV samples for the Akai MPC One, Live, X, and Key on Mac. Save storage and free CPU with mono samples for percussive pad-based workflows.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="How to Prepare Samples for Akai MPC on Mac (One, Live, X, Key)">
+    <meta property="og:description"
+        content="Batch convert your stereo sample library to mono for the Akai MPC family. Save storage, free CPU, and keep pad-based workflows snappy.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-akai-mpc-mac.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <meta name="apple-itunes-app" content="app-id=6758866918">
+    <title>How to Prepare Samples for Akai MPC on Mac (One, Live, X, Key)</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-akai-mpc-mac.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <!-- IAMJARL Design System v0.5.0 -->
+    <link rel="stylesheet" href="/assets/design-tokens.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { 'primary-light': '#A435D2', 'primary-dark': '#D0FF00' } } }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Preparing Samples for Akai MPC
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                The Akai MPC family (One, One+, Live, Live II, X, Key 61, Key 37) is the gold standard of standalone groove production. Unlike many hardware samplers, MPCs support both mono and stereo — but converting percussive samples to mono first saves storage, frees CPU for effects, and keeps pad triggers tight.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">MPC Sample Format Support</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                MPCs are flexible with audio formats:
+            </p>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Format:</strong> WAV, AIFF, MP3, FLAC, SND, REX</li>
+                <li><strong>Channels:</strong> Mono or stereo (both work natively)</li>
+                <li><strong>Sample rate:</strong> 44.1 kHz native (other rates auto-converted)</li>
+                <li><strong>Bit depth:</strong> 16-bit or 24-bit</li>
+                <li><strong>Storage:</strong> Internal SSD + SD card + USB</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">When to Convert MPC Samples to Mono</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                MPCs handle stereo fine, but mono is the right call for:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Drum hits and one-shots:</strong> Kicks, snares, hats, claps, percussion — these almost never need stereo information.</li>
+                <li><strong>Vocal chops:</strong> Single-voice samples are mono in source anyway. Save space.</li>
+                <li><strong>Bass samples:</strong> Bass is essentially mono perception-wise. No reason to store as stereo.</li>
+                <li><strong>Sample library on SD card:</strong> Mono samples = twice as many fit on your card.</li>
+                <li><strong>Pad-based performance:</strong> Mono samples trigger and chop more predictably than stereo.</li>
+            </ol>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                Keep <strong>stereo</strong> for: pads, atmospheres, full loops with stereo width, and anything you want to keep wide in the mix.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Batch Convert Your MPC Drum Library</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                If you have folders of drum samples you want to convert before loading onto your MPC, <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch convert them in one go</a>:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Download <strong>It's mono, yo!</strong> from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a></li>
+                <li>Drag your drum/one-shot folder into the app</li>
+                <li>Set Output Settings to <strong>WAV / 16-bit / 44.1 kHz</strong> (MPC native format)</li>
+                <li>Pick an output folder (e.g. "MPC Mono Drums")</li>
+                <li>Hit Convert, then copy to your MPC via USB, SD card, or MPC Desktop software</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">MPC Sample Prep Tips</h2>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Organize as kits:</strong> Group converted samples by drum type so they import cleanly into MPC programs.</li>
+                <li><strong>44.1 kHz is the MPC native rate</strong> — converting to 44.1 on Mac avoids on-device resampling.</li>
+                <li><strong>16-bit for drums, 24-bit for melodic content:</strong> Drums sound identical at 16-bit; melodic samples sometimes benefit from extra headroom.</li>
+                <li><strong>Trim silence:</strong> MPCs have generous storage but tighter samples = more responsive pads.</li>
+                <li><strong>Use proper stereo summing:</strong> If you're converting a stereo loop to mono, It's mono, yo! sums both channels (instead of dropping the right channel), so panned elements are preserved.</li>
+            </ul>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Optimize your MPC sample library</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Convert drum hits, one-shots, and bass to mono in seconds. Try It's mono, yo!</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="prepare-samples-elektron-digitakt-mac.html" class="hover:text-primary-dark transition-colors">Digitakt</a>
+                <a href="prepare-samples-roland-sp404.html" class="hover:text-primary-dark transition-colors">SP-404</a>
+                <a href="prepare-samples-polyend-tracker-mac.html" class="hover:text-primary-dark transition-colors">Polyend Tracker</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://itsmonoyo.iamjarl.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Prepare Samples for Akai MPC", "item": "https://itsmonoyo.iamjarl.com/prepare-samples-akai-mpc-mac.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Prepare Samples for Akai MPC on Mac",
+  "description": "Batch convert drums, one-shots, and bass to mono for the Akai MPC family (One, Live, X, Key). Save storage and free CPU for effects.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open the app", "text": "Launch It's mono, yo! on your Mac." },
+    { "@type": "HowToStep", "name": "Add samples", "text": "Drag and drop your stereo WAV or AIFF files into the app." },
+    { "@type": "HowToStep", "name": "Set output to 16-bit WAV at 44.1 kHz", "text": "Select WAV format, 16-bit depth, and 44.1 kHz sample rate for MPC native format." },
+    { "@type": "HowToStep", "name": "Convert and transfer", "text": "Convert your samples, then copy to your MPC via USB, SD card, or MPC Desktop." }
+  ],
+  "tool": { "@type": "SoftwareApplication", "name": "It's mono, yo!", "url": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" }
+}
+</script>
+</body>
+
+</html>
