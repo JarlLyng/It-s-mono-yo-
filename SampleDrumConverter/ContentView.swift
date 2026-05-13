@@ -1048,6 +1048,10 @@ struct CompletionView: View {
     let outputFolder: URL?
     let onStartOver: () -> Void
     @Environment(\.colorScheme) private var colorScheme
+
+    private var hasAnySuccess: Bool {
+        audioFiles.contains { $0.status == .completed }
+    }
     
     var body: some View {
         VStack(spacing: 30) {
@@ -1126,6 +1130,11 @@ struct CompletionView: View {
             Spacer()
         }
         .padding()
+        .onAppear {
+            if hasAnySuccess {
+                ReviewPrompt.recordSuccessfulConversion()
+            }
+        }
     }
 }
 
