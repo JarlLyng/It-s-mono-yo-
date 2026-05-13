@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to prepare WAV samples for the Elektron Model:Samples on Mac. The Model:Samples is mono-only — convert your stereo library properly with batch conversion.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="How to Prepare Samples for Elektron Model:Samples (Mac Guide)">
+    <meta property="og:description"
+        content="The Model:Samples is mono-only. Convert your stereo sample library to mono on Mac with proper stereo summing, not just left-channel grabbing.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-elektron-model-samples-mac.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/screenshots/og-image.png">
+    <meta name="apple-itunes-app" content="app-id=6758866918">
+    <title>How to Prepare Samples for Elektron Model:Samples on Mac</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-elektron-model-samples-mac.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <!-- IAMJARL Design System v0.5.0 -->
+    <link rel="stylesheet" href="/assets/design-tokens.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { 'primary-light': '#A435D2', 'primary-dark': '#D0FF00' } } }
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <i class="fas fa-moon dark:hidden text-black/70"></i>
+                    <i class="fas fa-sun hidden dark:block text-primary-dark"></i>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <i class="fab fa-apple"></i>
+                    <span class="font-medium">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Preparing Samples for Elektron Model:Samples
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                The Elektron Model:Samples is a fast, fun groovebox built around 6 sample tracks. But here is the catch: <strong>every track is mono</strong>. If you drag in stereo files, you lose half the sound. Here is how to convert your sample library properly on Mac.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Format Requirements</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                The Model:Samples expects audio in this format:
+            </p>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Format:</strong> WAV (uncompressed)</li>
+                <li><strong>Channels:</strong> Mono only — stereo files are downmixed automatically</li>
+                <li><strong>Sample rate:</strong> 48 kHz native</li>
+                <li><strong>Bit depth:</strong> 16-bit</li>
+                <li><strong>Storage:</strong> 1 GB Flash, up to 1024 samples</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why You Should Convert Beforehand</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                The Model:Samples and the Transfer app handle stereo-to-mono conversion automatically — but the algorithm is basic, and on some Elektron devices it just <strong>takes the left channel and discards the right</strong>. If your stereo sample has hard-panned elements, those just disappear.
+            </p>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                Converting to mono beforehand with <strong>It's mono, yo!</strong> gives you:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li><strong>Proper stereo summing:</strong> Both channels are combined into a single mono signal — no lost information.</li>
+                <li><strong>Half the file size on your Mac:</strong> Mono WAVs are exactly 50% smaller, making transfers faster.</li>
+                <li><strong>Preview-friendly library:</strong> Your sample library on Mac matches what you will hear on hardware.</li>
+                <li><strong>Predictable workflow:</strong> No surprises when a sample sounds different on the Model:Samples than in your DAW.</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How to Batch Convert for Model:Samples</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Batch convert</a> your entire sample library in one go:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Download <strong>It's mono, yo!</strong> from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a></li>
+                <li>Drag your stereo WAVs into the app (or a whole folder of them)</li>
+                <li>Set Output Settings to <strong>WAV / 16-bit / 48 kHz</strong> for Model:Samples native format</li>
+                <li>Choose an output folder (e.g. "Model Samples Ready")</li>
+                <li>Hit Convert, then transfer to the Model:Samples via Elektron Transfer</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Prep Tips for Model:Samples</h2>
+            <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Keep samples short — the Model:Samples has limited RAM per track. Trim silence aggressively.</li>
+                <li>Bake in any stereo width effects (chorus, panning) to mono <em>before</em> conversion, so the result still sounds wide.</li>
+                <li>16-bit / 48 kHz is the sweet spot. Higher bit depths just take more storage without audible benefit on this device.</li>
+                <li>If you have a stereo sample with important panned elements, mix down to mono carefully in your DAW first to preserve the balance.</li>
+            </ul>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Properly mono-fy your library</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Batch convert your stereo samples to mono with full control. Try It's mono, yo!</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <i class="fab fa-apple text-2xl"></i>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 space-x-6 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="prepare-samples-elektron-digitakt-mac.html" class="hover:text-primary-dark transition-colors">Digitakt</a>
+                <a href="prepare-samples-elektron-octatrack-mac.html" class="hover:text-primary-dark transition-colors">Octatrack</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+        </div>
+    </footer>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://itsmonoyo.iamjarl.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Prepare Samples for Elektron Model:Samples", "item": "https://itsmonoyo.iamjarl.com/prepare-samples-elektron-model-samples-mac.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Prepare Samples for Elektron Model:Samples on Mac",
+  "description": "The Model:Samples is mono-only. Convert your stereo sample library properly with stereo summing instead of left-channel-only grabbing.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open the app", "text": "Launch It's mono, yo! on your Mac." },
+    { "@type": "HowToStep", "name": "Add samples", "text": "Drag and drop your stereo WAV files into the app." },
+    { "@type": "HowToStep", "name": "Set output to 16-bit WAV at 48 kHz", "text": "Select WAV format, 16-bit depth, and 48 kHz sample rate for Model:Samples compatibility." },
+    { "@type": "HowToStep", "name": "Convert and transfer", "text": "Convert your samples, then use Elektron Transfer to load them onto the Model:Samples." }
+  ],
+  "tool": { "@type": "SoftwareApplication", "name": "It's mono, yo!", "url": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" }
+}
+</script>
+</body>
+
+</html>
