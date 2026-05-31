@@ -16,7 +16,6 @@
     <meta name="apple-itunes-app" content="app-id=6758866918">
     <title>Why Hardware Samplers Need Mono WAV Files – It's mono, yo!</title>
     <link rel="canonical" href="https://itsmonoyo.iamjarl.com/why-hardware-samplers-need-mono.html">
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons (IAMJARL Design System) -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -30,14 +29,8 @@
             localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
         }
     </script>
-    <!-- IAMJARL Design System v0.5.0 -->
-    <link rel="stylesheet" href="/assets/design-tokens.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { colors: { 'primary-light': '#A435D2', 'primary-dark': '#D0FF00' } } }
-        }
-    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
     <link rel="icon" type="image/png" sizes="32x32"
         href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
     <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
@@ -88,6 +81,73 @@
                 <li>The sampler rejects the file entirely</li>
                 <li>The audio sounds distorted or garbled</li>
             </ul>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sampler Compatibility & Specifications</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                Here is a quick reference table showing the preferred audio format and benefits of converting to mono for each hardware device:
+            </p>
+            <div class="overflow-x-auto mb-8 border border-black/10 dark:border-white/12 rounded-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-black/5 dark:bg-white/5 border-b border-black/10 dark:border-white/12">
+                            <th class="p-4 font-bold text-sm text-black dark:text-white">Device</th>
+                            <th class="p-4 font-bold text-sm text-black dark:text-white">Preferred Format</th>
+                            <th class="p-4 font-bold text-sm text-black dark:text-white">Mono/Stereo Behavior</th>
+                            <th class="p-4 font-bold text-sm text-black dark:text-white">Mono Advantage</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-black/10 dark:divide-white/12 text-sm text-black/70 dark:text-white/75">
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Roland SP-404 MK2</td>
+                            <td class="p-4">16/24/32-bit, 48kHz WAV</td>
+                            <td class="p-4">Supports both (stereo counts as 2 voices)</td>
+                            <td class="p-4">Doubles voice polyphony (up to 32 voices) and halves memory storage.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Elektron Digitakt (OG)</td>
+                            <td class="p-4">16-bit, 48kHz WAV</td>
+                            <td class="p-4">Mono only (takes Left channel on transfer)</td>
+                            <td class="p-4">Avoids losing the Right channel (summing to mono pre-transfer preserves full sound).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Elektron Digitakt II</td>
+                            <td class="p-4">16/24-bit, 48kHz WAV</td>
+                            <td class="p-4">Supports stereo and mono</td>
+                            <td class="p-4">Saves 50% on +Drive space and speeds up USB transfers.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Elektron Model:Samples</td>
+                            <td class="p-4">16-bit, 48kHz WAV</td>
+                            <td class="p-4">Mono only (converts on upload)</td>
+                            <td class="p-4">Saves upload transfer time and ensures accurate mix summing.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Elektron Octatrack</td>
+                            <td class="p-4">16/24-bit, 44.1kHz WAV</td>
+                            <td class="p-4">Supports both (Flex/Static machines)</td>
+                            <td class="p-4">Saves precious Flex RAM, allowing longer sample playtimes.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Polyend Tracker</td>
+                            <td class="p-4">16-bit, 44.1kHz WAV</td>
+                            <td class="p-4">Mono only (converts on import)</td>
+                            <td class="p-4">Saves SD card storage and guarantees correct track playback.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Erica Synths Sample Drum</td>
+                            <td class="p-4">16/24-bit, 44.1/48kHz WAV</td>
+                            <td class="p-4">Mono only (rejects stereo)</td>
+                            <td class="p-4">Required for loading. Stereo files will not play or load.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-black dark:text-white">Akai MPC series</td>
+                            <td class="p-4">Up to 24-bit, 96kHz WAV</td>
+                            <td class="p-4">Supports both</td>
+                            <td class="p-4">Reduces RAM usage for drum hits, freeing up memory for keygroups.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Which Samplers Require Mono?</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">

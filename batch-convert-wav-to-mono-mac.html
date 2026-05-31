@@ -16,7 +16,6 @@
     <meta name="apple-itunes-app" content="app-id=6758866918">
     <title>Batch Convert WAV to Mono on Mac (Fast & Lossless)</title>
     <link rel="canonical" href="https://itsmonoyo.iamjarl.com/batch-convert-wav-to-mono-mac.html">
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons (IAMJARL Design System) -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -30,14 +29,8 @@
             localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
         }
     </script>
-    <!-- IAMJARL Design System v0.5.0 -->
-    <link rel="stylesheet" href="/assets/design-tokens.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { colors: { 'primary-light': '#A435D2', 'primary-dark': '#D0FF00' } } }
-        }
-    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
     <link rel="icon" type="image/png" sizes="32x32"
         href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
     <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
@@ -79,9 +72,9 @@
             </p>
 
             <div class="my-12">
-                <img src="app store images/mac-image02.png"
+                <img src="app store images/mac-image02.webp"
                     alt="It's mono, yo! batch conversion progress view"
-                    class="rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12" loading="lazy">
+                    class="rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12" loading="lazy" width="1280" height="800">
             </div>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How Batch Conversion Works</h2>

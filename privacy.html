@@ -13,11 +13,11 @@
     <title>Privacy Policy - It's mono, yo!</title>
     
     <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://buttons.github.io" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://buttons.github.io">
     
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons (IAMJARL Design System) -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -35,21 +35,8 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    <!-- IAMJARL Design System v0.5.0 -->
-    <link rel="stylesheet" href="/assets/design-tokens.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-light': '#A435D2',
-                        'primary-dark': '#D0FF00',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
     <!-- Favicon and App Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/16x16.png">

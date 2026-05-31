@@ -16,7 +16,6 @@
     <meta name="apple-itunes-app" content="app-id=6758866918">
     <title>How to Convert Stereo WAV to Mono on Mac (Fast Batch Converter)</title>
     <link rel="canonical" href="https://itsmonoyo.iamjarl.com/convert-stereo-wav-to-mono-mac.html">
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons (IAMJARL Design System) -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -30,21 +29,8 @@
             localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
         }
     </script>
-    <!-- IAMJARL Design System v0.5.0 -->
-    <link rel="stylesheet" href="/assets/design-tokens.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-light': '#A435D2',
-                        'primary-dark': '#D0FF00',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
     <link rel="icon" type="image/png" sizes="32x32"
         href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
     <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
@@ -86,9 +72,9 @@
             </p>
 
             <div class="my-12">
-                <img src="screenshots/Screenshot.png"
+                <img src="screenshots/Screenshot.webp"
                     alt="It's mono, yo! app interface showing stereo to mono WAV conversion"
-                    class="rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12" loading="lazy">
+                    class="rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12" loading="lazy" width="544" height="464">
             </div>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why Convert Stereo to Mono?</h2>

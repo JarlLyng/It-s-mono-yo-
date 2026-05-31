@@ -51,15 +51,12 @@
     <title>Convert Stereo WAV to Mono on Mac – It's mono, yo! | macOS Converter</title>
 
     <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://buttons.github.io" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://buttons.github.io">
-    <link rel="preload" href="screenshots/Screenshot.png" as="image" type="image/png">
+    <link rel="preload" href="screenshots/Screenshot.webp" as="image" type="image/webp">
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Phosphor Icons (IAMJARL Design System) -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -77,60 +74,8 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    <!-- IAMJARL Design System v0.5.0 — design tokens (colors, spacing, radius, typography) -->
-    <link rel="stylesheet" href="/assets/design-tokens.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        // IAMJARL Design System v0.5.0
-                        'primary-light': '#A435D2',
-                        'primary-dark': '#D0FF00',
-                        'success': '#4CAF50',
-                        'warning': '#FF6B35',
-                        'error': '#D70015',
-                    },
-                    spacing: {
-                        // IAMJARL Design System Spacing
-                        'xs': '4px',
-                        'sm': '8px',
-                        'md': '12px',
-                        'lg': '16px',
-                        'xl': '20px',
-                        'xxl': '24px',
-                        'xxxl': '32px',
-                    },
-                    borderRadius: {
-                        // IAMJARL Design System Radius
-                        'sm': '8px',
-                        'md': '12px',
-                        'lg': '16px',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in',
-                        'slide-up': 'slideUp 0.6s ease-out',
-                        'float': 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
     <!-- Canonical URL -->
     <link rel="canonical" href="https://itsmonoyo.iamjarl.com/">
 
@@ -230,7 +175,10 @@
                     <p
                         class="text-xl md:text-2xl text-black/70 dark:text-white/75 mb-12 max-w-3xl mx-auto leading-relaxed">
                         A simple macOS tool that converts stereo WAV and AIFF files to mono with configurable bit depth,
-                        sample rate, and output format. Perfect for hardware samplers like the Erica Synths Sample Drum.
+                        sample rate, and output format. Perfect for preparing samples for hardware samplers like the 
+                        <a href="prepare-samples-elektron-digitakt-mac.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Elektron Digitakt</a>, 
+                        <a href="prepare-samples-roland-sp404.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Roland SP-404</a>, and 
+                        <a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Erica Synths Sample Drum</a>.
                     </p>
                 </div>
 
@@ -238,7 +186,7 @@
                     <div
                         class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300">
                     </div>
-                    <img src="screenshots/Screenshot.png"
+                    <img src="screenshots/Screenshot.webp"
                         alt="It's mono, yo! macOS app interface showing WAV file conversion process with drag and drop support, batch processing, and IAMJARL Design System"
                         width="544" height="464" loading="eager" fetchpriority="high"
                         class="relative rounded-2xl w-full transform transition-transform duration-500 group-hover:scale-[1.02]"
@@ -289,7 +237,7 @@
                         <div
                             class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-300">
                         </div>
-                        <img src="app store images/mac-image01.png"
+                        <img src="app store images/mac-image01.webp"
                             alt="It's mono, yo! app interface showing file selection and conversion"
                             loading="lazy" width="1280" height="800"
                             class="relative rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12 transform transition-transform duration-500 group-hover:scale-[1.02]">
@@ -298,7 +246,7 @@
                         <div
                             class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-300">
                         </div>
-                        <img src="app store images/mac-image02.png"
+                        <img src="app store images/mac-image02.webp"
                             alt="It's mono, yo! app interface showing batch conversion progress"
                             loading="lazy" width="1280" height="800"
                             class="relative rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12 transform transition-transform duration-500 group-hover:scale-[1.02]">
@@ -771,8 +719,8 @@
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock"
       },
-      "screenshot": "https://itsmonoyo.iamjarl.com/screenshots/Screenshot.png",
-      "image": "https://itsmonoyo.iamjarl.com/screenshots/Screenshot.png",
+      "screenshot": "https://itsmonoyo.iamjarl.com/screenshots/Screenshot.webp",
+      "image": "https://itsmonoyo.iamjarl.com/screenshots/Screenshot.webp",
       "downloadUrl": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12",
       "installUrl": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12",
       "softwareVersion": "1.2.0",
