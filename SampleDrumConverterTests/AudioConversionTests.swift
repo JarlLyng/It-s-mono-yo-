@@ -3,30 +3,93 @@ import AVFoundation
 @testable import It_s_mono__yo_
 
 final class AudioConversionTests: XCTestCase {
-    let testBundle = Bundle(for: AudioConversionTests.self)
+
+    /// Stereo test fixture generated fresh for each test in `setUp`.
+    /// Generating it programmatically keeps a binary blob out of git and
+    /// guarantees the conversion tests actually run (instead of XCTSkip).
+    private var stereoFixtureURL: URL!
+
+    override func setUpWithError() throws {
+        stereoFixtureURL = try Self.makeStereoFixture()
+    }
+
+    override func tearDownWithError() throws {
+        if let url = stereoFixtureURL {
+            try? FileManager.default.removeItem(at: url)
+        }
+        stereoFixtureURL = nil
+    }
+
+    // MARK: - Fixture Generation
+
+    /// Writes a short 2-channel, 44.1 kHz WAV file where the left channel is a
+    /// constant +0.5 and the right channel a constant -0.5. After an equal-weight
+    /// stereo downmix the mono result is 0.0, which gives the conversion tests a
+    /// deterministic value to assert against.
+    private static func makeStereoFixture() throws -> URL {
+        let sampleRate = 44_100.0
+        let frameCount: AVAudioFrameCount = 4_410 // 0.1s
+
+        guard let format = AVAudioFormat(
+            commonFormat: .pcmFormatFloat32,
+            sampleRate: sampleRate,
+            channels: 2,
+            interleaved: false
+        ), let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
+            throw XCTSkip("Could not allocate test audio buffer")
+        }
+
+        buffer.frameLength = frameCount
+        let channels = buffer.floatChannelData!
+        for frame in 0..<Int(frameCount) {
+            channels[0][frame] = 0.5  // left
+            channels[1][frame] = -0.5 // right
+        }
+
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("test_stereo_\(UUID().uuidString).wav")
+        let file = try AVAudioFile(forWriting: url, settings: format.settings)
+        try file.write(from: buffer)
+        return url
+    }
 
     // MARK: - Basic Conversion
 
     func testStereoToMonoConversion() async throws {
-        guard let inputURL = testBundle.url(forResource: "test_stereo", withExtension: "wav") else {
-            throw XCTSkip("Test fixture 'test_stereo.wav' not found in test bundle")
-        }
-
         let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_output.wav")
         defer { try? FileManager.default.removeItem(at: outputURL) }
 
         // Default settings: 16-bit WAV
-        try await convertAudioFile(inputURL: inputURL, outputURL: outputURL, settings: OutputSettings()) { _ in }
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: OutputSettings()) { _ in }
 
-        guard let outputFile = try? AVAudioFile(forReading: outputURL) else {
-            XCTFail("Could not read output file")
-            return
-        }
-
+        let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
         XCTAssertEqual(outputFile.processingFormat.channelCount, 1)
 
-        let inputFile = try XCTUnwrap(try? AVAudioFile(forReading: inputURL))
+        let inputFile = try XCTUnwrap(try? AVAudioFile(forReading: stereoFixtureURL))
         XCTAssertEqual(outputFile.processingFormat.sampleRate, inputFile.processingFormat.sampleRate)
+    }
+
+    /// Verifies the downmix math, not just the channel count: equal-weight summing
+    /// of L=+0.5 and R=-0.5 must produce silence (0.0) in the mono output.
+    func testDownmixSumsChannelsCorrectly() async throws {
+        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_downmix.wav")
+        defer { try? FileManager.default.removeItem(at: outputURL) }
+
+        var settings = OutputSettings()
+        settings.bitDepth = .float32
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
+
+        let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
+        let format = outputFile.processingFormat
+        let buffer = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(outputFile.length)))
+        try outputFile.read(into: buffer)
+
+        let samples = try XCTUnwrap(buffer.floatChannelData)[0]
+        var peak: Float = 0
+        for frame in 0..<Int(buffer.frameLength) {
+            peak = max(peak, abs(samples[frame]))
+        }
+        XCTAssertEqual(peak, 0.0, accuracy: 0.0001, "Equal-weight downmix of +0.5/-0.5 should be silence")
     }
 
     func testErrorHandling() async throws {
@@ -45,16 +108,12 @@ final class AudioConversionTests: XCTestCase {
     // MARK: - Bit Depth
 
     func test24BitOutput() async throws {
-        guard let inputURL = testBundle.url(forResource: "test_stereo", withExtension: "wav") else {
-            throw XCTSkip("Test fixture 'test_stereo.wav' not found in test bundle")
-        }
-
         let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_24bit.wav")
         defer { try? FileManager.default.removeItem(at: outputURL) }
 
         var settings = OutputSettings()
         settings.bitDepth = .int24
-        try await convertAudioFile(inputURL: inputURL, outputURL: outputURL, settings: settings) { _ in }
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
 
         let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
         XCTAssertEqual(outputFile.processingFormat.channelCount, 1)
@@ -62,16 +121,12 @@ final class AudioConversionTests: XCTestCase {
     }
 
     func test32BitFloatOutput() async throws {
-        guard let inputURL = testBundle.url(forResource: "test_stereo", withExtension: "wav") else {
-            throw XCTSkip("Test fixture 'test_stereo.wav' not found in test bundle")
-        }
-
         let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_32float.wav")
         defer { try? FileManager.default.removeItem(at: outputURL) }
 
         var settings = OutputSettings()
         settings.bitDepth = .float32
-        try await convertAudioFile(inputURL: inputURL, outputURL: outputURL, settings: settings) { _ in }
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
 
         let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
         XCTAssertEqual(outputFile.processingFormat.channelCount, 1)
@@ -81,16 +136,12 @@ final class AudioConversionTests: XCTestCase {
     // MARK: - AIFF Output
 
     func testAIFFOutput() async throws {
-        guard let inputURL = testBundle.url(forResource: "test_stereo", withExtension: "wav") else {
-            throw XCTSkip("Test fixture 'test_stereo.wav' not found in test bundle")
-        }
-
         let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_output.aiff")
         defer { try? FileManager.default.removeItem(at: outputURL) }
 
         var settings = OutputSettings()
         settings.fileType = .aiff
-        try await convertAudioFile(inputURL: inputURL, outputURL: outputURL, settings: settings) { _ in }
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
 
         let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
         XCTAssertEqual(outputFile.processingFormat.channelCount, 1)
@@ -99,16 +150,12 @@ final class AudioConversionTests: XCTestCase {
     // MARK: - Sample Rate Conversion
 
     func testSampleRateConversion() async throws {
-        guard let inputURL = testBundle.url(forResource: "test_stereo", withExtension: "wav") else {
-            throw XCTSkip("Test fixture 'test_stereo.wav' not found in test bundle")
-        }
-
         let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_48k.wav")
         defer { try? FileManager.default.removeItem(at: outputURL) }
 
         var settings = OutputSettings()
         settings.sampleRate = .resample(48000)
-        try await convertAudioFile(inputURL: inputURL, outputURL: outputURL, settings: settings) { _ in }
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
 
         let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
         XCTAssertEqual(outputFile.processingFormat.channelCount, 1)
