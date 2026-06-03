@@ -4,9 +4,6 @@ import UniformTypeIdentifiers
 // MARK: - Constants
 enum AppConstants {
     static let bufferSize: UInt32 = 32768
-    static let githubRepository = "JarlLyng/It-s-mono-yo-"
-    static let githubReleasesURL = "https://api.github.com/repos/\(githubRepository)/releases/latest"
-    static let githubReleasesPageURL = "https://github.com/\(githubRepository)/releases/latest"
     static let defaultAppVersion = "1.3.0"
 }
 
@@ -124,11 +121,6 @@ struct ContentView: View {
             return "\(failed) files failed to convert"
         }
         return "All files converted successfully"
-    }
-    
-    var totalFileSize: Int64 {
-        audioFiles.compactMap { try? FileManager.default.attributesOfItem(atPath: $0.url.path)[.size] as? Int64 }
-            .reduce(0, +)
     }
     
     var body: some View {
@@ -266,21 +258,6 @@ struct ContentView: View {
         }
     }
 
-    private func formatFileSize(_ size: Int64) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useMB, .useKB]
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: size)
-    }
-
-    private func removeFiles(at offsets: IndexSet) {
-        audioFiles.remove(atOffsets: offsets)
-    }
-
-    private func clearFiles() {
-        audioFiles.removeAll()
-    }
-
     func selectFiles() {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.wav, .aiff]
@@ -295,39 +272,6 @@ struct ContentView: View {
         }
     }
     
-    func selectOutputFolder() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.canCreateDirectories = true
-        panel.prompt = "Choose Output Folder"
-        
-        if panel.runModal() == .OK {
-            outputFolder = panel.url
-            setStatusMessage("Output folder selected: \(panel.url?.lastPathComponent ?? "")")
-        }
-    }
-    
-    
-
-    @MainActor
-    private func addFile(from url: URL) {
-        let newFile = AudioFile(url: url, format: getAudioFormat(for: url))
-        audioFiles.append(newFile)
-    }
-
-    /// Logs a debug message with timestamp
-    /// - Parameter message: The message to log
-    /// - Note: Only logs in DEBUG builds
-    private func log(_ message: String) {
-        #if DEBUG
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        print("[\(formatter.string(from: Date()))] \(message)")
-        #endif
-    }
-
     /// Shows user where to get updates (App Store). No network access – app uses minimal entitlements for App Review.
     private func checkForUpdates() {
         latestVersion = ""
@@ -335,25 +279,6 @@ struct ContentView: View {
         showingUpdateAlert = true
     }
     
-    /// Compares two semantic version strings
-    /// - Returns: > 0 if v1 > v2, < 0 if v1 < v2, 0 if equal
-    private func compareVersions(_ v1: String, _ v2: String) -> Int {
-        let parts1 = v1.split(separator: ".").compactMap { Int($0) }
-        let parts2 = v2.split(separator: ".").compactMap { Int($0) }
-        
-        let maxCount = max(parts1.count, parts2.count)
-        
-        for i in 0..<maxCount {
-            let p1 = i < parts1.count ? parts1[i] : 0
-            let p2 = i < parts2.count ? parts2[i] : 0
-            
-            if p1 > p2 { return 1 }
-            if p1 < p2 { return -1 }
-        }
-        
-        return 0
-    }
-
     /// Updates the status message shown to the user
     /// - Parameter message: The message to display
     /// - Note: Message will be cleared when state changes (e.g., conversion starts/stops)
@@ -408,8 +333,6 @@ private struct UpdateAlertModifier: ViewModifier {
 struct FileRowView: View {
     let file: AudioFile
     let onRemove: () -> Void
-    var onRetry: (() -> Void)?
-    var onReveal: (() -> Void)?
     @State private var isHovering = false
     @Environment(\.colorScheme) private var colorScheme
     
@@ -448,17 +371,6 @@ struct FileRowView: View {
         }
         .adaptiveAnimation(.easeInOut(duration: 0.2), value: isHovering)
         .contextMenu {
-            if file.status == .failed {
-                Button(action: { onRetry?() }) {
-                    Label("Retry Conversion", systemImage: "arrow.clockwise")
-                }
-            }
-            if file.status == .completed {
-                Button(action: { onReveal?() }) {
-                    Label("Show in Finder", systemImage: "folder")
-                }
-            }
-            Divider()
             if #available(macOS 12.0, *) {
                 Button(role: .destructive, action: { onRemove() }) {
                     Label("Remove", systemImage: "trash")
@@ -1135,14 +1047,6 @@ struct CompletionView: View {
                 ReviewPrompt.recordSuccessfulConversion()
             }
         }
-    }
-}
-
-struct GitHubRelease: Codable {
-    let tagName: String
-    
-    enum CodingKeys: String, CodingKey {
-        case tagName = "tag_name"
     }
 }
 
