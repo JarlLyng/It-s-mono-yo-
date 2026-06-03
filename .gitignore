@@ -39,4 +39,8 @@ playground.xcworkspace
 
 # GitHub Pages files (only in gh-pages branch)
 index.html
-sitemap.xml 
+sitemap.xml
+
+# App Store marketing assets — local working files only.
+# The optimized .webp versions used by the site live on the gh-pages branch.
+app store images/ 
