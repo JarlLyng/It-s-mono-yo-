@@ -59,9 +59,19 @@
 - **Audio engine** — AudioToolbox / ExtAudioFile API for format conversion
 - **UI** — SwiftUI with step-based conversion flow
 - **Downmix** — float32 intermediate processing, ITU-R BS.775 weighted multi-channel downmix
-- **Concurrency** — Swift async/await with per-file progress tracking
+- **Concurrency** — Swift async/await; batches convert in parallel via a bounded task group with per-file progress tracking
 
 ## Release Notes
+
+### Version 1.3.1
+- Parallel batch conversion (bounded task group) for faster large batches
+- Preserve headroom on 32-bit float output (no unnecessary clamping)
+- Conversion test suite now runs against a generated fixture
+- Internal cleanup: removed unused code paths
+
+### Version 1.3.0
+- In-app App Store review prompt after repeated successful conversions
+- Updated to IAMJARL Design System v0.5.0
 
 ### Version 1.2.0
 - Configurable output bit depth (16-bit, 24-bit, 32-bit float)
