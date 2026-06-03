@@ -22,7 +22,7 @@ A clear and concise description of what you expected to happen.
 
 **System Information**
 - macOS version: [e.g. 14.0]
-- App version: [e.g. 1.2.0]
+- App version: [e.g. 1.3.1]
 - File type (if relevant): [e.g. WAV 44.1 kHz 16-bit stereo]
 
 **Additional context**

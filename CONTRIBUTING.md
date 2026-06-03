@@ -32,7 +32,7 @@ If you are a Swift developer looking to contribute to the codebase, follow these
 4. **Select Development Team**: Under the project target's *Signing & Capabilities*, select your Apple Developer Team to ensure signing succeeds.
 5. **Write your code**: Make your changes.
     * _Architecture note:_ Keep UI changes in SwiftUI and audio processing localized to the `AudioConverter.swift` structures. Ensure heavy conversions remain asynchronous using Swift concurrency (`async/await`).
-6. **Test your code**: Ensure the app builds locally (`⌘ + R`) and that core mono downmixing functionality isn't broken. If you've modified the core `ExtAudioFile` logic, deeply test with both WAV and AIFF files.
+6. **Test your code**: Ensure the app builds locally (`⌘ + R`) and run the unit tests (`⌘ + U`) — the conversion tests generate their own audio fixture, so they run without any external files. If you've modified the core `ExtAudioFile` logic, deeply test with both WAV and AIFF files.
 7. **Commit your changes**: Ensure your commit messages are clear and descriptive.
 8. **Push and open a PR**: Push to your fork and submit a pull request to our `main` branch. Please fill out the provided pull request template thoroughly.
 
