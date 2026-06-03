@@ -4,7 +4,7 @@ import UniformTypeIdentifiers
 // MARK: - Constants
 enum AppConstants {
     static let bufferSize: UInt32 = 32768
-    static let defaultAppVersion = "1.3.0"
+    static let defaultAppVersion = "1.3.1"
 }
 
 // AppTheme replaced with IAMJARL Design Tokens
