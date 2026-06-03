@@ -96,12 +96,20 @@ private func downmixWeights(channelCount: Int) -> [Float] {
 
 // MARK: - Overwrite Protection
 
-/// Resolves the output URL to avoid overwriting existing files.
-/// Appends " (1)", " (2)", etc. before the extension until a unique path is found.
-func resolveOutputURL(_ proposedURL: URL) -> URL {
-    guard FileManager.default.fileExists(atPath: proposedURL.path) else {
-        return proposedURL
+/// Resolves an output URL that collides with neither an existing file on disk
+/// nor any path in `taken`. Appends " (1)", " (2)", etc. before the extension
+/// until a free path is found.
+///
+/// The `taken` set lets callers reserve names for conversions that haven't
+/// written their output yet — essential when files are converted in parallel,
+/// where two inputs sharing a base name would otherwise resolve to the same
+/// output path (a check-then-create race).
+func uniqueOutputURL(_ proposedURL: URL, taken: Set<String> = []) -> URL {
+    func isFree(_ url: URL) -> Bool {
+        !FileManager.default.fileExists(atPath: url.path) && !taken.contains(url.path)
     }
+
+    if isFree(proposedURL) { return proposedURL }
 
     let directory = proposedURL.deletingLastPathComponent()
     let ext = proposedURL.pathExtension
@@ -109,13 +117,17 @@ func resolveOutputURL(_ proposedURL: URL) -> URL {
 
     var counter = 1
     while true {
-        let newName = "\(baseName) (\(counter))"
-        let newURL = directory.appendingPathComponent(newName).appendingPathExtension(ext)
-        if !FileManager.default.fileExists(atPath: newURL.path) {
-            return newURL
-        }
+        let newURL = directory
+            .appendingPathComponent("\(baseName) (\(counter))")
+            .appendingPathExtension(ext)
+        if isFree(newURL) { return newURL }
         counter += 1
     }
+}
+
+/// Resolves the output URL to avoid overwriting existing files on disk.
+func resolveOutputURL(_ proposedURL: URL) -> URL {
+    uniqueOutputURL(proposedURL)
 }
 
 // MARK: - Audio Conversion
@@ -236,6 +248,10 @@ func convertAudioFile(
     // Get downmix weights for this channel layout
     let weights = downmixWeights(channelCount: intChannelCount)
 
+    // Clamping protects integer formats from wraparound on overflow. For
+    // 32-bit float output we keep the raw value to preserve headroom.
+    let clampToUnity = settings.bitDepth != .float32
+
     var currentFrame: Int64 = 0
 
     while currentFrame < fileLengthFrames {
@@ -265,8 +281,7 @@ func convertAudioFile(
             for channel in 0..<intChannelCount {
                 sample += floatBuffer[frame * intChannelCount + channel] * weights[channel]
             }
-            // Clamp to valid range
-            monoBuffer[frame] = max(-1.0, min(1.0, sample))
+            monoBuffer[frame] = clampToUnity ? max(-1.0, min(1.0, sample)) : sample
         }
 
         // Write mono float data — ExtAudioFile converts to target bit depth
