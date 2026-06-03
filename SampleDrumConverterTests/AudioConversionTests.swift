@@ -187,4 +187,18 @@ final class AudioConversionTests: XCTestCase {
         let resolved = resolveOutputURL(testFile)
         XCTAssertEqual(resolved.path, testFile.path)
     }
+
+    /// Guards the parallel-conversion race fix: two inputs sharing a base name
+    /// must not resolve to the same output path even before either is written.
+    func testUniqueOutputURLAvoidsReservedNames() {
+        let dir = FileManager.default.temporaryDirectory
+        let base = dir.appendingPathComponent("clash_\(UUID().uuidString).wav")
+
+        let first = uniqueOutputURL(base, taken: [])
+        let second = uniqueOutputURL(base, taken: [first.path])
+
+        XCTAssertEqual(first.path, base.path)
+        XCTAssertNotEqual(second.path, first.path)
+        XCTAssertTrue(second.lastPathComponent.contains("(1)"))
+    }
 }

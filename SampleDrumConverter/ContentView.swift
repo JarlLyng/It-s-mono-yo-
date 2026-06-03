@@ -869,64 +869,81 @@ struct ConvertView: View {
         .padding()
     }
     
+    /// Max files converted at once. Conversion is largely disk/IO-bound, so a
+    /// small pool keeps cores busy without thrashing the disk.
+    private static let maxConcurrentConversions = 4
+
     private func startConversion() {
         guard let outputFolder = outputFolder else { return }
         isConverting = true
         isProcessing = true
-        
-        // Start conversion for first pending file
+
         Task {
-            await convertNextFile(outputFolder: outputFolder)
+            await convertAllFiles(outputFolder: outputFolder)
         }
     }
-    
-    private func convertNextFile(outputFolder: URL) async {
-        // Find first pending file
-        guard let index = audioFiles.firstIndex(where: { $0.status == .pending }) else {
-            await MainActor.run {
-                isConverting = false
-                isProcessing = false
-                currentStep = .completed
+
+    private func convertAllFiles(outputFolder: URL) async {
+        // Resolve every output path up front, sequentially, reserving each name.
+        // Doing this before any parallel work avoids a check-then-create race
+        // where two inputs sharing a base name pick the same output path.
+        let jobs: [(index: Int, input: URL, output: URL)] = await MainActor.run {
+            var taken = Set<String>()
+            var result: [(index: Int, input: URL, output: URL)] = []
+            for index in audioFiles.indices where audioFiles[index].status == .pending {
+                let input = audioFiles[index].url
+                let proposed = outputFolder
+                    .appendingPathComponent(input.deletingPathExtension().lastPathComponent + ".Mono")
+                    .appendingPathExtension(settings.fileType.fileExtension)
+                let output = uniqueOutputURL(proposed, taken: taken)
+                taken.insert(output.path)
+                result.append((index, input, output))
             }
-            return
+            return result
         }
-        
-        // Update file status
-        await MainActor.run {
-            audioFiles[index].status = .converting
-        }
-        
-        // Get input and output URLs
-        let inputURL = audioFiles[index].url
-        let proposedURL = outputFolder
-            .appendingPathComponent(inputURL.deletingPathExtension().lastPathComponent + ".Mono")
-            .appendingPathExtension(settings.fileType.fileExtension)
-        let outputURL = resolveOutputURL(proposedURL)
-        
-        do {
-            try await convertFile(at: index, from: inputURL, to: outputURL)
-            
-            await MainActor.run {
-                audioFiles[index].status = .completed
-                // Continue with next file
-                Task {
-                    await convertNextFile(outputFolder: outputFolder)
+
+        // Run conversions through a bounded task group: seed up to the limit,
+        // then start a new job each time one finishes.
+        await withTaskGroup(of: Void.self) { group in
+            var iterator = jobs.makeIterator()
+
+            func addNext() -> Bool {
+                guard let job = iterator.next() else { return false }
+                group.addTask {
+                    await self.convert(job: job)
                 }
+                return true
             }
+
+            for _ in 0..<Self.maxConcurrentConversions {
+                if !addNext() { break }
+            }
+            for await _ in group {
+                _ = addNext()
+            }
+        }
+
+        await MainActor.run {
+            isConverting = false
+            isProcessing = false
+            currentStep = .completed
+        }
+    }
+
+    private func convert(job: (index: Int, input: URL, output: URL)) async {
+        await MainActor.run { audioFiles[job.index].status = .converting }
+        do {
+            try await convertFile(at: job.index, from: job.input, to: job.output)
+            await MainActor.run { audioFiles[job.index].status = .completed }
         } catch {
             await MainActor.run {
-                audioFiles[index].status = .failed
-                audioFiles[index].errorMessage = error.localizedDescription
-                errorMessage = "Error converting \(inputURL.lastPathComponent): \(error.localizedDescription)"
-                
-                // Continue with next file despite error
-                Task {
-                    await convertNextFile(outputFolder: outputFolder)
-                }
+                audioFiles[job.index].status = .failed
+                audioFiles[job.index].errorMessage = error.localizedDescription
+                errorMessage = "Error converting \(job.input.lastPathComponent): \(error.localizedDescription)"
             }
         }
     }
-    
+
     private func convertFile(at index: Int, from inputURL: URL, to outputURL: URL) async throws {
         // Access security-scoped resource if needed (for sandboxed environments)
         // This handles URLs from drag-and-drop that may be security-scoped
