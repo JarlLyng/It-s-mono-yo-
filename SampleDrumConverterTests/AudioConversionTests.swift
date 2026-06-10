@@ -188,6 +188,51 @@ final class AudioConversionTests: XCTestCase {
         XCTAssertEqual(resolved.path, testFile.path)
     }
 
+    // MARK: - Folder Import
+
+    /// Writes the standard stereo test buffer to a specific URL.
+    private static func writeStereoWav(to url: URL) throws {
+        let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44_100, channels: 2, interleaved: false)!
+        let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 1_000)!
+        buffer.frameLength = 1_000
+        let channels = buffer.floatChannelData!
+        for frame in 0..<1_000 {
+            channels[0][frame] = 0.5
+            channels[1][frame] = -0.5
+        }
+        let file = try AVAudioFile(forWriting: url, settings: format.settings)
+        try file.write(from: buffer)
+    }
+
+    /// Folder import must find audio recursively and compute each file's relative
+    /// directory (including the picked folder's own name) so output can mirror it.
+    func testFolderImportComputesRelativeDirectories() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appendingPathComponent("Pack_\(UUID().uuidString)")
+        let kicks = root.appendingPathComponent("Kicks")
+        let snares = root.appendingPathComponent("Snares")
+        try fm.createDirectory(at: kicks, withIntermediateDirectories: true)
+        try fm.createDirectory(at: snares, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: root) }
+
+        try Self.writeStereoWav(to: root.appendingPathComponent("top.wav"))
+        try Self.writeStereoWav(to: kicks.appendingPathComponent("kick.wav"))
+        try Self.writeStereoWav(to: snares.appendingPathComponent("snare.wav"))
+        // A non-audio file that must be ignored.
+        try "x".write(to: root.appendingPathComponent("readme.txt"), atomically: true, encoding: .utf8)
+
+        let found = collectAudioFiles(inFolder: root)
+        XCTAssertEqual(found.count, 3, "Should find 3 audio files, ignoring the .txt")
+
+        let packName = root.lastPathComponent
+        let byName = Dictionary(uniqueKeysWithValues: found.map { ($0.url.lastPathComponent, $0) })
+        XCTAssertEqual(byName["top.wav"]?.relativeDirectory, packName)
+        XCTAssertEqual(byName["kick.wav"]?.relativeDirectory, "\(packName)/Kicks")
+        XCTAssertEqual(byName["snare.wav"]?.relativeDirectory, "\(packName)/Snares")
+        // Every folder-imported file carries the folder as its security-scope root.
+        XCTAssertTrue(found.allSatisfy { $0.securityScopeRoot == root })
+    }
+
     /// Guards the parallel-conversion race fix: two inputs sharing a base name
     /// must not resolve to the same output path even before either is written.
     func testUniqueOutputURLAvoidsReservedNames() {
