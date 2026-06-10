@@ -64,7 +64,7 @@
 
 ## Release Notes
 
-### Version 1.4.0 (in development)
+### Version 1.4.0
 - Folder import: drop or select a folder and convert an entire sample pack in one go, with the source folder structure preserved in the output
 
 ### Version 1.3.1
