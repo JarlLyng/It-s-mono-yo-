@@ -15,12 +15,28 @@ enum AppConstants {
 struct AudioFile: Identifiable, Sendable {
     let id = UUID()
     let url: URL
+    /// Directory path relative to an imported folder, including that folder's own
+    /// name (e.g. "MyPack/Kicks"). nil for individually-selected files. Used to
+    /// mirror the source folder structure under the output folder.
+    var relativeDirectory: String?
+    /// Security-scoped folder URL whose access must be held while converting this
+    /// file. Set for folder imports — children are read through the folder's scope.
+    /// nil for individually-selected files, which hold their own scope.
+    var securityScopeRoot: URL?
     var status: ConversionStatus = .pending
     var progress: Float = 0.0
     var errorMessage: String?
-    
+
     var format: AudioFileFormat?
-    
+
+    /// Filename including any relative folder path, for display in the file list.
+    var displayName: String {
+        if let rel = relativeDirectory, !rel.isEmpty {
+            return "\(rel)/\(url.lastPathComponent)"
+        }
+        return url.lastPathComponent
+    }
+
     enum ConversionStatus: Sendable {
         case pending
         case converting
@@ -57,6 +73,57 @@ struct AudioFile: Identifiable, Sendable {
 }
 
 // AudioFileFormat, getAudioFormat, and ConversionError are in AudioConverter.swift
+
+private let supportedAudioExtensions: Set<String> = ["wav", "aiff", "aif"]
+
+/// Recursively collects WAV/AIFF files inside a folder. Each file's relative
+/// directory is computed against the folder's parent, so the picked folder's own
+/// name becomes the top level of the mirrored output structure.
+func collectAudioFiles(inFolder folderURL: URL) -> [AudioFile] {
+    let accessing = folderURL.startAccessingSecurityScopedResource()
+    defer { if accessing { folderURL.stopAccessingSecurityScopedResource() } }
+
+    let parentComponents = folderURL.deletingLastPathComponent().standardizedFileURL.pathComponents
+    guard let enumerator = FileManager.default.enumerator(
+        at: folderURL,
+        includingPropertiesForKeys: [.isRegularFileKey],
+        options: [.skipsHiddenFiles, .skipsPackageDescendants]
+    ) else { return [] }
+
+    var files: [AudioFile] = []
+    for case let fileURL as URL in enumerator {
+        guard supportedAudioExtensions.contains(fileURL.pathExtension.lowercased()) else { continue }
+        let isRegular = (try? fileURL.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) ?? false
+        guard isRegular else { continue }
+
+        let dirComponents = fileURL.deletingLastPathComponent().standardizedFileURL.pathComponents
+        let relative = dirComponents.dropFirst(parentComponents.count).joined(separator: "/")
+
+        files.append(AudioFile(
+            url: fileURL,
+            relativeDirectory: relative.isEmpty ? nil : relative,
+            securityScopeRoot: folderURL,
+            format: getAudioFormat(for: fileURL)
+        ))
+    }
+    return files
+}
+
+/// Builds AudioFiles from a set of user-selected URLs, expanding any folders
+/// recursively and keeping individually-selected files flat.
+func collectAudioFiles(fromSelected urls: [URL]) -> [AudioFile] {
+    var files: [AudioFile] = []
+    for url in urls {
+        var isDirectory: ObjCBool = false
+        let exists = FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory)
+        if exists && isDirectory.boolValue {
+            files.append(contentsOf: collectAudioFiles(inFolder: url))
+        } else if supportedAudioExtensions.contains(url.pathExtension.lowercased()) {
+            files.append(AudioFile(url: url, format: getAudioFormat(for: url)))
+        }
+    }
+    return files
+}
 
 enum ConversionStep {
     case selectFiles
@@ -262,13 +329,11 @@ struct ContentView: View {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.wav, .aiff]
         panel.allowsMultipleSelection = true
-        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = true
 
         if panel.runModal() == .OK {
-            let newFiles = panel.urls.compactMap { url -> AudioFile? in
-                return AudioFile(url: url, format: getAudioFormat(for: url))
-            }
-            audioFiles.append(contentsOf: newFiles)
+            audioFiles.append(contentsOf: collectAudioFiles(fromSelected: panel.urls))
         }
     }
     
@@ -343,7 +408,7 @@ struct FileRowView: View {
                 .frame(width: 16)
             
             VStack(alignment: .leading, spacing: DesignTokens.Spacing.xs) {
-                Text(file.url.lastPathComponent)
+                Text(file.displayName)
                     .font(.system(.body))
                     .foregroundColor(AdaptiveColor.textPrimary(colorScheme))
                 if let format = file.format {
@@ -403,7 +468,7 @@ struct SelectFilesView: View {
                             .font(.system(size: min(35, geometry.size.width * 0.05), weight: .ultraLight))
                             .foregroundColor(isDropTargeted || isHovering ? AdaptiveColor.textPrimary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
                         
-                        Text("Click to select WAV or AIFF files\nor drag files here")
+                        Text("Click to select WAV/AIFF files or folders\nor drag them here")
                             .font(.system(size: min(DesignTokens.Typography.Size.sm, geometry.size.width * 0.018)))
                             .multilineTextAlignment(.center)
                             .foregroundColor(isDropTargeted || isHovering ? AdaptiveColor.textPrimary(colorScheme) : AdaptiveColor.textTertiary(colorScheme))
@@ -447,16 +512,19 @@ struct SelectFilesView: View {
                                     #endif
                                     return
                                 }
-                                
-                                // Check file extension
+
+                                // Accept folders (enumerated recursively) and WAV/AIFF files
+                                var isDir: ObjCBool = false
+                                let exists = FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
+                                let isDirectory = exists && isDir.boolValue
                                 let ext = url.pathExtension.lowercased()
-                                guard ext == "wav" || ext == "aiff" || ext == "aif" else {
+                                guard isDirectory || supportedAudioExtensions.contains(ext) else {
                                     #if DEBUG
-                                    print("Skipped unsupported file: \(url.lastPathComponent)")
+                                    print("Skipped unsupported item: \(url.lastPathComponent)")
                                     #endif
                                     return
                                 }
-                                
+
                                 // Access security-scoped resource for sandboxed environments
                                 let isAccessing = url.startAccessingSecurityScopedResource()
                                 defer {
@@ -464,17 +532,18 @@ struct SelectFilesView: View {
                                         url.stopAccessingSecurityScopedResource()
                                     }
                                 }
-                                
+
                                 Task { @MainActor in
                                     do {
-                                        // Create a security-scoped bookmark for persistent access
+                                        // Resolve a security-scoped bookmark so access can be
+                                        // re-established during conversion. For folders this grants
+                                        // access to the whole subtree.
                                         let bookmarkData = try url.bookmarkData(
                                             options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
                                             includingResourceValuesForKeys: nil,
                                             relativeTo: nil
                                         )
-                                        
-                                        // Resolve bookmark to get a URL that can be accessed later
+
                                         var isStale = false
                                         let resolvedURL = try URL(
                                             resolvingBookmarkData: bookmarkData,
@@ -482,29 +551,23 @@ struct SelectFilesView: View {
                                             relativeTo: nil,
                                             bookmarkDataIsStale: &isStale
                                         )
-                                        
-                                        // Start accessing the resolved URL for validation
-                                        let resolvedAccessing = resolvedURL.startAccessingSecurityScopedResource()
-                                        defer {
-                                            if resolvedAccessing {
-                                                resolvedURL.stopAccessingSecurityScopedResource()
+
+                                        if isDirectory {
+                                            audioFiles.append(contentsOf: collectAudioFiles(inFolder: resolvedURL))
+                                        } else {
+                                            let resolvedAccessing = resolvedURL.startAccessingSecurityScopedResource()
+                                            defer {
+                                                if resolvedAccessing {
+                                                    resolvedURL.stopAccessingSecurityScopedResource()
+                                                }
                                             }
+                                            audioFiles.append(AudioFile(url: resolvedURL, format: getAudioFormat(for: resolvedURL)))
                                         }
-                                        
-                                        // Read format and add file
-                                        let format = getAudioFormat(for: resolvedURL)
-                                        
-                                        // Store the resolved URL - access will be re-established during conversion
-                                        audioFiles.append(AudioFile(url: resolvedURL, format: format))
-                                        
-                                        #if DEBUG
-                                        print("Successfully added dropped file: \(resolvedURL.lastPathComponent)")
-                                        #endif
                                     } catch {
                                         #if DEBUG
-                                        print("Error processing dropped file \(url.lastPathComponent): \(error.localizedDescription)")
+                                        print("Error processing dropped item \(url.lastPathComponent): \(error.localizedDescription)")
                                         #endif
-                                        // Silently skip invalid files
+                                        // Silently skip invalid items
                                     }
                                 }
                             }
@@ -572,9 +635,9 @@ struct SelectFilesView: View {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.wav, .aiff]
         panel.allowsMultipleSelection = true
-        panel.canChooseDirectories = false
+        panel.canChooseDirectories = true
         panel.canChooseFiles = true
-        panel.title = "Select Audio Files"
+        panel.title = "Select Audio Files or Folders"
         panel.prompt = "Select"
 
         let response = panel.runModal()
@@ -591,16 +654,10 @@ struct SelectFilesView: View {
         }
 
         #if DEBUG
-        print("Selected \(panel.urls.count) files")
+        print("Selected \(panel.urls.count) item(s)")
         #endif
 
-        let newFiles = panel.urls.map { url -> AudioFile in
-            let format = getAudioFormat(for: url)
-            #if DEBUG
-            print("Added file: \(url.lastPathComponent)")
-            #endif
-            return AudioFile(url: url, format: format)
-        }
+        let newFiles = collectAudioFiles(fromSelected: panel.urls)
 
         audioFiles.append(contentsOf: newFiles)
 
@@ -887,17 +944,25 @@ struct ConvertView: View {
         // Resolve every output path up front, sequentially, reserving each name.
         // Doing this before any parallel work avoids a check-then-create race
         // where two inputs sharing a base name pick the same output path.
-        let jobs: [(index: Int, input: URL, output: URL)] = await MainActor.run {
+        let jobs: [(index: Int, input: URL, output: URL, scopeRoot: URL?)] = await MainActor.run {
             var taken = Set<String>()
-            var result: [(index: Int, input: URL, output: URL)] = []
+            var result: [(index: Int, input: URL, output: URL, scopeRoot: URL?)] = []
             for index in audioFiles.indices where audioFiles[index].status == .pending {
-                let input = audioFiles[index].url
-                let proposed = outputFolder
-                    .appendingPathComponent(input.deletingPathExtension().lastPathComponent + ".Mono")
+                let file = audioFiles[index]
+                // Mirror the source folder structure: place the output under the
+                // file's relative directory (if it came from a folder import).
+                let destinationFolder: URL
+                if let relative = file.relativeDirectory, !relative.isEmpty {
+                    destinationFolder = outputFolder.appendingPathComponent(relative, isDirectory: true)
+                } else {
+                    destinationFolder = outputFolder
+                }
+                let proposed = destinationFolder
+                    .appendingPathComponent(file.url.deletingPathExtension().lastPathComponent + ".Mono")
                     .appendingPathExtension(settings.fileType.fileExtension)
                 let output = uniqueOutputURL(proposed, taken: taken)
                 taken.insert(output.path)
-                result.append((index, input, output))
+                result.append((index, file.url, output, file.securityScopeRoot))
             }
             return result
         }
@@ -930,10 +995,10 @@ struct ConvertView: View {
         }
     }
 
-    private func convert(job: (index: Int, input: URL, output: URL)) async {
+    private func convert(job: (index: Int, input: URL, output: URL, scopeRoot: URL?)) async {
         await MainActor.run { audioFiles[job.index].status = .converting }
         do {
-            try await convertFile(at: job.index, from: job.input, to: job.output)
+            try await convertFile(at: job.index, from: job.input, to: job.output, scopeRoot: job.scopeRoot)
             await MainActor.run { audioFiles[job.index].status = .completed }
         } catch {
             await MainActor.run {
@@ -944,16 +1009,22 @@ struct ConvertView: View {
         }
     }
 
-    private func convertFile(at index: Int, from inputURL: URL, to outputURL: URL) async throws {
-        // Access security-scoped resource if needed (for sandboxed environments)
-        // This handles URLs from drag-and-drop that may be security-scoped
-        let isAccessing = inputURL.startAccessingSecurityScopedResource()
+    private func convertFile(at index: Int, from inputURL: URL, to outputURL: URL, scopeRoot: URL?) async throws {
+        // Access the security-scoped resource (for sandboxed environments). For
+        // folder imports we hold the folder's scope, which covers its children;
+        // for individual files we hold the file's own scope.
+        let accessURL = scopeRoot ?? inputURL
+        let isAccessing = accessURL.startAccessingSecurityScopedResource()
         defer {
             if isAccessing {
-                inputURL.stopAccessingSecurityScopedResource()
+                accessURL.stopAccessingSecurityScopedResource()
             }
         }
-        
+
+        // Recreate the mirrored output subdirectory if needed.
+        let outputDirectory = outputURL.deletingLastPathComponent()
+        try FileManager.default.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
+
         try await convertAudioFile(
             inputURL: inputURL,
             outputURL: outputURL,

@@ -15,6 +15,7 @@
 ## Features
 
 - **Batch conversion** — drag in unlimited WAV and AIFF files
+- **Folder import** — drop a whole folder; sample packs convert recursively with their folder structure preserved in the output
 - **Configurable bit depth** — 16-bit (default), 24-bit, or 32-bit float output
 - **Output format** — WAV or AIFF
 - **Sample rate conversion** — keep original, or convert to 44.1 / 48 / 96 kHz
@@ -62,6 +63,9 @@
 - **Concurrency** — Swift async/await; batches convert in parallel via a bounded task group with per-file progress tracking
 
 ## Release Notes
+
+### Version 1.4.0 (in development)
+- Folder import: drop or select a folder and convert an entire sample pack in one go, with the source folder structure preserved in the output
 
 ### Version 1.3.1
 - Parallel batch conversion (bounded task group) for faster large batches
