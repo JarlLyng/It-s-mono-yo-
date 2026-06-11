@@ -103,15 +103,16 @@ def make_token(key_id: str, issuer_id: str, private_key_path: str) -> str:
                       headers={"kid": key_id, "typ": "JWT"})
 
 
-def fetch_day(token: str, vendor: str, report_date: str):
-    """Return the report TSV for a day, or None if no report exists yet."""
+def fetch_report(token: str, vendor: str, report_date: str, frequency: str = "DAILY"):
+    """Return the report TSV for a date, or None if no report exists yet."""
     params = {
-        "filter[frequency]": "DAILY",
+        "filter[frequency]": frequency,
         "filter[reportType]": "SALES",
         "filter[reportSubType]": "SUMMARY",
         "filter[vendorNumber]": vendor,
         "filter[reportDate]": report_date,
-        "filter[version]": "1_1",
+        # filter[version] is omitted so the API uses the latest version for each
+        # report type (it differs: daily SALES is 1_1, monthly is 1_0).
     }
     request = urllib.request.Request(
         f"{API_URL}?{urllib.parse.urlencode(params)}",
@@ -121,8 +122,10 @@ def fetch_day(token: str, vendor: str, report_date: str):
         with urllib.request.urlopen(request) as response:
             return gzip.decompress(response.read()).decode("utf-8")
     except urllib.error.HTTPError as error:
-        if error.code == 404:
-            return None  # no report for that date yet
+        # 404: no report for that date yet. 410: aged out (daily kept 365 days,
+        # monthly 12 months). Both just mean "nothing here" — skip.
+        if error.code in (404, 410):
+            return None
         body = error.read().decode("utf-8", "replace")
         sys.exit(f"API error {error.code} for {report_date}: {body}")
 
@@ -161,6 +164,9 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--days", type=int, default=7, help="number of recent days to pull (default 7)")
     group.add_argument("--date", help="a single report date, YYYY-MM-DD")
+    group.add_argument("--all-time", action="store_true", dest="all_time",
+                       help="total since release: monthly reports for completed months "
+                            "plus daily reports for the current month")
     parser.add_argument("--app", help="filter to one app by Apple ID or a case-insensitive title substring "
                                       "(the report covers your whole vendor account)")
     args = parser.parse_args()
@@ -175,13 +181,29 @@ def main():
 
     token = make_token(key_id, issuer_id, private_key)
 
-    if args.date:
-        dates = [args.date]
+    # Build the list of (frequency, report_date) keys to fetch.
+    today = datetime.date.today()
+    keys: list[tuple[str, str]] = []
+    if args.all_time:
+        # Completed months: monthly reports are kept for 12 months
+        # (months before release simply return 404/410 and are skipped).
+        year, month = today.year, today.month
+        for _ in range(12):
+            month -= 1
+            if month == 0:
+                year, month = year - 1, 12
+            keys.append(("MONTHLY", f"{year:04d}-{month:02d}"))
+        keys.reverse()
+        # Current (incomplete) month: daily reports day 1..today.
+        for day in range(1, today.day + 1):
+            keys.append(("DAILY", datetime.date(today.year, today.month, day).isoformat()))
+    elif args.date:
+        keys = [("DAILY", args.date)]
     else:
-        today = datetime.date.today()
-        dates = [(today - datetime.timedelta(days=offset)).isoformat()
-                 for offset in range(1, args.days + 1)]
-        dates.reverse()
+        days = [(today - datetime.timedelta(days=offset)).isoformat()
+                for offset in range(1, args.days + 1)]
+        days.reverse()
+        keys = [("DAILY", d) for d in days]
 
     def matches(row):
         if not args.app:
@@ -189,27 +211,27 @@ def main():
         needle = args.app.lower()
         return needle == row["apple_id"].lower() or needle in row["title"].lower()
 
-    per_day = []          # (date, units-after-filter or None)
+    per_period = []       # (label, units-after-filter or None)
     by_type: dict[str, int] = {}
     by_country: dict[str, int] = {}
     by_app: dict[str, int] = {}
     grand_total = 0
     found_any = False
 
-    for report_date in dates:
-        tsv = fetch_day(token, vendor, report_date)
+    for frequency, report_date in keys:
+        tsv = fetch_report(token, vendor, report_date, frequency)
         if tsv is None:
-            per_day.append((report_date, None))
+            per_period.append((report_date, None))
             continue
         found_any = True
         rows = [r for r in parse_rows(tsv) if matches(r)]
-        day_units = sum(r["units"] for r in rows)
-        grand_total += day_units
+        period_units = sum(r["units"] for r in rows)
+        grand_total += period_units
         for r in rows:
             by_type[r["type"]] = by_type.get(r["type"], 0) + r["units"]
             by_country[r["country"]] = by_country.get(r["country"], 0) + r["units"]
             by_app[r["title"]] = by_app.get(r["title"], 0) + r["units"]
-        per_day.append((report_date, day_units))
+        per_period.append((report_date, period_units))
 
     if not found_any:
         print("No reports available for the requested range yet (reports lag ~24-48h).")
@@ -217,10 +239,10 @@ def main():
 
     scope = f"app filter: {args.app}" if args.app else "whole vendor account (all apps)"
     print(f"Scope: {scope}\n")
-    print(f"{'Date':<12}{'Units':>8}")
+    print(f"{'Period':<12}{'Units':>8}")
     print("-" * 20)
-    for report_date, units in per_day:
-        print(f"{report_date:<12}{('(no report)' if units is None else units):>8}")
+    for label, units in per_period:
+        print(f"{label:<12}{('(no report)' if units is None else units):>8}")
     print("-" * 20)
     print(f"{'TOTAL':<12}{grand_total:>8}")
 
