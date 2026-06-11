@@ -23,8 +23,9 @@ Usage:
     export ASC_KEY_ID=ABC123 ASC_ISSUER_ID=... \
            ASC_PRIVATE_KEY=~/.appstoreconnect/AuthKey_ABC123.p8 \
            ASC_VENDOR_NUMBER=1234567
-    python3 scripts/asc_downloads.py             # last 7 days
-    python3 scripts/asc_downloads.py --days 30
+    python3 scripts/asc_downloads.py                       # last 7 days, all apps
+    python3 scripts/asc_downloads.py --days 30 --app 6758866918
+    python3 scripts/asc_downloads.py --all-time --app 6758866918
     python3 scripts/asc_downloads.py --date 2026-06-10
 
 Note: App Store Connect sales reports lag ~24-48h. Days with no report yet
@@ -47,6 +48,21 @@ except ImportError:
     sys.exit('Missing dependency. Run:  pip install "pyjwt[crypto]"')
 
 API_URL = "https://api.appstoreconnect.apple.com/v1/salesReports"
+
+# App Store "Product Type Identifier" codes we can label confidently. Codes
+# outside these sets are counted under "Other" rather than guessed.
+DOWNLOAD_CODES = {"1", "1F", "1T", "F1"}
+UPDATE_CODES = {"7", "7F", "7T", "F7"}
+TYPE_DESCRIPTIONS = {
+    "1": "iOS app download",
+    "1F": "Universal app download",
+    "1T": "iPad app download",
+    "7": "iOS app update",
+    "7F": "Universal app update",
+    "7T": "iPad app update",
+    "F1": "Mac app download",
+    "F7": "Mac app update",
+}
 
 
 def load_env_file() -> None:
@@ -103,8 +119,13 @@ def make_token(key_id: str, issuer_id: str, private_key_path: str) -> str:
                       headers={"kid": key_id, "typ": "JWT"})
 
 
-def fetch_report(token: str, vendor: str, report_date: str, frequency: str = "DAILY"):
-    """Return the report TSV for a date, or None if no report exists yet."""
+def fetch_report(token: str, vendor: str, report_date: str, frequency: str = "DAILY",
+                 max_attempts: int = 3):
+    """Return the report TSV for a date, or None if no report exists yet.
+
+    Retries transient failures (429 rate limit, 5xx, network errors) with
+    exponential backoff; 404/410 mean "nothing here" and return None.
+    """
     params = {
         "filter[frequency]": frequency,
         "filter[reportType]": "SALES",
@@ -114,20 +135,30 @@ def fetch_report(token: str, vendor: str, report_date: str, frequency: str = "DA
         # filter[version] is omitted so the API uses the latest version for each
         # report type (it differs: daily SALES is 1_1, monthly is 1_0).
     }
-    request = urllib.request.Request(
-        f"{API_URL}?{urllib.parse.urlencode(params)}",
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/a-gzip"},
-    )
-    try:
-        with urllib.request.urlopen(request) as response:
-            return gzip.decompress(response.read()).decode("utf-8")
-    except urllib.error.HTTPError as error:
-        # 404: no report for that date yet. 410: aged out (daily kept 365 days,
-        # monthly 12 months). Both just mean "nothing here" — skip.
-        if error.code in (404, 410):
-            return None
-        body = error.read().decode("utf-8", "replace")
-        sys.exit(f"API error {error.code} for {report_date}: {body}")
+    url = f"{API_URL}?{urllib.parse.urlencode(params)}"
+    headers = {"Authorization": f"Bearer {token}", "Accept": "application/a-gzip"}
+
+    for attempt in range(max_attempts):
+        try:
+            request = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return gzip.decompress(response.read()).decode("utf-8")
+        except urllib.error.HTTPError as error:
+            # 404: no report for that date yet. 410: aged out (daily kept 365
+            # days, monthly 12 months). Both just mean "nothing here" — skip.
+            if error.code in (404, 410):
+                return None
+            transient = error.code == 429 or 500 <= error.code < 600
+            if transient and attempt < max_attempts - 1:
+                time.sleep(2 ** (attempt + 1))
+                continue
+            body = error.read().decode("utf-8", "replace")
+            sys.exit(f"API error {error.code} for {report_date}: {body}")
+        except urllib.error.URLError as error:
+            if attempt < max_attempts - 1:
+                time.sleep(2 ** (attempt + 1))
+                continue
+            sys.exit(f"Network error fetching {report_date}: {error.reason}")
 
 
 def parse_rows(tsv: str):
@@ -246,6 +277,14 @@ def main():
     print("-" * 20)
     print(f"{'TOTAL':<12}{grand_total:>8}")
 
+    downloads = sum(u for t, u in by_type.items() if t in DOWNLOAD_CODES)
+    updates = sum(u for t, u in by_type.items() if t in UPDATE_CODES)
+    other = grand_total - downloads - updates
+    print(f"\n  {'Downloads (new)':<18}{downloads:>6}")
+    print(f"  {'Updates':<18}{updates:>6}")
+    if other:
+        print(f"  {'Other':<18}{other:>6}")
+
     if not args.app:
         print("\nBy app:")
         for title, units in sorted(by_app.items(), key=lambda kv: -kv[1]):
@@ -253,7 +292,9 @@ def main():
 
     print("\nBy product type:")
     for ptype, units in sorted(by_type.items(), key=lambda kv: -kv[1]):
-        print(f"  {ptype or '(blank)':<10}{units:>8}")
+        description = TYPE_DESCRIPTIONS.get(ptype)
+        label = f"{ptype} ({description})" if description else (ptype or "(blank)")
+        print(f"  {label:<32}{units:>6}")
 
     print("\nTop countries:")
     for country, units in sorted(by_country.items(), key=lambda kv: -kv[1])[:10]:
