@@ -68,6 +68,14 @@ def load_env_file() -> None:
                 os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
+def autodetect_private_key():
+    """Return the path to a lone .p8 in the repo root, if exactly one exists."""
+    import glob
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    matches = glob.glob(os.path.join(repo_root, "*.p8"))
+    return matches[0] if len(matches) == 1 else None
+
+
 def require_env(name: str) -> str:
     value = os.environ.get(name)
     if not value:
@@ -157,7 +165,9 @@ def main():
     load_env_file()
     key_id = require_env("ASC_KEY_ID")
     issuer_id = require_env("ASC_ISSUER_ID")
-    private_key = require_env("ASC_PRIVATE_KEY")
+    private_key = os.environ.get("ASC_PRIVATE_KEY") or autodetect_private_key()
+    if not private_key:
+        sys.exit("Set ASC_PRIVATE_KEY to your .p8 path, or place a single .p8 in the repo root.")
     vendor = require_env("ASC_VENDOR_NUMBER")
 
     token = make_token(key_id, issuer_id, private_key)
