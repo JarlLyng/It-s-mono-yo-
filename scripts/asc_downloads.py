@@ -151,6 +151,7 @@ def parse_rows(tsv: str):
             "type": col("Product Type Identifier"),
             "country": col("Country Code"),
             "title": col("Title"),
+            "apple_id": col("Apple Identifier"),
         })
     return rows
 
@@ -160,6 +161,8 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--days", type=int, default=7, help="number of recent days to pull (default 7)")
     group.add_argument("--date", help="a single report date, YYYY-MM-DD")
+    parser.add_argument("--app", help="filter to one app by Apple ID or a case-insensitive title substring "
+                                      "(the report covers your whole vendor account)")
     args = parser.parse_args()
 
     load_env_file()
@@ -180,33 +183,51 @@ def main():
                  for offset in range(1, args.days + 1)]
         dates.reverse()
 
-    grand_total = 0
+    def matches(row):
+        if not args.app:
+            return True
+        needle = args.app.lower()
+        return needle == row["apple_id"].lower() or needle in row["title"].lower()
+
+    per_day = []          # (date, units-after-filter or None)
     by_type: dict[str, int] = {}
     by_country: dict[str, int] = {}
+    by_app: dict[str, int] = {}
+    grand_total = 0
     found_any = False
 
-    print(f"{'Date':<12}{'Units':>8}")
-    print("-" * 20)
     for report_date in dates:
         tsv = fetch_day(token, vendor, report_date)
         if tsv is None:
-            print(f"{report_date:<12}{'(no report)':>8}")
+            per_day.append((report_date, None))
             continue
         found_any = True
-        rows = parse_rows(tsv)
+        rows = [r for r in parse_rows(tsv) if matches(r)]
         day_units = sum(r["units"] for r in rows)
         grand_total += day_units
         for r in rows:
             by_type[r["type"]] = by_type.get(r["type"], 0) + r["units"]
             by_country[r["country"]] = by_country.get(r["country"], 0) + r["units"]
-        print(f"{report_date:<12}{day_units:>8}")
+            by_app[r["title"]] = by_app.get(r["title"], 0) + r["units"]
+        per_day.append((report_date, day_units))
 
     if not found_any:
-        print("\nNo reports available for the requested range yet (reports lag ~24-48h).")
+        print("No reports available for the requested range yet (reports lag ~24-48h).")
         return
 
+    scope = f"app filter: {args.app}" if args.app else "whole vendor account (all apps)"
+    print(f"Scope: {scope}\n")
+    print(f"{'Date':<12}{'Units':>8}")
+    print("-" * 20)
+    for report_date, units in per_day:
+        print(f"{report_date:<12}{('(no report)' if units is None else units):>8}")
     print("-" * 20)
     print(f"{'TOTAL':<12}{grand_total:>8}")
+
+    if not args.app:
+        print("\nBy app:")
+        for title, units in sorted(by_app.items(), key=lambda kv: -kv[1]):
+            print(f"  {(title or '(blank)')[:34]:<36}{units:>6}")
 
     print("\nBy product type:")
     for ptype, units in sorted(by_type.items(), key=lambda kv: -kv[1]):
