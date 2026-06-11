@@ -19,15 +19,20 @@ Find your **Vendor Number** under **Payments and Financial Reports**.
 
 Keep the key outside the repo, e.g. `~/.appstoreconnect/AuthKey_XXXXXX.p8`.
 
-### 2. Run
+### 2. Configure
+Easiest: copy `.env.example` to `.env` (gitignored) in the repo root and fill
+it in — the script auto-loads it. Or export the same variables in your shell.
+
+```
+ASC_KEY_ID=XXXXXXXXXX
+ASC_ISSUER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ASC_VENDOR_NUMBER=1234567
+ASC_PRIVATE_KEY=./AuthKey_XXXXXX.p8
+```
+
+### 3. Run
 ```bash
 pip install "pyjwt[crypto]"
-
-export ASC_KEY_ID=XXXXXXXXXX
-export ASC_ISSUER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-export ASC_PRIVATE_KEY=~/.appstoreconnect/AuthKey_XXXXXX.p8
-export ASC_VENDOR_NUMBER=1234567
-
 python3 scripts/asc_downloads.py            # last 7 days
 python3 scripts/asc_downloads.py --days 30
 python3 scripts/asc_downloads.py --date 2026-06-10

@@ -49,6 +49,25 @@ except ImportError:
 API_URL = "https://api.appstoreconnect.apple.com/v1/salesReports"
 
 
+def load_env_file() -> None:
+    """Populate os.environ from a local .env (gitignored), if present.
+
+    Looks in the current directory and in the repo root (the script's parent
+    folder). Existing real environment variables always win.
+    """
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for candidate in (os.path.join(os.getcwd(), ".env"), os.path.join(repo_root, ".env")):
+        if not os.path.exists(candidate):
+            continue
+        with open(candidate) as handle:
+            for line in handle:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
 def require_env(name: str) -> str:
     value = os.environ.get(name)
     if not value:
@@ -135,6 +154,7 @@ def main():
     group.add_argument("--date", help="a single report date, YYYY-MM-DD")
     args = parser.parse_args()
 
+    load_env_file()
     key_id = require_env("ASC_KEY_ID")
     issuer_id = require_env("ASC_ISSUER_ID")
     private_key = require_env("ASC_PRIVATE_KEY")
