@@ -31,12 +31,25 @@ ASC_PRIVATE_KEY=./AuthKey_XXXXXX.p8
 ```
 
 ### 3. Run
+
+One-time setup of a local virtualenv (gitignored):
 ```bash
-pip install "pyjwt[crypto]"
-python3 scripts/asc_downloads.py            # last 7 days
-python3 scripts/asc_downloads.py --days 30
-python3 scripts/asc_downloads.py --date 2026-06-10
+python3 -m venv .venv
+.venv/bin/pip install "pyjwt[crypto]"
 ```
+
+Then:
+```bash
+.venv/bin/python scripts/asc_downloads.py                      # last 7 days, all apps
+.venv/bin/python scripts/asc_downloads.py --days 30 --app 6758866918
+.venv/bin/python scripts/asc_downloads.py --all-time --app 6758866918
+.venv/bin/python scripts/asc_downloads.py --date 2026-06-10
+```
+
+`--app` takes an Apple ID or a title substring. The Sales report covers the
+whole vendor account, so without `--app` you get a per-app breakdown across
+all your apps. `--all-time` sums monthly reports (kept 12 months) plus the
+current month's daily reports.
 
 Output shows units per day, a total, and breakdowns by product type and
 country.
