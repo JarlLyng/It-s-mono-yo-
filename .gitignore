@@ -56,4 +56,8 @@ app store images/
 __pycache__/
 
 # Local strategy notes — keep out of the public repo
-targetaudience.md 
+targetaudience.md
+SEO_STRATEGY.md
+ASO_PLAYBOOK.md
+OUTREACH.md
+TESTFLIGHT_REVIEW.md 
