@@ -23,7 +23,7 @@
 - **Multi-channel support** — weighted downmix using ITU-R BS.775 coefficients for surround audio
 - **Overwrite protection** — existing files are auto-renamed, never replaced
 - **Drag and drop** — drop files directly into the app
-- **Keyboard shortcuts** — ⌘O to open, ESC to go back
+- **Keyboard shortcut** — ⌘O to open files
 - **Accessibility** — VoiceOver support, Reduce Motion, system dark mode
 - **Native macOS** — built with SwiftUI, lightweight, no internet required
 

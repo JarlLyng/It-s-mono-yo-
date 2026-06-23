@@ -24,7 +24,7 @@ Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competit
 - **Sample rate** — keep original or convert to 44.1 / 48 / 96 kHz.
 - **Intelligent downmix** — proper stereo summing; multi-channel uses ITU-R BS.775 weighted coefficients.
 - **Overwrite protection** — existing files auto-renamed, never replaced.
-- Drag & drop; keyboard shortcuts (⌘O open, ESC back); VoiceOver / Reduce Motion / dark mode.
+- Drag & drop; keyboard shortcut (⌘O to open files); VoiceOver / Reduce Motion / dark mode.
 - In-app App Store review prompt after repeated successful conversions.
 
 ### Features that do NOT exist (common hallucination targets)
