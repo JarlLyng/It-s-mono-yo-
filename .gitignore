@@ -53,4 +53,7 @@ app store images/
 
 # Python virtualenv for scripts/
 .venv/
-__pycache__/ 
+__pycache__/
+
+# Local strategy notes — keep out of the public repo
+targetaudience.md 
