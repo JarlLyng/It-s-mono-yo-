@@ -190,13 +190,14 @@ final class AudioConversionTests: XCTestCase {
 
     // MARK: - Folder Import
 
-    /// Writes the standard stereo test buffer to a specific URL.
-    private static func writeStereoWav(to url: URL) throws {
+    /// Writes a stereo test buffer (L=+0.5, R=-0.5) to a URL. `frames` is small
+    /// by default so large-batch tests stay fast.
+    private static func writeStereoWav(to url: URL, frames: Int = 1_000) throws {
         let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44_100, channels: 2, interleaved: false)!
-        let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 1_000)!
-        buffer.frameLength = 1_000
+        let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(frames))!
+        buffer.frameLength = AVAudioFrameCount(frames)
         let channels = buffer.floatChannelData!
-        for frame in 0..<1_000 {
+        for frame in 0..<frames {
             channels[0][frame] = 0.5
             channels[1][frame] = -0.5
         }
@@ -235,6 +236,81 @@ final class AudioConversionTests: XCTestCase {
 
     /// Guards the parallel-conversion race fix: two inputs sharing a base name
     /// must not resolve to the same output path even before either is written.
+    // MARK: - Stress / no-limits
+
+    /// Large-batch regression for the "no file count limit" claim and the
+    /// parallel-conversion path: convert many tiny files at once, all sharing the
+    /// same base name (to also stress race-safe unique output naming), and verify
+    /// every one succeeds with a distinct mono output. 1000+ on real files is a
+    /// manual field test (#18); this gives automated coverage at meaningful scale.
+    func testStressLargeBatchWithDuplicateNames() async throws {
+        let fm = FileManager.default
+        let inputDir = fm.temporaryDirectory.appendingPathComponent("stress_in_\(UUID().uuidString)")
+        let outputDir = fm.temporaryDirectory.appendingPathComponent("stress_out_\(UUID().uuidString)")
+        try fm.createDirectory(at: inputDir, withIntermediateDirectories: true)
+        try fm.createDirectory(at: outputDir, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: inputDir); try? fm.removeItem(at: outputDir) }
+
+        let count = 500
+
+        // Generate `count` tiny stereo files, all named "loop.wav" in separate
+        // subfolders, so every conversion competes for the same output base name.
+        var inputs: [URL] = []
+        for i in 0..<count {
+            let sub = inputDir.appendingPathComponent("f\(i)")
+            try fm.createDirectory(at: sub, withIntermediateDirectories: true)
+            let url = sub.appendingPathComponent("loop.wav")
+            try Self.writeStereoWav(to: url, frames: 64)
+            inputs.append(url)
+        }
+
+        // Pre-resolve unique outputs into one folder (mirrors the app's flow).
+        var taken = Set<String>()
+        var jobs: [(input: URL, output: URL)] = []
+        for input in inputs {
+            let proposed = outputDir.appendingPathComponent("loop.Mono").appendingPathExtension("wav")
+            let output = uniqueOutputURL(proposed, taken: taken)
+            taken.insert(output.path)
+            jobs.append((input, output))
+        }
+        XCTAssertEqual(Set(jobs.map { $0.output.path }).count, count, "All \(count) output paths must be unique")
+
+        // Convert with bounded concurrency, like ConvertView's task group.
+        var succeeded = 0
+        await withTaskGroup(of: Bool.self) { group in
+            var iterator = jobs.makeIterator()
+            func addNext() -> Bool {
+                guard let job = iterator.next() else { return false }
+                group.addTask {
+                    do {
+                        try await convertAudioFile(inputURL: job.input, outputURL: job.output,
+                                                   settings: OutputSettings()) { _ in }
+                        return true
+                    } catch {
+                        return false
+                    }
+                }
+                return true
+            }
+            for _ in 0..<8 { if !addNext() { break } }
+            for await ok in group {
+                if ok { succeeded += 1 }
+                _ = addNext()
+            }
+        }
+
+        XCTAssertEqual(succeeded, count, "All \(count) conversions should succeed (no file-count limit)")
+        let produced = try fm.contentsOfDirectory(at: outputDir, includingPropertiesForKeys: nil)
+            .filter { $0.pathExtension == "wav" }
+        XCTAssertEqual(produced.count, count, "Should produce \(count) distinct output files")
+
+        // Spot-check a sample of outputs are valid mono files.
+        for url in produced.prefix(10) {
+            let f = try XCTUnwrap(try? AVAudioFile(forReading: url))
+            XCTAssertEqual(f.processingFormat.channelCount, 1)
+        }
+    }
+
     func testUniqueOutputURLAvoidsReservedNames() {
         let dir = FileManager.default.temporaryDirectory
         let base = dir.appendingPathComponent("clash_\(UUID().uuidString).wav")
