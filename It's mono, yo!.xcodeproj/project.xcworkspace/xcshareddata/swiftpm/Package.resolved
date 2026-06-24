@@ -1,0 +1,15 @@
+{
+  "originHash" : "98ea44209d0bb2401f8d5991fdbb1a40437eadd90693705e08fc89c2b73485d0",
+  "pins" : [
+    {
+      "identity" : "iamjarl-design",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JarlLyng/iamjarl-design.git",
+      "state" : {
+        "revision" : "5c5ccacaa88ee97571ca7dc49d55cf317a09e77e",
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}
