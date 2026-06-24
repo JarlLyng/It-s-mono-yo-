@@ -592,7 +592,7 @@ struct SelectFilesView: View {
                                 .fontWeight(.medium)
                             
                             ScrollView {
-                                VStack(alignment: .leading, spacing: 8) {
+                                VStack(alignment: .leading, spacing: DesignTokens.Spacing.sm) {
                                     ForEach(audioFiles) { file in
                                         FileRowView(file: file, onRemove: {
                                             // Handle file removal here
@@ -602,7 +602,7 @@ struct SelectFilesView: View {
                                         })
                                     }
                                 }
-                                .padding(.vertical, 4)
+                                .padding(.vertical, DesignTokens.Spacing.xs)
                             }
                             .frame(maxHeight: geometry.size.height * 0.4)  // Relative height
                         }
@@ -715,14 +715,14 @@ struct SelectOutputView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: DesignTokens.Spacing.xxl) {
                 // Title
                 Text("Output Settings")
                     .font(.title)
                     .fontWeight(.bold)
 
                 // Folder select area
-                VStack(spacing: 16) {
+                VStack(spacing: DesignTokens.Spacing.lg) {
                     Image(systemName: "folder.fill")
                         .font(.system(size: 36, weight: .ultraLight))
 
@@ -794,7 +794,7 @@ struct SelectOutputView: View {
                 .cornerRadius(DesignTokens.Radius.md)
 
                 // Navigation buttons
-                HStack(spacing: 20) {
+                HStack(spacing: DesignTokens.Spacing.xl) {
                     Button(action: onBack) {
                         Text("Back")
                             .fontWeight(.medium)
@@ -850,13 +850,13 @@ struct ConvertView: View {
                 .fontWeight(.bold)
             
             // Status and progress
-            VStack(spacing: 20) {
+            VStack(spacing: DesignTokens.Spacing.xl) {
                 Image(systemName: "waveform.circle.fill")
                     .font(.system(size: 40, weight: .ultraLight))
                 
                 if isConverting {
                     let completed = audioFiles.filter { $0.status == .completed }.count
-                    VStack(spacing: 8) {
+                    VStack(spacing: DesignTokens.Spacing.sm) {
                         Text("Converting files...")
                             .fontWeight(.medium)
                         Text("\(completed) of \(audioFiles.count) completed")
@@ -904,7 +904,7 @@ struct ConvertView: View {
                 .buttonStyle(.bordered)
                 .disabled(outputFolder == nil)
             } else {
-                HStack(spacing: 20) {
+                HStack(spacing: DesignTokens.Spacing.xl) {
                     Button(action: onBack) {
                         Text("Back")
                             .fontWeight(.medium)

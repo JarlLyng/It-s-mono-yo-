@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D511C0DE0000000000000003 /* IAMJARLDesignTokens in Frameworks */ = {isa = PBXBuildFile; productRef = D511C0DE0000000000000002 /* IAMJARLDesignTokens */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3B469F292D1E18C4004E5EDE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D511C0DE0000000000000003 /* IAMJARLDesignTokens in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +109,7 @@
 			);
 			name = "It's mono, yo!";
 			packageProductDependencies = (
+				D511C0DE0000000000000002 /* IAMJARLDesignTokens */,
 			);
 			productName = SampleDrumConverter;
 			productReference = 3BDF76072D1F625D00189ABE /* It's mono, yo!.app */;
@@ -188,6 +194,7 @@
 			mainGroup = 3B469F0E2D1E18C2004E5EDE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				D511C0DE0000000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3B469F0E2D1E18C2004E5EDE;
@@ -567,6 +574,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D511C0DE0000000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JarlLyng/iamjarl-design.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D511C0DE0000000000000002 /* IAMJARLDesignTokens */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D511C0DE0000000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */;
+			productName = IAMJARLDesignTokens;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3B469F0F2D1E18C2004E5EDE /* Project object */;
 }
