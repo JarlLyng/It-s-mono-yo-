@@ -85,7 +85,7 @@
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">How Batch Conversion Works</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                <strong>It's mono, yo!</strong> supports batch conversion of unlimited WAV and AIFF files at once. The process is simple:
+                <strong>It's mono, yo!</strong> supports batch conversion of unlimited WAV and AIFF files at once. Drop in individual files or a whole folder, and it converts everything inside while recreating your folder structure in the output. The process is simple:
             </p>
             <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
                 <li>Open the app and drag in all your WAV files (or use ⌘O to select multiple files)</li>
@@ -101,8 +101,9 @@
             <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
                 <li><strong>Sample rate:</strong> 44.1 kHz stays 44.1 kHz, 48 kHz stays 48 kHz, etc.</li>
                 <li><strong>Bit depth:</strong> 16-bit, 24-bit, and 32-bit files all maintain their original depth</li>
-                <li><strong>File names:</strong> Output files keep the original file name</li>
-                <li><strong>Audio content:</strong> Left and right channels are mixed into a balanced mono signal</li>
+                <li><strong>File names:</strong> each output keeps its name with a ".Mono" suffix, and existing files are auto-renamed so nothing is ever overwritten</li>
+                <li><strong>Folder structure:</strong> drop a folder and the output mirrors its subfolders, so a whole sample pack stays organized</li>
+                <li><strong>Audio content:</strong> both channels are combined with a proper summed downmix, not just the left channel, so the mono file keeps the full sound</li>
             </ul>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">When You Need Batch Conversion</h2>
@@ -118,12 +119,12 @@
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Error Handling</h2>
             <p class="text-black/70 dark:text-white/75 mb-8 leading-relaxed">
-                If a file fails during batch conversion (for example, if it is corrupted or not a valid WAV file), the app continues converting the remaining files. Failed files are marked with an error status, and you can retry them individually. Your successfully converted files are not affected.
+                If a file fails during batch conversion (for example, if it is corrupted or not a valid WAV file), the app continues converting the remaining files. Failed files are marked with an error status and their reason is shown, so you know exactly which ones to re-add. Your successfully converted files are not affected.
             </p>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Tips for Efficient Batch Processing</h2>
             <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
-                <li>Process files in batches of 50 if you have a large library</li>
+                <li>There is no file-count limit — drop an entire library or sample pack in one go</li>
                 <li>Output directly to your SD card to save a copy step</li>
                 <li>The app shows file info before conversion — check that your files are actually stereo before converting</li>
                 <li>Original files are never modified, so you can safely experiment</li>
