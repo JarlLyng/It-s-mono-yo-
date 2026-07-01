@@ -123,7 +123,15 @@
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">What Happens During Conversion?</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                The app mixes the left and right channels of each stereo WAV file into a single mono channel. The original sample rate (44.1 kHz, 48 kHz, 96 kHz, etc.) and bit depth (16-bit, 24-bit, 32-bit) are preserved. This means your converted files maintain the same audio quality, just in mono format.
+                It's mono, yo! sums the left and right channels into a single mono channel using a proper weighted downmix, so nothing is silently thrown away. The original sample rate (44.1 kHz, 48 kHz, or 96 kHz) and your chosen bit depth (16-bit, 24-bit, or 32-bit float) are preserved, and you can convert a whole folder at once while keeping its structure intact. Your files come out mono, at full quality, ready to load.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Done Right: a Real Downmix, Not Just the Left Channel</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                This is the part most converters get wrong. A lot of tools, and some DAW exports, fake a mono file by simply keeping the left channel and discarding the right, which quietly throws away half of your sound. Others sum the two channels without accounting for level, so the result jumps in volume or loses punch to phase cancellation.
+            </p>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                It's mono, yo! does a proper summed downmix: both channels are combined at the right level so the mono file sounds like the stereo one, just centered. Multi-channel and surround files use the standard ITU-R BS.775 weighting rather than a naive average. For a kick, snare, or loop headed to a hardware sampler, that is the difference between a sample that still hits and one that sounds thin.
             </p>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Who Is This For?</h2>
