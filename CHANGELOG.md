@@ -6,6 +6,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
+## [1.4.1] - 2026-08
+### Changed
+- Moved to the shared IAMJARL design tokens (v1.2.1) instead of a local copy. Colours and spacing are unchanged.
+
+### Notes
+- Maintenance release. No user-facing behaviour changes; it exists so the App Store listing (subtitle, screenshots) can be corrected, since those fields are version-locked.
+
 ## [1.4.0] - 2026-06
 ### Added
 - Folder import: drop or select a folder and convert an entire sample pack in one go, preserving the source folder structure in the output.
