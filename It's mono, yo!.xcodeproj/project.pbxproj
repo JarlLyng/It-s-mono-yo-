@@ -413,7 +413,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "It's mono, yo!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_LSMinimumSystemVersion = 11.0;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 12.0;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024–2025 Jarl Lyng. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -448,7 +448,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "It's mono, yo!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_LSMinimumSystemVersion = 11.0;
+				INFOPLIST_KEY_LSMinimumSystemVersion = 12.0;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024–2025 Jarl Lyng. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
