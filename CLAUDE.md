@@ -11,7 +11,7 @@ An open-source macOS app for **batch converting stereo WAV and AIFF audio to mon
 - **App Store:** [apps.apple.com/app/its-mono-yo/id6758866918](https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12)
 - **License:** [MIT](LICENSE) — open source.
 - **Price:** $0.99 USD one-time (no in-app purchases, no subscription, no ads)
-- **Platform:** macOS 11.0+ (SwiftUI).
+- **Platform:** macOS 12.0+ (SwiftUI).
 
 ## Strategy lives in the private hub
 

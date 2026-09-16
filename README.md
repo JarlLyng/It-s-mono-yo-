@@ -43,7 +43,7 @@
 
 ## System Requirements
 
-- macOS 11.0 or later
+- macOS 12.0 or later
 - WAV and AIFF file format support
 
 ## Usage

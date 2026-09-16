@@ -41,6 +41,6 @@ If you are a Swift developer looking to contribute to the codebase, follow these
 - Try to keep your pull requests focused on a single issue or feature.
 - Follow the existing Swift coding style and conventions used throughout the project.
 - If you change any UI, please include screenshots in your Pull Request description.
-- All code must support macOS 11.0 as the minimum deployment target.
+- All code must support macOS 12.0 as the minimum deployment target.
 
 Thank you for contributing!

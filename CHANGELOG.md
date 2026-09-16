@@ -6,6 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
+## [1.4.2] - 2026-09
+### Fixed
+- Files were cut short when converting to a higher sample rate. A 44.1 kHz file resampled to 48 kHz stopped after 44.1/48 of its length; a 3:30 file ended at about 3:13. Converting to a lower rate, or keeping the original rate, was unaffected. Thanks to @perpetualgrimace for the report.
+- The file list showed every source file as 32-bit. It now reports the file's real bit depth, so 24-bit files are labelled 24-bit.
+
+### Changed
+- Minimum macOS is now 12.0. Current Xcode can no longer build for macOS 11, and macOS 11 users can still download the last compatible version from the App Store.
+
 ## [1.4.1] - 2026-08
 ### Changed
 - Moved to the shared IAMJARL design tokens (v1.2.1) instead of a local copy. Colours and spacing are unchanged.
