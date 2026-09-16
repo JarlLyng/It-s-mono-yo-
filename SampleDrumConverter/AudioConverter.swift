@@ -17,12 +17,20 @@ struct AudioFileFormat: Sendable {
 /// Extracts audio format information from an audio file
 func getAudioFormat(for url: URL) -> AudioFileFormat? {
     guard let file = try? AVAudioFile(forReading: url) else { return nil }
-    let format = file.processingFormat
+    // processingFormat is AVAudioFile's decoding format, which is always 32-bit
+    // float whatever the file holds, so reading bit depth from it reported every
+    // 24-bit file as 32-bit (#63). fileFormat describes the file as stored.
+    let format = file.fileFormat
+    let storedBitDepth = Int(format.streamDescription.pointee.mBitsPerChannel)
 
     return AudioFileFormat(
         channels: Int(format.channelCount),
         sampleRate: format.sampleRate,
-        bitDepth: Int(format.streamDescription.pointee.mBitsPerChannel)
+        // Compressed formats report 0 bits per channel; fall back to the decoding
+        // format rather than showing "0-bit".
+        bitDepth: storedBitDepth > 0
+            ? storedBitDepth
+            : Int(file.processingFormat.streamDescription.pointee.mBitsPerChannel)
     )
 }
 
@@ -252,9 +260,17 @@ func convertAudioFile(
     // 32-bit float output we keep the raw value to preserve headroom.
     let clampToUnity = settings.bitDepth != .float32
 
+    // fileLengthFrames is expressed in the file's own sample rate, but reads come
+    // back in the client format's rate. Bounding the loop by it truncated upsampled
+    // output: a 44.1 kHz file resampled to 48 kHz stopped after 44.1/48 of its
+    // length (#63). Read until EOF instead, and use the scaled count only to drive
+    // progress. Downsampling was unaffected because EOF arrived first.
+    let rateRatio = targetSampleRate / inputFormat.mSampleRate
+    let estimatedOutputFrames = max(1, Int64((Double(fileLengthFrames) * rateRatio).rounded()))
+
     var currentFrame: Int64 = 0
 
-    while currentFrame < fileLengthFrames {
+    while true {
         var frameCount = bufferSize
         let bytesPerFrame = intChannelCount * MemoryLayout<Float>.size
         let totalBytes = Int(bufferSize) * bytesPerFrame
@@ -299,6 +315,6 @@ func convertAudioFile(
         }
 
         currentFrame += Int64(frameCount)
-        updateProgress(Float(currentFrame) / Float(fileLengthFrames))
+        updateProgress(min(1.0, Float(currentFrame) / Float(estimatedOutputFrames)))
     }
 }

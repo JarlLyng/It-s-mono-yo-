@@ -162,6 +162,79 @@ final class AudioConversionTests: XCTestCase {
         XCTAssertEqual(outputFile.processingFormat.sampleRate, 48000, accuracy: 1.0)
     }
 
+    /// #63: resampling upwards truncated the output. The conversion loop was bounded
+    /// by the source frame count, which is in the file's own sample rate, so a
+    /// 44.1 kHz file written at 48 kHz stopped after 44.1/48 of its duration.
+    /// Asserting the sample rate alone missed this, so assert duration.
+    func testUpsamplingPreservesDuration() async throws {
+        let outputURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("test_upsample_\(UUID().uuidString).wav")
+        defer { try? FileManager.default.removeItem(at: outputURL) }
+
+        let inputFile = try XCTUnwrap(try? AVAudioFile(forReading: stereoFixtureURL))
+        let inputDuration = Double(inputFile.length) / inputFile.fileFormat.sampleRate
+
+        var settings = OutputSettings()
+        settings.sampleRate = .resample(48000)
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
+
+        let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
+        let outputDuration = Double(outputFile.length) / outputFile.fileFormat.sampleRate
+
+        // One resampler block of slack; before the fix this was short by ~8%.
+        XCTAssertEqual(outputDuration, inputDuration, accuracy: 0.01,
+                       "Upsampled output lost \(inputDuration - outputDuration)s of audio")
+    }
+
+    /// The mirror case, which always worked because EOF arrived before the frame
+    /// budget ran out. Kept so a future fix to the loop cannot silently break it.
+    func testDownsamplingPreservesDuration() async throws {
+        let outputURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("test_downsample_\(UUID().uuidString).wav")
+        defer { try? FileManager.default.removeItem(at: outputURL) }
+
+        let inputFile = try XCTUnwrap(try? AVAudioFile(forReading: stereoFixtureURL))
+        let inputDuration = Double(inputFile.length) / inputFile.fileFormat.sampleRate
+
+        var settings = OutputSettings()
+        settings.sampleRate = .resample(22050)
+        try await convertAudioFile(inputURL: stereoFixtureURL, outputURL: outputURL, settings: settings) { _ in }
+
+        let outputFile = try XCTUnwrap(try? AVAudioFile(forReading: outputURL))
+        let outputDuration = Double(outputFile.length) / outputFile.fileFormat.sampleRate
+
+        XCTAssertEqual(outputDuration, inputDuration, accuracy: 0.01)
+    }
+
+    /// #63 (secondary): getAudioFormat read bit depth from processingFormat, which
+    /// is always 32-bit float, so the file list showed every 24-bit file as 32-bit.
+    func testReportedBitDepthMatchesFileNotDecodingFormat() throws {
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("test_24bit_source_\(UUID().uuidString).wav")
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let settings: [String: Any] = [
+            AVFormatIDKey: kAudioFormatLinearPCM,
+            AVSampleRateKey: 44_100.0,
+            AVNumberOfChannelsKey: 2,
+            AVLinearPCMBitDepthKey: 24,
+            AVLinearPCMIsFloatKey: false,
+            AVLinearPCMIsBigEndianKey: false,
+            AVLinearPCMIsNonInterleaved: false
+        ]
+        let file = try AVAudioFile(forWriting: url, settings: settings)
+        guard let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: 4_410) else {
+            throw XCTSkip("Could not allocate test audio buffer")
+        }
+        buffer.frameLength = 4_410
+        try file.write(from: buffer)
+
+        let format = try XCTUnwrap(getAudioFormat(for: url))
+        XCTAssertEqual(format.bitDepth, 24, "24-bit source reported as \(format.bitDepth)-bit")
+        XCTAssertEqual(format.channels, 2)
+        XCTAssertEqual(format.sampleRate, 44_100, accuracy: 1.0)
+    }
+
     // MARK: - Overwrite Protection
 
     func testOverwriteAutoRename() {
