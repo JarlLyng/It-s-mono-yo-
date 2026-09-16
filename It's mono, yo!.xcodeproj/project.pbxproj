@@ -401,7 +401,7 @@
 				CODE_SIGN_ENTITLEMENTS = SampleDrumConverter/SampleDrumConverter.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"SampleDrumConverter/Preview Content\"";
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
@@ -436,7 +436,7 @@
 				CODE_SIGN_ENTITLEMENTS = SampleDrumConverter/SampleDrumConverter.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"SampleDrumConverter/Preview Content\"";
 				DEVELOPMENT_TEAM = KDWZ3WNLDK;
