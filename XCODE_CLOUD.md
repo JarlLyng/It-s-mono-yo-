@@ -1,55 +1,57 @@
 # Xcode Cloud
 
-This document is for **maintainers** setting up or using Xcode Cloud CI for this repository. Xcode Cloud is not under the Product menu; use the steps below.
+For **maintainers**. Xcode Cloud is not under the Product menu; see below.
 
 ---
 
-## Hvor finder du Xcode Cloud? (Where to find it)
+## Where the configuration actually lives
 
-Xcode Cloud ligger **ikke** under Product-menuen. Du finder det her:
+**Workflows live server-side in App Store Connect, not in this repo.** Nothing in git
+controls them. `ci_scripts/` and this file are the only traces Xcode Cloud leaves here, and
+their presence says nothing about whether a workflow currently exists or which branch it
+builds. A branch trigger (for example "build when `release` is updated") is configured in
+App Store Connect or Xcode, never in the repository.
 
-## Hvor finder du Xcode Cloud?
+Two places to look:
 
-1. Åbn **Report Navigator** i Xcode:
-   - Klik på **Report Navigator-ikonet** i den venstre navigatorlinje (ikonet der ligner en taleboble / liste med checkmarks), **eller**
-   - Brug **View → Navigators → Show Report Navigator** (kort: **⌘9**).
-
-2. I Report Navigator:
-   - Øverst kan du skifte mellem **All**, **Crashes**, **Integrations** osv.
-   - Vælg **Integrations** (eller **Cloud** – navnet kan variere lidt med Xcode-version).
-   - Her ser du eksisterende Xcode Cloud-workflows og builds.
-   - For at **oprette dit første workflow**: Klik **"+"** eller **"Create Workflow"** / **"Get Started"** (teksten afhænger af Xcode). Hvis du ikke har tilknyttet appen til Xcode Cloud endnu, vises en guide til at tilknytte repo og oprette workflow.
-
-**Kort:** **⌘9** → Report Navigator → **Integrations** / **Cloud** → opret workflow derfra.
+- **App Store Connect** → Xcode Cloud. Use this to check whether the product exists at all.
+- **Xcode** → Report Navigator (**⌘9**) → **Cloud** / **Integrations**. Use this to create or
+  edit workflows. If you have never connected the app, this shows a getting-started guide.
 
 ---
 
-## Krav for at Xcode Cloud vises og virker
+## Requirements
 
-### 1. Apple-konto og rolle
+### 1. Apple account and role
+- Signed in with an Apple ID in the **Apple Developer Program** (Xcode → Settings ⌘, → Accounts).
+- A role that can create apps in App Store Connect (Account Holder, Admin or App Manager).
+- Note the Xcode Cloud REST API needs Admin or App Manager rights; a Sales and Reports or
+  Metadata key gets `403 FORBIDDEN` on `/v1/ciProducts`.
 
-- Du skal være logget ind med en **Apple ID**, der har **Apple Developer Program** (betalt medlemskab).
-- **Xcode → Settings (⌘,)** → **Accounts** → tjek at din Apple ID viser "Apple Developer Program" / "Developer".
-- Rollen skal tillade at oprette apps i App Store Connect (Account Holder, Admin, App Manager, eller Developer/Marketing med rettighed til at oprette app records).
+### 2. Git remote
+- Xcode Cloud builds from a Git repository with a remote. Source Control navigator (**⌘2**)
+  should show `origin` → `https://github.com/JarlLyng/It-s-mono-yo-.git`.
 
-### 2. Git-remote
-
-- Xcode Cloud bygger fra et **Git-repository med en remote** (fx GitHub).
-- **Source Control navigator (⌘2)** → tjek at der er en **remote** (fx `origin` → `https://github.com/JarlLyng/It-s-mono-yo-.git`).
-- Åbn gerne projektet ved at **klone** repo’et (File → Clone / `git clone`), så remote er sat fra start.
-
-### 3. Scheme er delt
-
-- **Product → Scheme → Manage Schemes** → scheme for hovedappen (**"It's mono, yo!"**) skal have **Shared** slået til (projektet har allerede scheme i `xcshareddata/xcschemes/`).
-
----
-
-## Efter workflow er oprettet
-
-- Vælg **GitHub** som kilde og godkend adgang.
-- Vælg **branch** (fx `main`).
-- Xcode Cloud kører herefter byg og (valgfrit) tests ved push/PR.
+### 3. Shared scheme
+- The shared scheme is **`SampleDrumConverter`**, not "It's mono, yo!". The project was renamed
+  but the scheme never was. **Pick `SampleDrumConverter` when the workflow asks for a scheme**,
+  or the build fails.
+- It is committed at `It's mono, yo!.xcodeproj/xcshareddata/xcschemes/SampleDrumConverter.xcscheme`,
+  which is what makes it visible to Xcode Cloud. Verify with:
+  `xcodebuild -list -project "It's mono, yo!.xcodeproj"`.
 
 ---
 
-**Reference:** [Get started with Xcode Cloud](https://developer.apple.com/xcode-cloud/get-started/) (Apple). Xcode Cloud kræver Xcode 15.0 eller nyere.
+## Release convention
+
+Releases are cut by pushing to the **`release`** branch, matching the other apps in the
+portfolio. `main` is the development branch and should not trigger release builds.
+
+## Branch trigger
+
+Configure the workflow's start condition on **`release`**, then bump `MARKETING_VERSION` and
+`CURRENT_PROJECT_VERSION`, merge to `main`, and push `main:release`.
+
+---
+
+**Reference:** [Xcode Cloud documentation](https://developer.apple.com/documentation/Xcode/Xcode-Cloud/)
