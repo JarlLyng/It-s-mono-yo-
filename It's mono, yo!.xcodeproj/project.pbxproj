@@ -414,7 +414,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "It's mono, yo!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSMinimumSystemVersion = 12.0;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024–2025 Jarl Lyng. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024–2026 IAMJARL. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -449,7 +449,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "It's mono, yo!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSMinimumSystemVersion = 12.0;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024–2025 Jarl Lyng. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024–2026 IAMJARL. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
