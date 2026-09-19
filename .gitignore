@@ -61,3 +61,20 @@ SEO_STRATEGY.md
 ASO_PLAYBOOK.md
 OUTREACH.md
 TESTFLIGHT_REVIEW.md 
+
+# AI tooling. The repo is indifferent to which agent is used: one vendor-neutral
+# AGENTS.md is the agent-context file, and whatever a specific editor or agent
+# writes stays local. See PROJECT_STANDARDS.md section 8 in the strategy hub.
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.cursor/
+.cursorrules
+.windsurfrules
+.clinerules
+.aider*
+.continue/
+.codex/
+.mcp.json
+GEMINI.md
+.github/copilot-instructions.md
