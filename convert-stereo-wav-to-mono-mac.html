@@ -40,6 +40,19 @@
     <link rel="icon" type="image/png" sizes="32x32"
         href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
     <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
+    <!-- IAMJARL design system v1.11.1: shared footer cross-links.
+         SRI hashes come from dist/sri.json at this tag; a wrong hash blocks the
+         file outright and leaves no visible cause, so copy them, never retype. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.11.1/dist/css/tokens.css"
+          integrity="sha384-L04G8T2ueNJsSeQgLUS3Eje4r9GZywm5MipKrfmFd66VQOrkPDAUfxPzJVQ+/htW" crossorigin="anonymous">
+    <script type="module" src="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.11.1/dist/components/ij-footer.js"
+            integrity="sha384-aa9SbgW/xtP0xM7PgPiJHJC+wc0ZLuWSpUxwf+ynhvenQBkl2T1VMHRkvrDdmmMg" crossorigin="anonymous"></script>
+    <style>
+      /* The shared footer is built to be a whole footer; here it contributes only
+         the cross-links, so the site's own group is emptied and the row is centred
+         to match the bottom bar. */
+      ij-footer { display:block; text-align:center; }
+    </style>
 </head>
 
 <body class="bg-white dark:bg-black transition-colors duration-200">
@@ -174,7 +187,18 @@
                 <a href="prepare-samples-eurorack-samplers.html" class="hover:text-primary-dark transition-colors">Eurorack</a>
             </div>
             <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
-            <p class="text-white/60 mt-2">More from IAMJARL: <a href="https://echolume.iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">Echolume</a> &middot; <a href="https://its404yo.iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">It&#39;s 404, yo!</a></p>
+            <!-- Generated from iamjarl-design v1.11.1 dist/footers/its-mono-yo.html.
+                 The anchors are inlined so they are in the served HTML: Googlebot runs
+                 JavaScript but GPTBot, ClaudeBot, CCBot and PerplexityBot do not.
+                 A fragment is a snapshot; rebuild it when the registry changes. -->
+            <ij-footer app="its-mono-yo" links-label="">
+                <a slot="cross-links" href="https://echolume.iamjarl.com">Echolume</a>
+                <a slot="cross-links" href="https://its404yo.iamjarl.com">It&#39;s 404, yo!</a>
+                <a slot="cross-links" href="https://patternaut.iamjarl.com">Patternaut</a>
+                <a slot="cross-links" href="https://tonvault.iamjarl.com">TonVault</a>
+                <a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+                <a slot="cross-links" href="https://iamjarl.com">All projects</a>
+            </ij-footer>
         </div>
     </footer>
 <script type="application/ld+json">
