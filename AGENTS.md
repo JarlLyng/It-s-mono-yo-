@@ -1,4 +1,4 @@
-# CLAUDE.md — It's mono, yo!
+# AGENTS.md — It's mono, yo!
 
 Quick-start context for developers and AI assistants.
 
@@ -12,6 +12,18 @@ An open-source macOS app for **batch converting stereo WAV and AIFF audio to mon
 - **License:** [MIT](LICENSE) — open source.
 - **Price:** $0.99 USD one-time (no in-app purchases, no subscription, no ads)
 - **Platform:** macOS 12.0+ (SwiftUI).
+
+## Boundaries: work only in this repo
+
+- Commit, push and open pull requests **only in this repo**. Never edit, commit to, push to or
+  open a pull request in another IAMJARL repo, and that includes `iamjarl-design`.
+- To ask another repo for something, **open an issue there**. Public repos get findings, never
+  measured numbers. If it is strategic, or not safe in public, it goes to the hub instead.
+- The one place outside this repo you write is this app's own folder in the private hub
+  (`ItsMonoYo/`). Shared hub files (`PORTFOLIO.md`, the standards, `tools/`) are changed from inside
+  the hub; if one needs changing, open an issue there.
+- If a task seems to need a change in another repo, stop, open the issue, and carry on with what
+  this repo can do.
 
 ## Strategy lives in the private hub
 

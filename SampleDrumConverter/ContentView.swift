@@ -363,8 +363,7 @@ private struct UpdateAlertModifier: ViewModifier {
     @Binding var updateURL: String
 
     func body(content: Content) -> some View {
-        if #available(macOS 12.0, *) {
-            content.alert(latestVersion.isEmpty ? "Updates" : "Update Available", isPresented: $showing) {
+        content.alert(latestVersion.isEmpty ? "Updates" : "Update Available", isPresented: $showing) {
                 if latestVersion.isEmpty {
                     Button("OK", role: .cancel) { }
                 } else {
@@ -379,17 +378,6 @@ private struct UpdateAlertModifier: ViewModifier {
                 Text(latestVersion.isEmpty
                      ? "Check the App Store for the latest version."
                      : "Version \(latestVersion) is available.")
-            }
-        } else {
-            content.alert(isPresented: $showing) {
-                Alert(
-                    title: Text(latestVersion.isEmpty ? "Updates" : "Update Available"),
-                    message: Text(latestVersion.isEmpty
-                                 ? "Check the App Store for the latest version."
-                                 : "Version \(latestVersion) is available."),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
         }
     }
 }
@@ -436,14 +424,8 @@ struct FileRowView: View {
         }
         .adaptiveAnimation(.easeInOut(duration: 0.2), value: isHovering)
         .contextMenu {
-            if #available(macOS 12.0, *) {
-                Button(role: .destructive, action: { onRemove() }) {
-                    Label("Remove", systemImage: "trash")
-                }
-            } else {
-                Button(action: { onRemove() }) {
-                    Label("Remove", systemImage: "trash")
-                }
+            Button(role: .destructive, action: { onRemove() }) {
+                Label("Remove", systemImage: "trash")
             }
         }
     }
@@ -697,12 +679,8 @@ struct HoverButtonStyle: ButtonStyle {
 extension View {
     @ViewBuilder
     func applyProminentStyleAndTint(colorScheme: ColorScheme) -> some View {
-        if #available(macOS 12.0, *) {
-            self.buttonStyle(.borderedProminent)
-                .accentColor(AdaptiveColor.primary(colorScheme))
-        } else {
-            self.buttonStyle(.bordered) // Fallback without tint
-        }
+        self.buttonStyle(.borderedProminent)
+            .accentColor(AdaptiveColor.primary(colorScheme))
     }
 }
 
