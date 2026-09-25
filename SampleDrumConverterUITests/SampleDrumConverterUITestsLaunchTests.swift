@@ -2,7 +2,7 @@
 //  SampleDrumConverterUITestsLaunchTests.swift
 //  It's mono, yo!UITests
 //
-//  Created by Jarl Lyng on 27/12/2024.
+//  Created by IAMJARL on 27/12/2024.
 //
 
 import XCTest

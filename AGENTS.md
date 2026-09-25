@@ -6,7 +6,7 @@ Quick-start context for developers and AI assistants.
 
 An open-source macOS app for **batch converting stereo WAV and AIFF audio to mono**, with configurable bit depth, sample rate, and output format. Built for hardware samplers (Erica Synths Sample Drum, Elektron Digitakt, Roland SP-404, Eurorack). Native, lightweight, no internet required.
 
-- **Developer:** Jarl Lyng / [IAMJARL](https://iamjarl.com)
+- **Developer:** [IAMJARL](https://iamjarl.com)
 - **Website:** [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com)
 - **App Store:** [apps.apple.com/app/its-mono-yo/id6758866918](https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12)
 - **License:** [MIT](LICENSE) — open source.

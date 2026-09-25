@@ -2,7 +2,7 @@
 //  ItsMonoYoApp.swift
 //  It's mono, yo!
 //
-//  Created by Jarl Lyng on 27/12/2024.
+//  Created by IAMJARL on 27/12/2024.
 //
 
 import SwiftUI
