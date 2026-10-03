@@ -235,6 +235,50 @@ final class AudioConversionTests: XCTestCase {
         XCTAssertEqual(format.sampleRate, 44_100, accuracy: 1.0)
     }
 
+    // MARK: - Feedback (#79)
+
+    /// Decodes a mailto URL's query back into its fields, the way a mail client would.
+    private func mailtoFields(_ url: URL) -> [String: String] {
+        let query = url.absoluteString.components(separatedBy: "?").dropFirst().joined(separator: "?")
+        var out: [String: String] = [:]
+        for pair in query.components(separatedBy: "&") {
+            let kv = pair.split(separator: "=", maxSplits: 1).map(String.init)
+            guard kv.count == 2 else { continue }
+            out[kv[0]] = kv[1].removingPercentEncoding
+        }
+        return out
+    }
+
+    func testFeedbackMailtoCarriesVersionsIntact() throws {
+        let url = try XCTUnwrap(Feedback.mailtoURL(
+            appVersion: "1.4.4", build: "20",
+            systemVersion: "Version 15.1 (Build 24B83)"))
+
+        XCTAssertEqual(url.scheme, "mailto")
+        XCTAssertTrue(url.absoluteString.hasPrefix("mailto:support@iamjarl.com?"))
+
+        let f = mailtoFields(url)
+        XCTAssertEqual(f["subject"], "It's mono, yo! 1.4.4 feedback")
+        let body = try XCTUnwrap(f["body"])
+        XCTAssertTrue(body.contains("It's mono, yo! 1.4.4 (20)"))
+        XCTAssertTrue(body.contains("macOS Version 15.1 (Build 24B83)"))
+        XCTAssertTrue(body.hasPrefix("\n\n\n"), "room for the user to write above the versions")
+    }
+
+    /// A "&" or "=" left unencoded in a value would end that field early or start
+    /// a new one. URLComponents encodes both; this pins that behaviour down.
+    func testFeedbackMailtoSurvivesQueryDelimitersInValues() throws {
+        let url = try XCTUnwrap(Feedback.mailtoURL(
+            appVersion: "1.0&x=y", build: "1+2", systemVersion: "a?b#c"))
+        let f = mailtoFields(url)
+
+        XCTAssertEqual(f["subject"], "It's mono, yo! 1.0&x=y feedback")
+        XCTAssertNil(f["x"], "a stray & must not create a new field")
+        let body = try XCTUnwrap(f["body"])
+        XCTAssertTrue(body.contains("1.0&x=y (1+2)"))
+        XCTAssertTrue(body.contains("macOS a?b#c"))
+    }
+
     // MARK: - Overwrite Protection
 
     func testOverwriteAutoRename() {

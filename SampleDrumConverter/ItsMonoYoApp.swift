@@ -37,6 +37,13 @@ struct ItsMonoYoApp: App {
                 }
                 .keyboardShortcut("o", modifiers: .command)
             }
+            // Replaces the default "It's mono, yo! Help" item, which only ever
+            // said that no help was available.
+            CommandGroup(replacing: .help) {
+                Button("Send Feedback…") {
+                    Feedback.compose()
+                }
+            }
         }
     }
 }

@@ -113,5 +113,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Support
 
+- **Email:** [support@iamjarl.com](mailto:support@iamjarl.com), or **Help → Send Feedback…** in the app, which fills in your app and macOS versions
+- **Community:** the [Elektronauts thread](https://www.elektronauts.com/t/small-mac-app-for-batch-converting-samples-to-mono-for-model-samples/247849), where most of the useful feedback has come from
 - **Bugs & feature requests:** [GitHub Issues](https://github.com/JarlLyng/It-s-mono-yo-/issues)
-- **Website:** [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com)
+- **Website:** [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com) · [support page](https://itsmonoyo.iamjarl.com/support.html)
