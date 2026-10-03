@@ -6,6 +6,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
+## [Unreleased]
+### Added
+- **Send Feedback…** in the Help menu and in the window's options menu. It opens an email to support@iamjarl.com in your own mail app, with the app and macOS versions filled in. Nothing is sent until you send it yourself.
+
+### Changed
+- Updated to the shared IAMJARL design tokens 1.11.1. No visible change.
+
 ## [1.4.3] - 2026-09
 ### Fixed
 - The window opened too short, which pushed the "Show in Finder" and "Convert More Files" buttons below the bottom edge of the completion screen. Starting a new batch appeared to require closing and reopening the window. It now opens taller and will not shrink below a size that keeps those buttons in view. Thanks to @perpetualgrimace for the report.

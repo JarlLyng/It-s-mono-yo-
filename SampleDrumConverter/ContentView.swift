@@ -298,6 +298,10 @@ struct ContentView: View {
                     Button(action: checkForUpdates) {
                         Label("Check for Updates", systemImage: "arrow.triangle.2.circlepath")
                     }
+
+                    Button(action: Feedback.compose) {
+                        Label("Send Feedback…", systemImage: "envelope")
+                    }
                     
                     // Theme toggle removed - using system color scheme
                 } label: {
