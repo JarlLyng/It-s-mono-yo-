@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
-## [Unreleased]
+## [1.4.4] - 2026-10
 ### Added
 - **Send Feedback…** in the Help menu and in the window's options menu. It opens an email to support@iamjarl.com in your own mail app, with the app and macOS versions filled in. Nothing is sent until you send it yourself.
 
