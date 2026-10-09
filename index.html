@@ -115,6 +115,21 @@
          to match the bottom bar. */
       ij-footer { display:block; text-align:center; }
     </style>
+    <style>
+      /* Hero (#84): name as eyebrow, outcome line as h1, price and OS under the
+         store badge, and the call to action above the screenshot so a phone sees a
+         labelled download on its first screen. Scoped here because the compiled
+         Tailwind only contains classes already in use. */
+      .hero-pad { padding-top: 2.5rem; padding-bottom: 3rem; }
+      .hero-eyebrow { font-size: .875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 1rem; }
+      .hero-title { font-size: 2.5rem; line-height: 1.08; letter-spacing: -.02em; margin-bottom: 1.25rem; }
+      .hero-intro { font-size: 1.125rem; margin-bottom: 2rem; }
+      .hero-price { font-size: .875rem; margin-top: .75rem; }
+      .hero-ctas { align-items: center; }
+      .hero-shot { margin-top: 3rem; }
+      @media (min-width: 640px) { .hero-title { font-size: 3.75rem; } .hero-ctas { align-items: flex-start; } }
+      @media (min-width: 768px) { .hero-pad { padding-top: 6rem; padding-bottom: 6rem; } .hero-title { font-size: 4.5rem; } .hero-intro { font-size: 1.5rem; margin-bottom: 3rem; } }
+    </style>
 </head>
 
 <body class="bg-white dark:bg-black transition-colors duration-200">
@@ -177,44 +192,35 @@
 
         <!-- Hero Section -->
         <section class="pt-20 relative overflow-hidden bg-white dark:bg-black" aria-label="Introduction">
-            <div class="relative container mx-auto px-6 py-24 text-center">
+            <div class="relative container mx-auto px-6 hero-pad text-center">
                 <div class="animate-fade-in">
-                    <h1 class="text-6xl md:text-7xl font-extrabold mb-6 text-black dark:text-white leading-tight">
-                        It's mono, yo!
+                    <p class="hero-eyebrow text-primary-light dark:text-primary-dark">It's mono, yo!</p>
+                    <h1 class="hero-title font-extrabold text-black dark:text-white">
+                        Mono that keeps <span class="text-primary-light dark:text-primary-dark">the whole sound.</span>
                     </h1>
-                    <p
-                        class="text-xl md:text-2xl text-black/70 dark:text-white/75 mb-12 max-w-3xl mx-auto leading-relaxed">
-                        A simple macOS tool that converts stereo WAV and AIFF files to mono with configurable bit depth,
-                        sample rate, and output format. Perfect for preparing samples for hardware samplers like the 
-                        <a href="prepare-samples-elektron-digitakt-mac.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Elektron Digitakt</a>, 
-                        <a href="prepare-samples-roland-sp404.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Roland SP-404</a>, and 
+                    <p class="hero-intro text-black/70 dark:text-white/75 max-w-3xl mx-auto leading-relaxed">
+                        A small Mac app that batch converts stereo WAV and AIFF to mono for hardware samplers like the
+                        <a href="prepare-samples-elektron-digitakt-mac.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Elektron Digitakt</a>,
+                        <a href="prepare-samples-roland-sp404.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Roland SP-404</a> and
                         <a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Erica Synths Sample Drum</a>.
                     </p>
                 </div>
 
-                <div class="relative group animate-float max-w-5xl mx-auto mb-12" style="background: transparent;">
-                    <div
-                        class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300">
+                <div class="animate-slide-up hero-ctas flex flex-col sm:flex-row justify-center gap-4">
+                    <div class="flex flex-col items-center">
+                        <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="hero" data-umami-event-locale="en"
+                            aria-label="Download It's mono, yo! on the Mac App Store"
+                            class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg
+                                  hover:shadow-2xl hover:scale-105 transform transition-all duration-300
+                                  focus:outline-none focus:ring-4 focus:ring-black/30 dark:focus:ring-white/30">
+                            <i class="ph ph-apple-logo text-2xl" aria-hidden="true"></i>
+                            <div class="text-left">
+                                <div class="text-xs font-normal opacity-80">Download on the</div>
+                                <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                            </div>
+                        </a>
+                        <p class="hero-price text-black/55 dark:text-white/60">$0.99 once, no subscription &middot; macOS 12 or later</p>
                     </div>
-                    <img src="screenshots/Screenshot.webp"
-                        alt="It's mono, yo! macOS app interface showing WAV file conversion process with drag and drop support, batch processing, and IAMJARL Design System"
-                        width="544" height="464" loading="eager" fetchpriority="high"
-                        class="relative rounded-2xl w-full transform transition-transform duration-500 group-hover:scale-[1.02]"
-                        style="background: transparent; display: block; image-rendering: -webkit-optimize-contrast;">
-                </div>
-
-                <div class="animate-slide-up flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="hero" data-umami-event-locale="en"
-                        aria-label="Download It's mono, yo! on the Mac App Store"
-                        class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg
-                              hover:shadow-2xl hover:scale-105 transform transition-all duration-300
-                              focus:outline-none focus:ring-4 focus:ring-black/30 dark:focus:ring-white/30">
-                        <i class="ph ph-apple-logo text-2xl" aria-hidden="true"></i>
-                        <div class="text-left">
-                            <div class="text-xs font-normal opacity-80">Download on the</div>
-                            <div class="text-lg font-semibold leading-tight">Mac App Store</div>
-                        </div>
-                    </a>
                     <a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest"
                         aria-label="Download the latest version from GitHub releases"
                         class="inline-flex items-center space-x-3 px-8 py-4 bg-black/4 dark:bg-white/5 text-black dark:text-white rounded-xl font-semibold text-lg border border-black/10 dark:border-white/12
@@ -223,6 +229,17 @@
                         <i class="ph ph-github-logo" aria-hidden="true"></i>
                         <span>GitHub Release</span>
                     </a>
+                </div>
+
+                <div class="relative group animate-float hero-shot max-w-5xl mx-auto mb-12" style="background: transparent;">
+                    <div
+                        class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300">
+                    </div>
+                    <img src="screenshots/Screenshot.webp"
+                        alt="It's mono, yo! macOS app interface showing WAV file conversion process with drag and drop support, batch processing, and IAMJARL Design System"
+                        width="544" height="464" loading="eager" fetchpriority="high"
+                        class="relative rounded-2xl w-full transform transition-transform duration-500 group-hover:scale-[1.02]"
+                        style="background: transparent; display: block; image-rendering: -webkit-optimize-contrast;">
                 </div>
             </div>
         </section>
@@ -266,12 +283,12 @@
         </section>
 
         <!-- What's New -->
-        <section class="py-20 bg-white dark:bg-black" aria-label="What's new">
+        <section class="py-20 bg-white dark:bg-black" aria-label="Features">
             <div class="container mx-auto px-6 text-center">
-                <span
-                    class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12">
-                    ✨ New in Version 1.3
-                </span>
+                <a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/CHANGELOG.md"
+                    class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12 hover:opacity-80">
+                    What changed in each version
+                </a>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
                     <div
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
@@ -298,7 +315,7 @@
                             <i class="ph ph-infinity text-primary-light dark:text-primary-dark text-xl"></i>
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-black dark:text-white">No Limits</h3>
-                        <p class="text-sm text-black/70 dark:text-white/75">No file size or batch limits anymore</p>
+                        <p class="text-sm text-black/70 dark:text-white/75">No file size or batch limits</p>
                     </div>
                     <div
                         class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
@@ -458,7 +475,7 @@
                                     class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
                                     <i class="ph ph-check text-white"></i>
                                 </div>
-                                <span class="text-black/70 dark:text-white/75 font-medium">macOS 11.0 or later</span>
+                                <span class="text-black/70 dark:text-white/75 font-medium">macOS 12.0 or later</span>
                             </li>
                             <li
                                 class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
@@ -779,7 +796,7 @@
         "IAMJARL Design System with light & dark mode",
         "Drag and drop support"
       ],
-      "softwareRequirements": "macOS 11.0 or later",
+      "softwareRequirements": "macOS 12.0 or later",
       "availableOnDevice": "Mac",
       "fileSize": "Small",
       "license": "https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE",
