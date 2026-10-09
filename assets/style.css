@@ -35,3 +35,13 @@ h1, h2, h3, .wordmark {
 /* Mono is wider than the old sans, so headings wrap sooner; balance the lines so
    a wrap never leaves one word stranded (the hero read "...the whole / sound."). */
 h1, h2, h3 { text-wrap: balance; }
+
+/* Inline SVG icons (Phosphor 2.1.1, MIT, regular + one fill) replacing the unpkg
+   icon font, which blocked first paint (#84). Sized like a glyph: 1em square,
+   sitting on the baseline, coloured by currentColor. Deliberately no `display`
+   here, so utilities like hidden / dark:block on the icon still win. */
+.ph-icon { width: 1em; height: 1em; vertical-align: -0.125em; flex-shrink: 0; }
+/* Tailwind's preflight makes every svg display:block, which stacked the review
+   stars one per line. svg:where(.ph-icon) has the same specificity as that rule
+   and comes after it, so it wins; any utility (hidden, dark:block) still beats it. */
+svg:where(.ph-icon) { display: inline-block; }
