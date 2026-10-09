@@ -56,12 +56,17 @@
          to match the bottom bar. */
       ij-footer { display:block; text-align:center; }
     </style>
+    <!-- JetBrains Mono, the music family's display face (#82). Self-hosted under
+         /assets/fonts; the identity sheet only supplies --ij-font-display. -->
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.18.1/dist/identity/its-mono-yo.css"
+          integrity="sha384-N8cJLY4e5GCqMB3JIlwikPSV+Jk9swFb9bHuaIhhWSvvdQq0H0Q38fna354qkOZu" crossorigin="anonymous">
 </head>
 <body class="bg-white dark:bg-black transition-colors duration-200">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
         <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-            <a href="/" class="text-xl sm:text-2xl font-bold dark:text-primary-dark text-primary-light hover:opacity-80 transition-opacity">
+            <a href="/" class="wordmark text-xl sm:text-2xl font-bold dark:text-primary-dark text-primary-light hover:opacity-80 transition-opacity">
                 It's mono, yo!
             </a>
             <div class="flex items-center space-x-2 sm:space-x-4">

@@ -16,3 +16,22 @@
 .sm\:space-x-4>:not([hidden])~:not([hidden]){margin-left:1rem}
 .sm\:inline{display:inline}
 }
+
+/* JetBrains Mono, the music family's display face (iamjarl-design v1.18.1, #82).
+   Self-hosted: the woff2 is the design system's copy at v1.18.1, byte-identical to
+   @fontsource-variable/jetbrains-mono@5.3.0, latin subset, OFL-1.1 (licence beside it).
+   Used for headings and the wordmark only; body copy keeps the site's text face. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+h1, h2, h3, .wordmark {
+  font-family: var(--ij-font-display, 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+/* Mono is wider than the old sans, so headings wrap sooner; balance the lines so
+   a wrap never leaves one word stranded (the hero read "...the whole / sound."). */
+h1, h2, h3 { text-wrap: balance; }

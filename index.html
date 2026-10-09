@@ -130,6 +130,11 @@
       @media (min-width: 640px) { .hero-title { font-size: 3.75rem; } .hero-ctas { align-items: flex-start; } }
       @media (min-width: 768px) { .hero-pad { padding-top: 6rem; padding-bottom: 6rem; } .hero-title { font-size: 4.5rem; } .hero-intro { font-size: 1.5rem; margin-bottom: 3rem; } }
     </style>
+    <!-- JetBrains Mono, the music family's display face (#82). Self-hosted under
+         /assets/fonts; the identity sheet only supplies --ij-font-display. -->
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.18.1/dist/identity/its-mono-yo.css"
+          integrity="sha384-N8cJLY4e5GCqMB3JIlwikPSV+Jk9swFb9bHuaIhhWSvvdQq0H0Q38fna354qkOZu" crossorigin="anonymous">
 </head>
 
 <body class="bg-white dark:bg-black transition-colors duration-200">
@@ -167,7 +172,7 @@
         <nav
             class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
             <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-                <div class="text-xl sm:text-2xl font-bold dark:text-primary-dark text-primary-light">
+                <div class="wordmark text-xl sm:text-2xl font-bold dark:text-primary-dark text-primary-light">
                     It's mono, yo!
                 </div>
                 <div class="flex items-center space-x-2 sm:space-x-4">
@@ -194,7 +199,7 @@
         <section class="pt-20 relative overflow-hidden bg-white dark:bg-black" aria-label="Introduction">
             <div class="relative container mx-auto px-6 hero-pad text-center">
                 <div class="animate-fade-in">
-                    <p class="hero-eyebrow text-primary-light dark:text-primary-dark">It's mono, yo!</p>
+                    <p class="wordmark hero-eyebrow text-primary-light dark:text-primary-dark">It's mono, yo!</p>
                     <h1 class="hero-title font-extrabold text-black dark:text-white">
                         Mono that keeps <span class="text-primary-light dark:text-primary-dark">the whole sound.</span>
                     </h1>
