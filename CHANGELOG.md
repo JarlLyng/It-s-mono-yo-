@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
-## [Unreleased]
+## [1.4.5] - 2026-10
 ### Fixed
 - The file list now follows Finder order, by folder and name, with numbers compared as numbers, so Kick 2 comes before Kick 10. It used to show files in whatever order the disk returned them.
 - The output settings showed "Format", "Bit Depth" and "Sample Rate" twice, once as the heading and once beside the control. Each now appears once.
