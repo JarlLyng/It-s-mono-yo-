@@ -76,9 +76,15 @@ struct AudioFile: Identifiable, Sendable {
 
 private let supportedAudioExtensions: Set<String> = ["wav", "aiff", "aif"]
 
-/// Recursively collects WAV/AIFF files inside a folder. Each file's relative
-/// directory is computed against the folder's parent, so the picked folder's own
-/// name becomes the top level of the mirrored output structure.
+/// Orders files the way Finder lists them: by their displayed path, comparing
+/// numbers as numbers, so "Kick 2" comes before "Kick 10" (#89).
+func sortedForDisplay(_ files: [AudioFile]) -> [AudioFile] {
+    files.sorted { $0.displayName.localizedStandardCompare($1.displayName) == .orderedAscending }
+}
+
+/// Recursively collects WAV/AIFF files inside a folder, in Finder order. Each
+/// file's relative directory is computed against the folder's parent, so the
+/// picked folder's own name becomes the top level of the mirrored output structure.
 func collectAudioFiles(inFolder folderURL: URL) -> [AudioFile] {
     let accessing = folderURL.startAccessingSecurityScopedResource()
     defer { if accessing { folderURL.stopAccessingSecurityScopedResource() } }
@@ -106,7 +112,7 @@ func collectAudioFiles(inFolder folderURL: URL) -> [AudioFile] {
             format: getAudioFormat(for: fileURL)
         ))
     }
-    return files
+    return sortedForDisplay(files)
 }
 
 /// Builds AudioFiles from a set of user-selected URLs, expanding any folders
@@ -337,7 +343,7 @@ struct ContentView: View {
         panel.canChooseDirectories = true
 
         if panel.runModal() == .OK {
-            audioFiles.append(contentsOf: collectAudioFiles(fromSelected: panel.urls))
+            audioFiles = sortedForDisplay(audioFiles + collectAudioFiles(fromSelected: panel.urls))
         }
     }
     
@@ -539,7 +545,7 @@ struct SelectFilesView: View {
                                         )
 
                                         if isDirectory {
-                                            audioFiles.append(contentsOf: collectAudioFiles(inFolder: resolvedURL))
+                                            audioFiles = sortedForDisplay(audioFiles + collectAudioFiles(inFolder: resolvedURL))
                                         } else {
                                             let resolvedAccessing = resolvedURL.startAccessingSecurityScopedResource()
                                             defer {
@@ -547,7 +553,7 @@ struct SelectFilesView: View {
                                                     resolvedURL.stopAccessingSecurityScopedResource()
                                                 }
                                             }
-                                            audioFiles.append(AudioFile(url: resolvedURL, format: getAudioFormat(for: resolvedURL)))
+                                            audioFiles = sortedForDisplay(audioFiles + [AudioFile(url: resolvedURL, format: getAudioFormat(for: resolvedURL))])
                                         }
                                     } catch {
                                         #if DEBUG
@@ -645,7 +651,7 @@ struct SelectFilesView: View {
 
         let newFiles = collectAudioFiles(fromSelected: panel.urls)
 
-        audioFiles.append(contentsOf: newFiles)
+        audioFiles = sortedForDisplay(audioFiles + newFiles)
 
         #if DEBUG
         print("Added \(newFiles.count) files to list. Total: \(audioFiles.count)")
@@ -741,6 +747,8 @@ struct SelectOutputView: View {
                             }
                         }
                         .pickerStyle(.segmented)
+                        // The heading above names it; the title stays as the VoiceOver label (#88).
+                        .labelsHidden()
                     }
 
                     // Bit depth
@@ -755,6 +763,7 @@ struct SelectOutputView: View {
                             }
                         }
                         .pickerStyle(.segmented)
+                        .labelsHidden()
                     }
 
                     // Sample rate
@@ -769,6 +778,7 @@ struct SelectOutputView: View {
                             }
                         }
                         .pickerStyle(.segmented)
+                        .labelsHidden()
                     }
                 }
                 .padding(DesignTokens.Spacing.lg)
