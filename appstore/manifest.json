@@ -1,0 +1,16 @@
+{
+  "app": "It's mono, yo!",
+  "mode": "dark",
+  "accent": "#D0FF00",
+  "out_dir": "1.4.5",
+  "shots": [
+    {"raw": "raw/1-list.png", "slot": "mac-hidpi", "out": "mac-1.png", "caption_pos": "top",
+     "caption": "Mono that keeps\n*the whole sound*"},
+    {"raw": "raw/2-settings.png", "slot": "mac-hidpi", "out": "mac-2.png", "caption_pos": "bottom",
+     "caption": "The format\n*your sampler wants*"},
+    {"raw": "raw/3-converting.png", "slot": "mac-hidpi", "out": "mac-3.png", "caption_pos": "top",
+     "caption": "Whole folders,\n*no file limit*"},
+    {"raw": "raw/4-done.png", "slot": "mac-hidpi", "out": "mac-4.png", "caption_pos": "bottom",
+     "caption": "Pay once.\n*No subscription*"}
+  ]
+}
