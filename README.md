@@ -61,6 +61,7 @@
 - **UI** — SwiftUI with step-based conversion flow
 - **Downmix** — float32 intermediate processing, ITU-R BS.775 weighted multi-channel downmix
 - **Concurrency** — Swift async/await; batches convert in parallel via a bounded task group with per-file progress tracking
+- **Website** — the source of [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com) is in `website/`, published to GitHub Pages by `.github/workflows/deploy-pages.yml` on every push to `main` that touches it
 
 ## Release Notes
 

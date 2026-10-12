@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="How to prepare WAV samples for Eurorack and modular synth samplers. Convert stereo to mono, set correct sample rates, and format files for your modules.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Preparing Samples for Eurorack Samplers">
+    <meta property="og:description"
+        content="Guide to preparing WAV samples for Eurorack sampler modules. Learn the correct format and how to convert stereo to mono.">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/prepare-samples-eurorack-samplers.html">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/assets/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Preparing Samples for Eurorack Samplers">
+    <meta name="twitter:description" content="Guide to preparing WAV samples for Eurorack sampler modules. Learn the correct format and how to convert stereo to mono.">
+    <meta name="twitter:image" content="https://itsmonoyo.iamjarl.com/assets/og.png">
+    <meta name="apple-itunes-app" content="app-id=6758866918">
+    <title>Preparing Samples for Eurorack Samplers – It's mono, yo!</title>
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/prepare-samples-eurorack-samplers.html">
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
+    <!-- IAMJARL design system v1.11.1: shared footer cross-links.
+         SRI hashes come from dist/sri.json at this tag; a wrong hash blocks the
+         file outright and leaves no visible cause, so copy them, never retype. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.11.1/dist/css/tokens.css"
+          integrity="sha384-L04G8T2ueNJsSeQgLUS3Eje4r9GZywm5MipKrfmFd66VQOrkPDAUfxPzJVQ+/htW" crossorigin="anonymous">
+    <script type="module" src="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.11.1/dist/components/ij-footer.js"
+            integrity="sha384-aa9SbgW/xtP0xM7PgPiJHJC+wc0ZLuWSpUxwf+ynhvenQBkl2T1VMHRkvrDdmmMg" crossorigin="anonymous"></script>
+    <style>
+      /* The shared footer is built to be a whole footer; here it contributes only
+         the cross-links, so the site's own group is emptied and the row is centred
+         to match the bottom bar. */
+      ij-footer { display:block; text-align:center; }
+    </style>
+    <!-- JetBrains Mono, the music family's display face (#82). Self-hosted under
+         /assets/fonts; the identity sheet only supplies --ij-font-display. -->
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.18.1/dist/identity/its-mono-yo.css"
+          integrity="sha384-N8cJLY4e5GCqMB3JIlwikPSV+Jk9swFb9bHuaIhhWSvvdQq0H0Q38fna354qkOZu" crossorigin="anonymous">
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+        <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <a href="/" class="wordmark text-xl sm:text-2xl font-bold dark:text-primary-dark text-primary-light">It's mono, yo!</a>
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                    class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 transition-all duration-200">
+                    <svg class="ph-icon dark:hidden text-black/70" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg>
+                    <svg class="ph-icon hidden dark:block text-primary-dark" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>
+                </button>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="header" data-umami-event-locale="en"
+                    class="flex items-center space-x-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M223.3,169.59a8.07,8.07,0,0,0-2.8-3.4C203.53,154.53,200,134.64,200,120c0-17.67,13.47-33.06,21.5-40.67a8,8,0,0,0,0-11.62C208.82,55.74,187.82,48,168,48a72.2,72.2,0,0,0-40,12.13,71.56,71.56,0,0,0-90.71,9.09A74.63,74.63,0,0,0,16,123.4a127.06,127.06,0,0,0,40.14,89.73A39.8,39.8,0,0,0,83.59,224h87.68a39.84,39.84,0,0,0,29.12-12.57,125,125,0,0,0,17.82-24.6C225.23,174,224.33,172,223.3,169.59Zm-34.63,30.94a23.76,23.76,0,0,1-17.4,7.47H83.59a23.82,23.82,0,0,1-16.44-6.51A111.14,111.14,0,0,1,32,123,58.5,58.5,0,0,1,48.65,80.47,54.81,54.81,0,0,1,88,64h.78A55.45,55.45,0,0,1,123,76.28a8,8,0,0,0,10,0A55.44,55.44,0,0,1,168,64a70.64,70.64,0,0,1,36,10.35c-13,14.52-20,30.47-20,45.65,0,23.77,7.64,42.73,22.18,55.3A105.82,105.82,0,0,1,188.67,200.53ZM128.23,30A40,40,0,0,1,167,0h1a8,8,0,0,1,0,16h-1a24,24,0,0,0-23.24,18,8,8,0,1,1-15.5-4Z"/></svg>
+                    <span class="font-medium hidden sm:inline">App Store</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16">
+        <article class="container mx-auto px-6 max-w-3xl">
+            <div class="mb-8">
+                <a href="/" class="text-primary-light dark:text-primary-dark hover:opacity-80 transition-colors text-sm font-medium">
+                    <svg class="ph-icon mr-2" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg>Back to home
+                </a>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white leading-tight">
+                Preparing Samples for Eurorack Samplers
+            </h1>
+
+            <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                Eurorack sampler modules open up a world of creative possibilities in modular synthesis. But getting your samples into the right format can be frustrating. This guide covers what you need to know about preparing WAV files for Eurorack samplers.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why Eurorack Samplers Need Mono</h2>
+            <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
+                Most Eurorack sampler modules have a single audio output per voice. In a modular system you route audio through patch cables to mixers, effects, and other modules, so one mono output per voice gives you the most patching flexibility. On modules that can do either, mono also stretches further: samples take half the memory, and some modules play more voices in mono than in stereo. Because of this, <a href="why-hardware-samplers-need-mono.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">these modules expect mono WAV files</a>.
+            </p>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Popular Eurorack Samplers</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                Here are some popular Eurorack sampler modules and their sample requirements:
+            </p>
+            <div class="space-y-4 mb-8">
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white"><a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Erica Synths Sample Drum</a></h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono WAV, 44.1 kHz, 16/24-bit. Reads from micro SD card.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">Squid Salmple</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono or stereo WAV, 44.1 kHz. 8 channels of sample playback.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">1010music Bitbox</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Supports stereo, but mono files save memory and simplify routing.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">Tiptop Audio ONE</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono WAV samples from SD card. Simple one-shot sample player.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                    <h3 class="font-bold text-black dark:text-white">Rossum Assimil8or</h3>
+                    <p class="text-black/70 dark:text-white/75 text-sm">Mono or stereo WAV. Plays 8 voices in mono but only 4 in stereo, so mono doubles your polyphony.</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Preparation Workflow</h2>
+            <p class="text-black/70 dark:text-white/75 mb-4 leading-relaxed">
+                Here is a typical workflow for preparing samples for Eurorack modules:
+            </p>
+            <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
+                <li>Collect your source samples (from sample packs, recordings, or synthesizers)</li>
+                <li><a href="convert-stereo-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">Convert stereo files to mono</a> using It's mono, yo!</li>
+                <li>Trim silence from the start and end of samples</li>
+                <li>Normalize volume levels for consistency</li>
+                <li>Rename files with short, descriptive names</li>
+                <li>Copy to your SD card and test on your module</li>
+            </ol>
+
+            <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Batch Converting for Large Libraries</h2>
+            <p class="text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                If you have a large sample library to prepare, <a href="batch-convert-wav-to-mono-mac.html" class="text-primary-light dark:text-primary-dark hover:opacity-80">batch conversion</a> saves a lot of time. It's mono, yo! converts unlimited files at once with a proper summed downmix, and you can drop a whole sample-pack folder to convert everything inside while keeping its structure. Just drag your files or folder in, pick an output folder, and the app handles the rest.
+            </p>
+
+            <div class="p-8 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12 text-center">
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Get Your Samples Ready</h2>
+                <p class="text-black/70 dark:text-white/75 mb-6">Stereo to mono converter on the Mac App Store.</p>
+                <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="cta" data-umami-event-locale="en"
+                    class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
+                    <svg class="ph-icon text-2xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M223.3,169.59a8.07,8.07,0,0,0-2.8-3.4C203.53,154.53,200,134.64,200,120c0-17.67,13.47-33.06,21.5-40.67a8,8,0,0,0,0-11.62C208.82,55.74,187.82,48,168,48a72.2,72.2,0,0,0-40,12.13,71.56,71.56,0,0,0-90.71,9.09A74.63,74.63,0,0,0,16,123.4a127.06,127.06,0,0,0,40.14,89.73A39.8,39.8,0,0,0,83.59,224h87.68a39.84,39.84,0,0,0,29.12-12.57,125,125,0,0,0,17.82-24.6C225.23,174,224.33,172,223.3,169.59Zm-34.63,30.94a23.76,23.76,0,0,1-17.4,7.47H83.59a23.82,23.82,0,0,1-16.44-6.51A111.14,111.14,0,0,1,32,123,58.5,58.5,0,0,1,48.65,80.47,54.81,54.81,0,0,1,88,64h.78A55.45,55.45,0,0,1,123,76.28a8,8,0,0,0,10,0A55.44,55.44,0,0,1,168,64a70.64,70.64,0,0,1,36,10.35c-13,14.52-20,30.47-20,45.65,0,23.77,7.64,42.73,22.18,55.3A105.82,105.82,0,0,1,188.67,200.53ZM128.23,30A40,40,0,0,1,167,0h1a8,8,0,0,1,0,16h-1a24,24,0,0,0-23.24,18,8,8,0,1,1-15.5-4Z"/></svg>
+                    <div class="text-left">
+                        <div class="text-xs font-normal opacity-80">Download on the</div>
+                        <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                    </div>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-black text-white py-12 border-t border-white/12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-white/60 text-sm">
+                <a href="/" class="hover:text-primary-dark transition-colors">Home</a>
+                <a href="convert-stereo-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Convert WAV to Mono</a>
+                <a href="batch-convert-wav-to-mono-mac.html" class="hover:text-primary-dark transition-colors">Batch Convert</a>
+                <a href="why-hardware-samplers-need-mono.html" class="hover:text-primary-dark transition-colors">Why Mono?</a>
+                <a href="prepare-samples-elektron-digitakt-mac.html" class="hover:text-primary-dark transition-colors">Digitakt</a>
+                <a href="prepare-samples-elektron-model-samples-mac.html" class="hover:text-primary-dark transition-colors">Model:Samples</a>
+                <a href="prepare-samples-elektron-octatrack-mac.html" class="hover:text-primary-dark transition-colors">Octatrack</a>
+                <a href="prepare-samples-roland-sp404.html" class="hover:text-primary-dark transition-colors">SP-404</a>
+                <a href="prepare-samples-polyend-tracker-mac.html" class="hover:text-primary-dark transition-colors">Polyend Tracker</a>
+                <a href="prepare-samples-akai-mpc-mac.html" class="hover:text-primary-dark transition-colors">Akai MPC</a>
+                <a href="prepare-samples-erica-synths-sample-drum.html" class="hover:text-primary-dark transition-colors">Erica Synths</a>
+                <a href="prepare-samples-eurorack-samplers.html" class="hover:text-primary-dark transition-colors">Eurorack</a>
+                <a href="support.html" class="hover:text-primary-dark transition-colors">Support</a>
+            </div>
+            <p class="text-white/60">Created with <span class="text-red-500">♥️</span> by <a href="https://iamjarl.com" class="text-primary-dark hover:opacity-80 font-semibold">IAMJARL</a></p>
+            <!-- Generated from iamjarl-design v1.11.1 dist/footers/its-mono-yo.html.
+                 The anchors are inlined so they are in the served HTML: Googlebot runs
+                 JavaScript but GPTBot, ClaudeBot, CCBot and PerplexityBot do not.
+                 A fragment is a snapshot; rebuild it when the registry changes. -->
+            <ij-footer app="its-mono-yo" links-label="">
+                <a slot="cross-links" href="https://echolume.iamjarl.com">Echolume</a>
+                <a slot="cross-links" href="https://its404yo.iamjarl.com">It&#39;s 404, yo!</a>
+                <a slot="cross-links" href="https://patternaut.iamjarl.com">Patternaut</a>
+                <a slot="cross-links" href="https://tonvault.iamjarl.com">TonVault</a>
+                <a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+                <a slot="cross-links" href="https://iamjarl.com">All projects</a>
+            </ij-footer>
+        </div>
+    </footer>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://itsmonoyo.iamjarl.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Prepare Samples for Eurorack Samplers", "item": "https://itsmonoyo.iamjarl.com/prepare-samples-eurorack-samplers.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Prepare Samples for Eurorack Sampler Modules",
+  "description": "Guide to converting stereo samples to mono for Eurorack sampler modules like Assimil8or and other modular samplers.",
+  "step": [
+    { "@type": "HowToStep", "name": "Open the app", "text": "Launch It's mono, yo! on your Mac." },
+    { "@type": "HowToStep", "name": "Add samples", "text": "Drag and drop your stereo WAV or AIFF files into the app." },
+    { "@type": "HowToStep", "name": "Configure output", "text": "Choose your output format and bit depth based on your module's requirements." },
+    { "@type": "HowToStep", "name": "Convert", "text": "Select an output folder and click Convert." }
+  ],
+  "tool": { "@type": "SoftwareApplication", "name": "It's mono, yo!", "url": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12" }
+}
+</script>
+</body>
+
+</html>

@@ -75,3 +75,4 @@ Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competit
 - SwiftUI, step-based conversion flow; Swift async/await with a bounded task group for parallel per-file conversion.
 - Sandboxed App Store build with accessibility support.
 - Privacy-first: no internet required; no tracking.
+- **The website** is in `website/` and deploys from `main` through `.github/workflows/deploy-pages.yml`. Plain HTML, no build step. Never commit to `gh-pages`, since the site no longer deploys from it (#74).

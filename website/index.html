@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="macOS app to convert stereo WAV and AIFF files to mono. Choose 16-bit, 24-bit, or 32-bit float output. Download on the Mac App Store. Perfect for Erica Synths Sample Drum, hardware samplers, and music production.">
+    <meta name="keywords"
+        content="WAV to mono converter, stereo to mono, audio converter macOS, sample drum converter, erica synths sample drum, hardware sampler preparation, batch audio conversion, mono audio converter, WAV file converter, audio utility macOS, music production tool, eurorack sampler, modular synth samples">
+    <meta name="author" content="IAMJARL">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="apple-itunes-app" content="app-id=6758866918">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="general">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="It's mono, yo! - WAV & AIFF to Mono Converter for macOS">
+    <meta property="og:description"
+        content="macOS app to convert stereo WAV and AIFF files to mono. Configurable bit depth, sample rate, and output format. Available on the Mac App Store.">
+    <!-- Open Graph image: Dedicated og-image.png (1200x630) -->
+    <meta property="og:image" content="https://itsmonoyo.iamjarl.com/assets/og.png">
+    <meta property="og:image:secure_url" content="https://itsmonoyo.iamjarl.com/assets/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt"
+        content="It&#39;s mono, yo! Mono that keeps the whole sound. Most converters keep the left channel and bin the right; this one sums both.">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:url" content="https://itsmonoyo.iamjarl.com/">
+    <meta property="og:site_name" content="It's mono, yo!">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:determiner" content="the">
+    <meta property="og:see_also" content="https://github.com/JarlLyng/It-s-mono-yo-">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="It's mono, yo! - WAV & AIFF to Mono Converter for macOS">
+    <meta name="twitter:description"
+        content="macOS app to convert stereo WAV and AIFF files to mono. Configurable bit depth, sample rate, and output format. Available on the Mac App Store.">
+    <meta name="twitter:image" content="https://itsmonoyo.iamjarl.com/assets/og.png">
+    <meta name="twitter:image:alt"
+        content="It&#39;s mono, yo! Mono that keeps the whole sound. Most converters keep the left channel and bin the right; this one sums both.">
+    <meta name="twitter:creator" content="@JarlLyng">
+    <meta name="twitter:site" content="@JarlLyng">
+
+    <title>Convert Stereo WAV to Mono on Mac – It's mono, yo! | macOS Converter</title>
+
+    <!-- Resource Hints for Performance -->
+    <link rel="preload" href="screenshots/Screenshot.webp" as="image" type="image/webp">
+
+    <script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true' ||
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <!-- Compiled static CSS (bundles IAMJARL Design System & Tailwind) -->
+    <link rel="stylesheet" href="/assets/style.css">
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://itsmonoyo.iamjarl.com/">
+
+    <!-- Alternate language links -->
+    <link rel="alternate" hreflang="en" href="https://itsmonoyo.iamjarl.com/">
+    <link rel="alternate" hreflang="x-default" href="https://itsmonoyo.iamjarl.com/">
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- More meta tags -->
+    <meta name="googlebot" content="index, follow">
+    <meta name="application-name" content="It's mono, yo!">
+    <meta name="apple-mobile-web-app-title" content="It's mono, yo!">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#A435D2" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="geo.region" content="DK">
+    <script defer src="https://umami-iamjarl.vercel.app/script.js" data-website-id="fd94e30e-8206-4e08-854d-ffdadf730f37"></script>
+    <!-- IAMJARL design system v1.11.1: shared footer cross-links.
+         SRI hashes come from dist/sri.json at this tag; a wrong hash blocks the
+         file outright and leaves no visible cause, so copy them, never retype. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.11.1/dist/css/tokens.css"
+          integrity="sha384-L04G8T2ueNJsSeQgLUS3Eje4r9GZywm5MipKrfmFd66VQOrkPDAUfxPzJVQ+/htW" crossorigin="anonymous">
+    <script type="module" src="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.11.1/dist/components/ij-footer.js"
+            integrity="sha384-aa9SbgW/xtP0xM7PgPiJHJC+wc0ZLuWSpUxwf+ynhvenQBkl2T1VMHRkvrDdmmMg" crossorigin="anonymous"></script>
+    <style>
+      /* The shared footer is built to be a whole footer; here it contributes only
+         the cross-links, so the site's own group is emptied and the row is centred
+         to match the bottom bar. */
+      ij-footer { display:block; text-align:center; }
+    </style>
+    <style>
+      /* Hero (#84): name as eyebrow, outcome line as h1, price and OS under the
+         store badge, and the call to action above the screenshot so a phone sees a
+         labelled download on its first screen. Scoped here because the compiled
+         Tailwind only contains classes already in use. */
+      .hero-pad { padding-top: 2.5rem; padding-bottom: 3rem; }
+      .hero-eyebrow { font-size: .875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 1rem; }
+      .hero-title { font-size: 2.5rem; line-height: 1.08; letter-spacing: -.02em; margin-bottom: 1.25rem; }
+      .hero-intro { font-size: 1.125rem; margin-bottom: 2rem; }
+      .hero-price { font-size: .875rem; margin-top: .75rem; }
+      .hero-ctas { align-items: center; }
+      .hero-shot { margin-top: 3rem; }
+      @media (min-width: 640px) { .hero-title { font-size: 3.75rem; } .hero-ctas { align-items: flex-start; } }
+      @media (min-width: 768px) { .hero-pad { padding-top: 6rem; padding-bottom: 6rem; } .hero-title { font-size: 4.5rem; } .hero-intro { font-size: 1.5rem; margin-bottom: 3rem; } }
+    </style>
+    <!-- JetBrains Mono, the music family's display face (#82). Self-hosted under
+         /assets/fonts; the identity sheet only supplies --ij-font-display. -->
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JarlLyng/iamjarl-design@v1.18.1/dist/identity/its-mono-yo.css"
+          integrity="sha384-N8cJLY4e5GCqMB3JIlwikPSV+Jk9swFb9bHuaIhhWSvvdQq0H0Q38fna354qkOZu" crossorigin="anonymous">
+</head>
+
+<body class="bg-white dark:bg-black transition-colors duration-200">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+        Skip to main content
+    </a>
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .focus\:not-sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: inherit;
+            margin: inherit;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+    </style>
+    <main id="main-content">
+        <!-- Navigation -->
+        <nav
+            class="fixed w-full z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/10 dark:border-white/12">
+            <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+                <div class="wordmark text-xl sm:text-2xl font-bold dark:text-primary-dark text-primary-light">
+                    It's mono, yo!
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="toggleDarkMode()" aria-label="Toggle dark mode"
+                        class="p-2.5 rounded-lg hover:bg-black/4 dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200">
+                        <svg class="ph-icon dark:hidden text-black/70" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg>
+                        <svg class="ph-icon hidden dark:block text-primary-dark" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>
+                    </button>
+                    <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="header" data-umami-event-locale="en" aria-label="Download on the Mac App Store"
+                        class="flex items-center space-x-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-lg bg-primary-light dark:bg-primary-dark text-black dark:text-black hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 font-semibold">
+                        <svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M223.3,169.59a8.07,8.07,0,0,0-2.8-3.4C203.53,154.53,200,134.64,200,120c0-17.67,13.47-33.06,21.5-40.67a8,8,0,0,0,0-11.62C208.82,55.74,187.82,48,168,48a72.2,72.2,0,0,0-40,12.13,71.56,71.56,0,0,0-90.71,9.09A74.63,74.63,0,0,0,16,123.4a127.06,127.06,0,0,0,40.14,89.73A39.8,39.8,0,0,0,83.59,224h87.68a39.84,39.84,0,0,0,29.12-12.57,125,125,0,0,0,17.82-24.6C225.23,174,224.33,172,223.3,169.59Zm-34.63,30.94a23.76,23.76,0,0,1-17.4,7.47H83.59a23.82,23.82,0,0,1-16.44-6.51A111.14,111.14,0,0,1,32,123,58.5,58.5,0,0,1,48.65,80.47,54.81,54.81,0,0,1,88,64h.78A55.45,55.45,0,0,1,123,76.28a8,8,0,0,0,10,0A55.44,55.44,0,0,1,168,64a70.64,70.64,0,0,1,36,10.35c-13,14.52-20,30.47-20,45.65,0,23.77,7.64,42.73,22.18,55.3A105.82,105.82,0,0,1,188.67,200.53ZM128.23,30A40,40,0,0,1,167,0h1a8,8,0,0,1,0,16h-1a24,24,0,0,0-23.24,18,8,8,0,1,1-15.5-4Z"/></svg>
+                        <span class="font-medium hidden sm:inline">App Store</span>
+                    </a>
+                    <a href="https://github.com/JarlLyng/It-s-mono-yo-" aria-label="View source code on GitHub"
+                        class="flex items-center space-x-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-lg bg-black/4 dark:bg-white/5 text-black dark:text-white border border-black/10 dark:border-white/12 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 font-semibold">
+                        <svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
+                        <span class="font-medium hidden sm:inline">GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="pt-20 relative overflow-hidden bg-white dark:bg-black" aria-label="Introduction">
+            <div class="relative container mx-auto px-6 hero-pad text-center">
+                <div class="animate-fade-in">
+                    <p class="wordmark hero-eyebrow text-primary-light dark:text-primary-dark">It's mono, yo!</p>
+                    <h1 class="hero-title font-extrabold text-black dark:text-white">
+                        Mono that keeps <span class="text-primary-light dark:text-primary-dark">the whole sound.</span>
+                    </h1>
+                    <p class="hero-intro text-black/70 dark:text-white/75 max-w-3xl mx-auto leading-relaxed">
+                        A small Mac app that batch converts stereo WAV and AIFF to mono for hardware samplers like the
+                        <a href="prepare-samples-elektron-digitakt-mac.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Elektron Digitakt</a>,
+                        <a href="prepare-samples-roland-sp404.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Roland SP-404</a> and
+                        <a href="prepare-samples-erica-synths-sample-drum.html" class="text-primary-light dark:text-primary-dark hover:underline font-semibold">Erica Synths Sample Drum</a>.
+                    </p>
+                </div>
+
+                <div class="animate-slide-up hero-ctas flex flex-col sm:flex-row justify-center gap-4">
+                    <div class="flex flex-col items-center">
+                        <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="hero" data-umami-event-locale="en"
+                            aria-label="Download It's mono, yo! on the Mac App Store"
+                            class="inline-flex items-center space-x-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-lg
+                                  hover:shadow-2xl hover:scale-105 transform transition-all duration-300
+                                  focus:outline-none focus:ring-4 focus:ring-black/30 dark:focus:ring-white/30">
+                            <svg class="ph-icon text-2xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M223.3,169.59a8.07,8.07,0,0,0-2.8-3.4C203.53,154.53,200,134.64,200,120c0-17.67,13.47-33.06,21.5-40.67a8,8,0,0,0,0-11.62C208.82,55.74,187.82,48,168,48a72.2,72.2,0,0,0-40,12.13,71.56,71.56,0,0,0-90.71,9.09A74.63,74.63,0,0,0,16,123.4a127.06,127.06,0,0,0,40.14,89.73A39.8,39.8,0,0,0,83.59,224h87.68a39.84,39.84,0,0,0,29.12-12.57,125,125,0,0,0,17.82-24.6C225.23,174,224.33,172,223.3,169.59Zm-34.63,30.94a23.76,23.76,0,0,1-17.4,7.47H83.59a23.82,23.82,0,0,1-16.44-6.51A111.14,111.14,0,0,1,32,123,58.5,58.5,0,0,1,48.65,80.47,54.81,54.81,0,0,1,88,64h.78A55.45,55.45,0,0,1,123,76.28a8,8,0,0,0,10,0A55.44,55.44,0,0,1,168,64a70.64,70.64,0,0,1,36,10.35c-13,14.52-20,30.47-20,45.65,0,23.77,7.64,42.73,22.18,55.3A105.82,105.82,0,0,1,188.67,200.53ZM128.23,30A40,40,0,0,1,167,0h1a8,8,0,0,1,0,16h-1a24,24,0,0,0-23.24,18,8,8,0,1,1-15.5-4Z"/></svg>
+                            <div class="text-left">
+                                <div class="text-xs font-normal opacity-80">Download on the</div>
+                                <div class="text-lg font-semibold leading-tight">Mac App Store</div>
+                            </div>
+                        </a>
+                        <p class="hero-price text-black/55 dark:text-white/60">$0.99 once, no subscription &middot; macOS 12 or later</p>
+                    </div>
+                    <a href="https://github.com/JarlLyng/It-s-mono-yo-/releases/latest"
+                        aria-label="Download the latest version from GitHub releases"
+                        class="inline-flex items-center space-x-3 px-8 py-4 bg-black/4 dark:bg-white/5 text-black dark:text-white rounded-xl font-semibold text-lg border border-black/10 dark:border-white/12
+                              hover:shadow-lg hover:scale-105 transform transition-all duration-300
+                              focus:outline-none focus:ring-4 focus:ring-primary-light/50 dark:focus:ring-primary-dark/50">
+                        <svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
+                        <span>GitHub Release</span>
+                    </a>
+                </div>
+
+                <div class="relative group animate-float hero-shot max-w-5xl mx-auto mb-12" style="background: transparent;">
+                    <div
+                        class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300">
+                    </div>
+                    <img src="screenshots/Screenshot.webp"
+                        alt="It's mono, yo! macOS app interface showing WAV file conversion process with drag and drop support, batch processing, and IAMJARL Design System"
+                        width="544" height="464" loading="eager" fetchpriority="high"
+                        class="relative rounded-2xl w-full transform transition-transform duration-500 group-hover:scale-[1.02]"
+                        style="background: transparent; display: block; image-rendering: -webkit-optimize-contrast;">
+                </div>
+            </div>
+        </section>
+
+        <!-- App Store Screenshots -->
+        <section class="py-24 bg-white dark:bg-black" aria-label="App Store screenshots">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <span
+                        class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12">
+                        Available on the Mac App Store
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">
+                        See It in Action
+                    </h2>
+                    <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
+                        A clean, native macOS experience built for speed and simplicity
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                    <div class="group relative">
+                        <div
+                            class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-300">
+                        </div>
+                        <img src="app store images/mac-image01.webp"
+                            alt="It's mono, yo! app interface showing file selection and conversion"
+                            loading="lazy" width="1280" height="800"
+                            class="relative rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12 transform transition-transform duration-500 group-hover:scale-[1.02]">
+                    </div>
+                    <div class="group relative">
+                        <div
+                            class="absolute -inset-1 bg-primary-light dark:bg-primary-dark rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-300">
+                        </div>
+                        <img src="app store images/mac-image02.webp"
+                            alt="It's mono, yo! app interface showing batch conversion progress"
+                            loading="lazy" width="1280" height="800"
+                            class="relative rounded-2xl w-full shadow-lg border border-black/10 dark:border-white/12 transform transition-transform duration-500 group-hover:scale-[1.02]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What's New -->
+        <section class="py-20 bg-white dark:bg-black" aria-label="Features">
+            <div class="container mx-auto px-6 text-center">
+                <a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/CHANGELOG.md"
+                    class="inline-block px-5 py-2 bg-black/4 dark:bg-white/5 text-primary-light dark:text-primary-dark rounded-full mb-8 font-semibold border border-black/10 dark:border-white/12 hover:opacity-80">
+                    What changed in each version
+                </a>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="ph-icon text-primary-light dark:text-primary-dark text-xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M40,88H73a32,32,0,0,0,62,0h81a8,8,0,0,0,0-16H135a32,32,0,0,0-62,0H40a8,8,0,0,0,0,16Zm64-24A16,16,0,1,1,88,80,16,16,0,0,1,104,64ZM216,168H199a32,32,0,0,0-62,0H40a8,8,0,0,0,0,16h97a32,32,0,0,0,62,0h17a8,8,0,0,0,0-16Zm-48,24a16,16,0,1,1,16-16A16,16,0,0,1,168,192Z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Output Control</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Choose 16-bit, 24-bit, or 32-bit float output</p>
+                    </div>
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="ph-icon text-primary-light dark:text-primary-dark text-xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M99.06,128.61a8,8,0,0,0-8.72,1.73L68.69,152H48a8,8,0,0,0-8,8v40a8,8,0,0,0,8,8H68.69l21.65,21.66A8,8,0,0,0,104,224V136A8,8,0,0,0,99.06,128.61ZM88,204.69,77.66,194.34A8,8,0,0,0,72,192H56V168H72a8,8,0,0,0,5.66-2.34L88,155.31ZM152,180a40.55,40.55,0,0,1-20,34.91A8,8,0,0,1,124,201.09a24.49,24.49,0,0,0,0-42.18A8,8,0,0,1,132,145.09,40.55,40.55,0,0,1,152,180Zm61.66-97.66-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40v80a8,8,0,0,0,16,0V40h88V88a8,8,0,0,0,8,8h48V216H168a8,8,0,0,0,0,16h32a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160Z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">AIFF Support</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Import and export WAV or AIFF files</p>
+                    </div>
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="ph-icon text-primary-light dark:text-primary-dark text-xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M248,128a56,56,0,0,1-95.6,39.6l-.33-.35L92.12,99.55a40,40,0,1,0,0,56.9l8.52-9.62a8,8,0,1,1,12,10.61l-8.69,9.81-.33.35a56,56,0,1,1,0-79.2l.33.35,59.95,67.7a40,40,0,1,0,0-56.9l-8.52,9.62a8,8,0,1,1-12-10.61l8.69-9.81.33-.35A56,56,0,0,1,248,128Z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">No Limits</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">No file size or batch limits</p>
+                    </div>
+                    <div
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-14 h-14 mx-auto mb-4 rounded-xl bg-black/4 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="ph-icon text-primary-light dark:text-primary-dark text-xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M114.34,154.34l96-96a8,8,0,0,1,11.32,11.32l-96,96a8,8,0,0,1-11.32-11.32ZM128,88a63.9,63.9,0,0,1,20.44,3.33,8,8,0,1,0,5.11-15.16A80,80,0,0,0,48.49,160.88,8,8,0,0,0,56.43,168c.29,0,.59,0,.89-.05a8,8,0,0,0,7.07-8.83A64.92,64.92,0,0,1,64,152,64.07,64.07,0,0,1,128,88Zm99.74,13a8,8,0,0,0-14.24,7.3,96.27,96.27,0,0,1,5,75.71l-181.1-.07A96.24,96.24,0,0,1,128,56h.88a95,95,0,0,1,42.82,10.5A8,8,0,1,0,179,52.27a112,112,0,0,0-156.66,137A16.07,16.07,0,0,0,37.46,200H218.53a16,16,0,0,0,15.11-10.71,112.35,112.35,0,0,0-5.9-88.3Z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Sample Rate</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Resample to 44.1, 48, or 96 kHz</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews / Testimonials -->
+        <section class="py-20 bg-black/4 dark:bg-white/5" aria-label="User reviews">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-black dark:text-white">What users are saying</h2>
+                    <p class="text-black/70 dark:text-white/75">From the Mac App Store</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <figure class="p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12">
+                        <div class="text-primary-light dark:text-primary-dark mb-3" aria-label="5 out of 5 stars">
+                            <svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg>
+                        </div>
+                        <blockquote class="text-black dark:text-white font-semibold mb-2">Simple and to the point</blockquote>
+                        <p class="text-black/70 dark:text-white/75 mb-4">"Love it — it's simple and straight forward. Amazing for my Sample Drum."</p>
+                        <figcaption class="text-sm text-black/55 dark:text-white/60">— Jamie Bahn, Denmark</figcaption>
+                    </figure>
+                    <figure class="p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12">
+                        <div class="text-primary-light dark:text-primary-dark mb-3" aria-label="5 out of 5 stars">
+                            <svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg><svg class="ph-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></svg>
+                        </div>
+                        <blockquote class="text-black dark:text-white font-semibold mb-2">Cheap and it works!</blockquote>
+                        <p class="text-black/70 dark:text-white/75 mb-4">"$.99 to save me a bunch of time for folks that use Logic and don't know how to export mono files! GREAT!"</p>
+                        <figcaption class="text-sm text-black/55 dark:text-white/60">— Dave Bechtel, United States</figcaption>
+                    </figure>
+                </div>
+                <div class="text-center mt-8">
+                    <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="midpage" data-umami-event-locale="en"
+                        class="inline-flex items-center text-primary-light dark:text-primary-dark hover:opacity-80 font-medium">
+                        Read more reviews on the Mac App Store
+                        <svg class="ph-icon ml-2 text-sm" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Open source on GitHub. Plain links: the old buttons.github.io widget showed
+             live counts (1 star, 0 forks) and blocked rendering to do it (#84). -->
+        <section class="py-16 bg-white dark:bg-black" aria-label="Open source on GitHub">
+            <div class="container mx-auto px-6 text-center">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="https://github.com/JarlLyng/It-s-mono-yo-" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-black/4 dark:bg-white/5 text-black dark:text-white border border-black/10 dark:border-white/12 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark font-semibold"><svg class="ph-icon mr-2" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg><span>Source on GitHub</span></a>
+                    <a href="https://github.com/JarlLyng/It-s-mono-yo-/issues" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-black/4 dark:bg-white/5 text-black dark:text-white border border-black/10 dark:border-white/12 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark font-semibold"><span>Report an issue</span></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="py-24 bg-white dark:bg-black" aria-label="Features">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">
+                        Powerful Features for Audio Conversion
+                    </h2>
+                    <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
+                        Everything you need to convert your stereo audio files to mono format efficiently
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="ph-icon text-black text-2xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M196,88a27.86,27.86,0,0,0-13.35,3.39A28,28,0,0,0,144,74.7V44a28,28,0,0,0-56,0v80l-3.82-6.13A28,28,0,0,0,35.73,146l4.67,8.23C74.81,214.89,89.05,240,136,240a88.1,88.1,0,0,0,88-88V116A28,28,0,0,0,196,88Zm12,64a72.08,72.08,0,0,1-72,72c-37.63,0-47.84-18-81.68-77.68l-4.69-8.27,0-.05A12,12,0,0,1,54,121.61a11.88,11.88,0,0,1,6-1.6,12,12,0,0,1,10.41,6,1.76,1.76,0,0,0,.14.23l18.67,30A8,8,0,0,0,104,152V44a12,12,0,0,1,24,0v68a8,8,0,0,0,16,0V100a12,12,0,0,1,24,0v20a8,8,0,0,0,16,0v-4a12,12,0,0,1,24,0Z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Drag &amp; Drop</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Simply drag your WAV or AIFF files
+                                directly into the app</p>
+                        </div>
+                    </div>
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="ph-icon text-black text-2xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M232,32a8,8,0,0,0-8-8c-44.08,0-89.31,49.71-114.43,82.63A60,60,0,0,0,32,164c0,30.88-19.54,44.73-20.47,45.37A8,8,0,0,0,16,224H92a60,60,0,0,0,57.37-77.57C182.3,121.31,232,76.08,232,32ZM92,208H34.63C41.38,198.41,48,183.92,48,164a44,44,0,1,1,44,44Zm32.42-94.45q5.14-6.66,10.09-12.55A76.23,76.23,0,0,1,155,121.49q-5.9,4.94-12.55,10.09A60.54,60.54,0,0,0,124.42,113.55Zm42.7-2.68a92.57,92.57,0,0,0-22-22c31.78-34.53,55.75-45,69.9-47.91C212.17,55.12,201.65,79.09,167.12,110.87Z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Modern Theme</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">IAMJARL Design System with light
+                                &amp; dark mode</p>
+                        </div>
+                    </div>
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="ph-icon text-black text-2xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Batch Processing</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Convert unlimited files
+                                with real-time progress tracking</p>
+                        </div>
+                    </div>
+                    <div
+                        class="group relative p-8 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="relative">
+                            <div
+                                class="w-16 h-16 mb-6 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="ph-icon text-black text-2xl" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,144H32V64H224V192Zm-16-64a8,8,0,0,1-8,8H56a8,8,0,0,1,0-16H200A8,8,0,0,1,208,128Zm0-32a8,8,0,0,1-8,8H56a8,8,0,0,1,0-16H200A8,8,0,0,1,208,96ZM72,160a8,8,0,0,1-8,8H56a8,8,0,0,1,0-16h8A8,8,0,0,1,72,160Zm96,0a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,160Zm40,0a8,8,0,0,1-8,8h-8a8,8,0,0,1,0-16h8A8,8,0,0,1,208,160Z"/></svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-3 text-black dark:text-white">Keyboard Shortcuts</h3>
+                            <p class="text-black/70 dark:text-white/75 leading-relaxed">Quick access with ⌘O and ESC
+                                shortcuts</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Requirements -->
+        <section class="py-24 bg-white dark:bg-black" aria-label="System requirements">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">Perfect for Hardware
+                        Samplers and Music Production</h2>
+                    <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
+                        Designed specifically for music producers, hardware enthusiasts, and eurorack modular synth
+                        users
+                    </p>
+                </div>
+                <div class="max-w-3xl mx-auto">
+                    <div
+                        class="bg-white dark:bg-black p-10 rounded-lg shadow-xl border border-black/10 dark:border-white/12">
+                        <p class="text-lg text-black/70 dark:text-white/75 mb-8 leading-relaxed">
+                            Specifically designed for preparing samples for hardware like the <span
+                                class="font-semibold text-primary-light dark:text-primary-dark">Erica Synths Sample
+                                Drum</span> module
+                            and other equipment that requires mono files.
+                        </p>
+                        <h3 class="text-2xl font-bold mb-6 text-black dark:text-white flex items-center">
+                            <span class="w-1 h-8 bg-primary-light dark:bg-primary-dark rounded-full mr-3"></span>
+                            System Requirements
+                        </h3>
+                        <ul class="space-y-4">
+                            <li
+                                class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="ph-icon text-white" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>
+                                </div>
+                                <span class="text-black/70 dark:text-white/75 font-medium">macOS 12.0 or later</span>
+                            </li>
+                            <li
+                                class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="ph-icon text-white" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>
+                                </div>
+                                <span class="text-black/70 dark:text-white/75 font-medium">64-bit processor</span>
+                            </li>
+                            <li
+                                class="flex items-center p-4 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-success flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="ph-icon text-white" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>
+                                </div>
+                                <span class="text-black/70 dark:text-white/75 font-medium">WAV and AIFF file format
+                                    support</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guides -->
+        <section class="py-24 bg-white dark:bg-black" aria-label="Guides and resources">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">
+                        Guides &amp; Resources
+                    </h2>
+                    <p class="text-lg text-black/70 dark:text-white/75 max-w-2xl mx-auto">
+                        Learn how to prepare samples for your hardware sampler
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <a href="convert-stereo-wav-to-mono-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Convert Stereo WAV to Mono on Mac</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Step-by-step guide to converting your WAV files.</p>
+                    </a>
+                    <a href="why-hardware-samplers-need-mono.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Why Hardware Samplers Need Mono</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">The technical reasons behind the mono requirement.</p>
+                    </a>
+                    <a href="prepare-samples-erica-synths-sample-drum.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Erica Synths Sample Drum</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Prepare samples for this Eurorack drum module.</p>
+                    </a>
+                    <a href="prepare-samples-elektron-digitakt-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Elektron Digitakt</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Optimize +Drive space and transfer speed.</p>
+                    </a>
+                    <a href="prepare-samples-roland-sp404.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Roland SP-404</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Double your polyphony and sample lengths.</p>
+                    </a>
+                    <a href="prepare-samples-eurorack-samplers.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Eurorack Samplers</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Sample preparation for modular sampler modules.</p>
+                    </a>
+                    <a href="batch-convert-wav-to-mono-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Batch Convert WAV Files</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Convert unlimited files at once with progress tracking.</p>
+                    </a>
+                    <a href="prepare-samples-elektron-octatrack-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Elektron Octatrack</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Optimize Flash storage and Flex Machine RAM.</p>
+                    </a>
+                    <a href="prepare-samples-elektron-model-samples-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Elektron Model:Samples</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Convert stereo to mono properly for this mono-only device.</p>
+                    </a>
+                    <a href="prepare-samples-polyend-tracker-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Polyend Tracker</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">Prep stereo samples for this mono-only tracker groovebox.</p>
+                    </a>
+                    <a href="prepare-samples-akai-mpc-mac.html"
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark hover:shadow-xl transition-all duration-300">
+                        <h3 class="font-bold text-lg mb-2 text-black dark:text-white group-hover:text-primary-light dark:group-hover:text-primary-dark transition-colors">Akai MPC</h3>
+                        <p class="text-sm text-black/70 dark:text-white/75">When to use mono on the MPC One, Live, X, and Key.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="py-24 bg-white dark:bg-black" aria-label="Frequently asked questions">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-black dark:text-white">
+                        Frequently Asked Questions
+                    </h2>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            How do I convert stereo WAV files to mono on Mac?
+                            <svg class="ph-icon text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            Download It's mono, yo! from the Mac App Store, then drag and drop your WAV or AIFF files into the app or use ⌘O to select files. Choose an output folder, pick your preferred bit depth (16-bit, 24-bit, or 32-bit float) and output format (WAV or AIFF), then convert.
+                        </p>
+                    </details>
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            Does it preserve the original sample rate?
+                            <svg class="ph-icon text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            By default, yes. The app preserves the original sample rate of your files. You can also choose to resample to 44.1 kHz, 48 kHz, or 96 kHz, and you have full control over the output bit depth: 16-bit (default), 24-bit, or 32-bit float.
+                        </p>
+                    </details>
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            Can I convert multiple files at once?
+                            <svg class="ph-icon text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            Yes. There are no file limits — convert as many files as you need. The app processes them with real-time progress tracking for each file, with automatic overwrite protection.
+                        </p>
+                    </details>
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            Does it work with Hardware Samplers like Erica Synths, Elektron Digitakt, or Roland SP-404?
+                            <svg class="ph-icon text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            Yes. It's mono, yo! is built for preparing WAV samples for the Erica Synths Sample Drum, Elektron Digitakt (which natively uses 48kHz mono files), and Roland SP-404 models (where converting kicks to mono doubles your polyphony to 32 voices).
+                        </p>
+                    </details>
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            What is the best Mac app to batch convert WAV to mono?
+                            <svg class="ph-icon text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            It's mono, yo! is a native macOS tool built for this specific task: it uses the ITU-R BS.775 algorithm for downmixing, tracks real-time progress, has zero file limits, and integrates directly with Finder without requiring bulky DAW software.
+                        </p>
+                    </details>
+                    <details
+                        class="group p-6 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/12 hover:border-primary-light dark:hover:border-primary-dark transition-all duration-300">
+                        <summary
+                            class="font-bold text-lg text-black dark:text-white cursor-pointer list-none flex justify-between items-center">
+                            How much does it cost?
+                            <svg class="ph-icon text-black/40 dark:text-white/40 group-open:rotate-180 transition-transform duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                        </summary>
+                        <p class="mt-4 text-black/70 dark:text-white/75 leading-relaxed">
+                            It's mono, yo! is available on the Mac App Store for a small one-time purchase. No ads, no in-app purchases, no subscriptions.
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black text-white py-16 border-t border-white/12">
+            <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-6 text-primary-dark">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="footer" data-umami-event-locale="en"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                Mac App Store
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                GitHub Repository
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/issues"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                Report an Issue
+                            </a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-6 text-primary-dark">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-#readme"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                Documentation
+                            </a></li>
+                        <li><a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                License
+                            </a></li>
+                        <li><a href="support.html"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                Support
+                            </a></li>
+                        <li><a href="privacy.html"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                Privacy Policy
+                            </a></li>
+                        <li><a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="footer" data-umami-event-locale="en"
+                                class="hover:text-primary-dark transition-colors duration-200 flex items-center group text-white/75">
+                                <svg class="ph-icon mr-2 text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>
+                                Download
+                            </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="mb-6 text-white/75 text-sm" id="accessibility"><strong
+                            class="text-primary-dark">Accessibility:</strong> The app supports VoiceOver, system dark
+                        mode, and status shown by icons and text. For support and feedback, see <a
+                            href="https://github.com/JarlLyng/It-s-mono-yo-/issues"
+                            class="text-primary-dark hover:opacity-80 transition-colors duration-200">GitHub Issues</a>.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/JarlLyng" aria-label="Visit IAMJARL on GitHub"
+                            class="w-12 h-12 rounded-lg bg-primary-dark flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all duration-300">
+                            <svg class="ph-icon text-xl text-black" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="container mx-auto px-6 mt-12 pt-8 border-t border-white/12 text-center text-white/60">
+                <p>Created with <span class="text-error">♥️</span> by <a
+                        href="https://iamjarl.com"
+                        class="text-primary-dark hover:opacity-80 transition-colors duration-200 font-semibold">IAMJARL</a></p>
+            <!-- Generated from iamjarl-design v1.11.1 dist/footers/its-mono-yo.html.
+                 The anchors are inlined so they are in the served HTML: Googlebot runs
+                 JavaScript but GPTBot, ClaudeBot, CCBot and PerplexityBot do not.
+                 A fragment is a snapshot; rebuild it when the registry changes. -->
+            <ij-footer app="its-mono-yo" links-label="">
+                <a slot="cross-links" href="https://echolume.iamjarl.com">Echolume</a>
+                <a slot="cross-links" href="https://its404yo.iamjarl.com">It&#39;s 404, yo!</a>
+                <a slot="cross-links" href="https://patternaut.iamjarl.com">Patternaut</a>
+                <a slot="cross-links" href="https://tonvault.iamjarl.com">TonVault</a>
+                <a slot="cross-links" href="https://madebyhuman.iamjarl.com">Made by Human</a>
+                <a slot="cross-links" href="https://iamjarl.com">All projects</a>
+            </ij-footer>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Structured data for software application -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "It's mono, yo!",
+      "alternateName": "WAV to Mono Converter",
+      "description": "macOS app to convert stereo WAV and AIFF files to mono with configurable bit depth (16/24/32-bit), sample rate conversion, and output format selection. Perfect for Erica Synths Sample Drum, hardware samplers, and music production.",
+      "operatingSystem": "macOS",
+      "applicationCategory": "AudioTool",
+      "applicationSubCategory": "Audio Converter",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.99",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "screenshot": "https://itsmonoyo.iamjarl.com/screenshots/Screenshot.webp",
+      "image": "https://itsmonoyo.iamjarl.com/screenshots/Screenshot.webp",
+      "downloadUrl": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12",
+      "installUrl": "https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12",
+      "softwareVersion": "1.4.2",
+      "datePublished": "2024-12-27",
+      "dateModified": "2026-06-03",
+      "author": {
+        "@type": "Organization",
+        "name": "IAMJARL",
+        "url": "https://iamjarl.com",
+        "sameAs": ["https://iamjarl.com", "https://github.com/JarlLyng"]
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IAMJARL",
+        "url": "https://iamjarl.com"
+      },
+      "featureList": [
+        "Configurable output bit depth: 16-bit, 24-bit, 32-bit float",
+        "WAV and AIFF input and output support",
+        "Sample rate conversion: 44.1, 48, or 96 kHz",
+        "Unlimited batch conversion with no file limits",
+        "Overwrite protection with auto-rename",
+        "Weighted multi-channel downmix (ITU-R BS.775)",
+        "Reduce Motion accessibility support",
+        "Preserves original sample rate by default",
+        "Progress tracking for each file",
+        "Keyboard shortcuts (⌘O, ESC)",
+        "IAMJARL Design System with light & dark mode",
+        "Drag and drop support"
+      ],
+      "softwareRequirements": "macOS 12.0 or later",
+      "availableOnDevice": "Mac",
+      "fileSize": "Small",
+      "license": "https://github.com/JarlLyng/It-s-mono-yo-/blob/main/LICENSE",
+      "keywords": "WAV converter, mono converter, audio converter, sample drum, erica synths, hardware sampler, music production, batch audio conversion, Mac App Store",
+      "inLanguage": "en-US",
+      "sameAs": [
+        "https://apps.apple.com/app/its-mono-yo/id6758866918",
+        "https://github.com/JarlLyng/It-s-mono-yo-"
+      ]
+    }
+    </script>
+
+    <!-- Structured data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "It's mono, yo!",
+      "url": "https://itsmonoyo.iamjarl.com",
+      "logo": "https://itsmonoyo.iamjarl.com/SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/512x512.png",
+      "description": "macOS app for converting WAV and AIFF files to mono format",
+      "foundingDate": "2024",
+      "founder": {
+        "@type": "Person",
+        "name": "Jarl",
+        "url": "https://iamjarl.com"
+      },
+      "sameAs": [
+        "https://github.com/JarlLyng/It-s-mono-yo-",
+        "https://iamjarl.com"
+      ]
+    }
+    </script>
+
+    <!-- Structured data for WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "It's mono, yo!",
+      "url": "https://itsmonoyo.iamjarl.com",
+      "description": "macOS app to convert stereo WAV and AIFF files to mono format. Perfect for Erica Synths Sample Drum, hardware samplers, and music production.",
+      "inLanguage": "en-US",
+      "publisher": {
+        "@type": "Organization",
+        "name": "IAMJARL",
+        "url": "https://iamjarl.com"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://github.com/JarlLyng/It-s-mono-yo-/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Breadcrumb structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://itsmonoyo.iamjarl.com"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured data for FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I convert stereo WAV files to mono on Mac?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Download It's mono, yo! from the Mac App Store, then drag and drop your WAV or AIFF files into the app or use ⌘O to select files. Choose an output folder, pick your preferred bit depth (16-bit, 24-bit, or 32-bit float) and output format (WAV or AIFF), then convert."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it preserve the original sample rate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By default, yes. The app preserves the original sample rate. You can also choose to resample to 44.1 kHz, 48 kHz, or 96 kHz, and select the output bit depth: 16-bit (default), 24-bit, or 32-bit float."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I convert multiple files at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. There are no file limits — convert as many files as you need. The app processes them with real-time progress tracking for each file, with automatic overwrite protection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work with Hardware Samplers like Erica Synths, Elektron Digitakt, or Roland SP-404?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. It's mono, yo! is built for preparing WAV samples for the Erica Synths Sample Drum, Elektron Digitakt (which natively uses 48kHz mono files), and Roland SP-404 models (where converting kicks to mono doubles your polyphony to 32 voices)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best Mac app to batch convert WAV to mono?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It's mono, yo! is a native macOS tool built for this specific task: it uses the ITU-R BS.775 algorithm for downmixing, tracks real-time progress, has zero file limits, and integrates directly with Finder without requiring bulky DAW software."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does it cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It's mono, yo! is available on the Mac App Store for a small one-time purchase. No ads, no in-app purchases, no subscriptions."
+          }
+        }
+      ]
+    }
+    </script>
+</body>
+
+</html>
