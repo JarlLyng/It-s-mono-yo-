@@ -1,0 +1,34 @@
+/* The home page's own additions to the design system's marketing kit (#86).
+   The kit and It's mono's identity sheet set the page: the blue-black ground, the
+   lime, JetBrains Mono and the bordered panels. This file adds only what the kit
+   has no section for, and takes every value from the tokens. */
+
+/* The FAQ: plain disclosures, readable with or without script, drawn as the same
+   bordered panels as the kit's cards. */
+.faq { display: grid; gap: var(--ij-spacing-sm); }
+.faq details {
+  background: var(--ij-color-bg-app);
+  border: var(--ij-panel-border, 1px solid var(--ij-color-border-subtle));
+  border-radius: var(--ij-radius-md);
+  padding: var(--ij-spacing-lg);
+}
+.faq summary {
+  cursor: pointer;
+  font-family: var(--ij-font-display, var(--ij-font-ui));
+  font-size: var(--ij-mkt-title-size);
+  line-height: var(--ij-mkt-title-leading);
+  color: var(--ij-color-text-primary);
+  /* Inside, or the marker sits on the panel's left border. */
+  list-style-position: inside;
+}
+.faq summary::marker { color: var(--ij-color-accent); }
+.faq details p { margin: var(--ij-spacing-md) 0 0; color: var(--ij-color-text-secondary); }
+
+/* Four assurances, not the kit's three: two a row from the kit's own breakpoint, four
+   when there is room, so none stands alone on a row of its own. */
+@media (min-width: 48rem) {
+  .ij-assurances--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 72rem) {
+  .ij-assurances--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
