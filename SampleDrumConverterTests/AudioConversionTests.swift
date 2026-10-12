@@ -351,6 +351,41 @@ final class AudioConversionTests: XCTestCase {
         XCTAssertTrue(found.allSatisfy { $0.securityScopeRoot == root })
     }
 
+    /// The file list follows Finder order, with numbers compared as numbers and
+    /// subfolders in place, however the file system enumerates them (#89).
+    func testFolderImportListsFilesInFinderOrder() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appendingPathComponent("Pack_\(UUID().uuidString)")
+        let kicks = root.appendingPathComponent("Kicks")
+        let fills = root.appendingPathComponent("Loops/Fills")
+        try fm.createDirectory(at: kicks, withIntermediateDirectories: true)
+        try fm.createDirectory(at: fills, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: root) }
+
+        // Written out of order on purpose.
+        for name in ["Kick 10.wav", "Kick 2.wav", "Kick 1.wav"] {
+            try Self.writeStereoWav(to: kicks.appendingPathComponent(name))
+        }
+        try Self.writeStereoWav(to: root.appendingPathComponent("top.wav"))
+        try Self.writeStereoWav(to: root.appendingPathComponent("Loops/Loop 1.wav"))
+        try Self.writeStereoWav(to: fills.appendingPathComponent("Fill 1.wav"))
+
+        let pack = root.lastPathComponent
+        let expected = [
+            "\(pack)/Kicks/Kick 1.wav",
+            "\(pack)/Kicks/Kick 2.wav",
+            "\(pack)/Kicks/Kick 10.wav",
+            "\(pack)/Loops/Fills/Fill 1.wav",
+            "\(pack)/Loops/Loop 1.wav",
+            "\(pack)/top.wav",
+        ]
+        XCTAssertEqual(collectAudioFiles(inFolder: root).map(\.displayName), expected)
+
+        // Adding the same folder again keeps one stable order, as the list does on a second drop.
+        let twice = sortedForDisplay(collectAudioFiles(inFolder: root) + collectAudioFiles(inFolder: root))
+        XCTAssertEqual(twice.map(\.displayName), expected.flatMap { [$0, $0] })
+    }
+
     /// Guards the parallel-conversion race fix: two inputs sharing a base name
     /// must not resolve to the same output path even before either is written.
     // MARK: - Stress / no-limits
