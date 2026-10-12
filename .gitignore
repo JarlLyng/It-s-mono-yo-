@@ -37,13 +37,13 @@ playground.xcworkspace
 # Thumbnails
 ._*
 
-# GitHub Pages files (only in gh-pages branch)
-index.html
-sitemap.xml
+# Stray site files at the repo root. The site itself lives in website/ (#74).
+/index.html
+/sitemap.xml
 
 # App Store marketing assets — local working files only.
-# The optimized .webp versions used by the site live on the gh-pages branch.
-app store images/
+# The optimized .webp versions used by the site live in website/app store images/.
+/app store images/
 
 # Secrets — never commit. App Store Connect API keys and env files.
 *.p8

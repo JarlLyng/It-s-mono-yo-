@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://itsmonoyo.iamjarl.com/sitemap.xml 
