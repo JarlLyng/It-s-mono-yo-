@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="How to prepare WAV samples for the Elektron Model:Samples on Mac. The Model:Samples is mono-only — convert your stereo library properly with batch conversion.">
+        content="How to prepare WAV samples for the Elektron Model:Samples on Mac. The Model:Samples is mono-only, so convert your stereo library properly with batch conversion.">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="How to Prepare Samples for Elektron Model:Samples (Mac Guide)">
     <meta property="og:description"
@@ -90,7 +90,7 @@
             </p>
             <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
                 <li><strong>Format:</strong> WAV (uncompressed)</li>
-                <li><strong>Channels:</strong> Mono only — stereo files are downmixed automatically</li>
+                <li><strong>Channels:</strong> Mono only (stereo files are downmixed automatically)</li>
                 <li><strong>Sample rate:</strong> 48 kHz native</li>
                 <li><strong>Bit depth:</strong> 16-bit</li>
                 <li><strong>Storage:</strong> 1 GB Flash, up to 1024 samples</li>
@@ -98,13 +98,13 @@
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Why You Should Convert Beforehand</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                The Model:Samples and the Transfer app handle stereo-to-mono conversion automatically — but the algorithm is basic, and on some Elektron devices it just <strong>takes the left channel and discards the right</strong>. If your stereo sample has hard-panned elements, those just disappear.
+                The Model:Samples and the Transfer app handle stereo-to-mono conversion automatically, but the algorithm is basic, and on some Elektron devices it just <strong>takes the left channel and discards the right</strong>. If your stereo sample has hard-panned elements, those just disappear.
             </p>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
                 Converting to mono beforehand with <strong>It's mono, yo!</strong> gives you:
             </p>
             <ol class="list-decimal list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
-                <li><strong>Proper stereo summing:</strong> Both channels are combined into a single mono signal — no lost information.</li>
+                <li><strong>Proper stereo summing:</strong> Both channels are combined into a single mono signal, with no lost information.</li>
                 <li><strong>Half the file size on your Mac:</strong> Mono WAVs are exactly 50% smaller, making transfers faster.</li>
                 <li><strong>Preview-friendly library:</strong> Your sample library on Mac matches what you will hear on hardware.</li>
                 <li><strong>Predictable workflow:</strong> No surprises when a sample sounds different on the Model:Samples than in your DAW.</li>
@@ -119,12 +119,12 @@
                 <li>Drag your stereo WAVs into the app (or a whole folder of them)</li>
                 <li>Set Output Settings to <strong>WAV / 16-bit / 48 kHz</strong> for Model:Samples native format</li>
                 <li>Choose an output folder (e.g. "Model Samples Ready")</li>
-                <li>Hit Convert, then transfer to the Model:Samples via Elektron Transfer</li>
+                <li>Press Start, then transfer to the Model:Samples via Elektron Transfer</li>
             </ol>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Sample Prep Tips for Model:Samples</h2>
             <ul class="list-disc list-inside text-black/70 dark:text-white/75 mb-8 space-y-2">
-                <li>Keep samples short — the Model:Samples has limited RAM per track. Trim silence aggressively.</li>
+                <li>Keep samples short. The Model:Samples has limited RAM per track. Trim silence aggressively.</li>
                 <li>Bake in any stereo width effects (chorus, panning) to mono <em>before</em> conversion, so the result still sounds wide.</li>
                 <li>16-bit / 48 kHz is the sweet spot. Higher bit depths just take more storage without audible benefit on this device.</li>
                 <li>If you have a stereo sample with important panned elements, mix down to mono carefully in your DAW first to preserve the balance.</li>

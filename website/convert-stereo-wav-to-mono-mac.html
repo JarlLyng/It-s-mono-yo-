@@ -102,7 +102,7 @@
                     <div class="w-10 h-10 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center flex-shrink-0 text-black font-bold">1</div>
                     <div>
                         <h3 class="font-bold text-black dark:text-white mb-1">Download the app</h3>
-                        <p class="text-black/70 dark:text-white/75">Get <strong>It's mono, yo!</strong> from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="midpage" data-umami-event-locale="en" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a>. It requires macOS 11.0 or later.</p>
+                        <p class="text-black/70 dark:text-white/75">Get <strong>It's mono, yo!</strong> from the <a href="https://apps.apple.com/app/its-mono-yo/id6758866918?pt=128512007&amp;ct=site&amp;mt=12" data-umami-event="store-click" data-umami-event-store="mac-app-store" data-umami-event-placement="midpage" data-umami-event-locale="en" class="text-primary-light dark:text-primary-dark hover:opacity-80">Mac App Store</a>. It requires macOS 12 or later.</p>
                     </div>
                 </div>
                 <div class="flex gap-4 p-6 rounded-lg bg-black/4 dark:bg-white/5 border border-black/10 dark:border-white/12">
@@ -123,22 +123,22 @@
                     <div class="w-10 h-10 rounded-lg bg-primary-light dark:bg-primary-dark flex items-center justify-center flex-shrink-0 text-black font-bold">4</div>
                     <div>
                         <h3 class="font-bold text-black dark:text-white mb-1">Convert</h3>
-                        <p class="text-black/70 dark:text-white/75">The app converts each file to mono while preserving the original sample rate and bit depth. You can track progress in real time.</p>
+                        <p class="text-black/70 dark:text-white/75">The app converts each file to mono. By default it keeps the original sample rate and writes 16-bit, and you can choose 24-bit or 32-bit float, 44.1, 48 or 96 kHz, and WAV or AIFF. A running count shows how far it has got.</p>
                     </div>
                 </div>
             </div>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">What Happens During Conversion?</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                It's mono, yo! sums the left and right channels into a single mono channel using a proper weighted downmix, so nothing is silently thrown away. The original sample rate (44.1 kHz, 48 kHz, or 96 kHz) and your chosen bit depth (16-bit, 24-bit, or 32-bit float) are preserved, and you can convert a whole folder at once while keeping its structure intact. Your files come out mono, at full quality, ready to load.
+                It's mono, yo! adds the left and right channels at half level each into a single mono channel, so nothing is silently thrown away. It keeps the original sample rate unless you choose 44.1, 48 or 96 kHz, writes the bit depth you choose (16-bit, 24-bit or 32-bit float), and can convert a whole folder at once while keeping its structure. Your files come out mono, ready to load.
             </p>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Done Right: a Real Downmix, Not Just the Left Channel</h2>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                This is the part most converters get wrong. A lot of tools, and some DAW exports, fake a mono file by simply keeping the left channel and discarding the right, which quietly throws away half of your sound. Others sum the two channels without accounting for level, so the result jumps in volume or loses punch to phase cancellation.
+                This is the part many converters get wrong. A lot of tools, and some DAW exports, fake a mono file by simply keeping the left channel and discarding the right, which quietly throws away half of your sound. Others add the two channels at full level, so the result jumps in volume or clips.
             </p>
             <p class="text-black/70 dark:text-white/75 mb-6 leading-relaxed">
-                It's mono, yo! does a proper summed downmix: both channels are combined at the right level so the mono file sounds like the stereo one, just centered. Multi-channel and surround files use the standard ITU-R BS.775 weighting rather than a naive average. For a kick, snare, or loop headed to a hardware sampler, that is the difference between a sample that still hits and one that sounds thin.
+                It's mono, yo! does a proper summed downmix: both channels are added at half level each, so the level holds and a sound panned to one side stays in. Material that is out of phase between the channels still cancels, as it does in any downmix. Multi-channel and surround files use the standard ITU-R BS.775 weighting rather than a naive average. For a kick, snare, or loop headed to a hardware sampler, that is the difference between a sample that still hits and one that sounds thin.
             </p>
 
             <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Who Is This For?</h2>
