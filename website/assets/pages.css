@@ -1,0 +1,15 @@
+/* The guides, privacy and support in the home's frame (#92). Their content is
+   Tailwind markup from the old site; this file mends where the two meet, and takes
+   every value it can from the tokens. */
+
+/* Tailwind's reset gives every link `color: inherit`, and a page's styles win over
+   a component's ::slotted ones, so the nav's Download button went lime on lime. */
+ij-nav a[slot="cta"] { color: var(--ij-color-on-accent); }
+
+/* Spacing the frame adds, which the purged Tailwind build doesn't carry. */
+.pt-12 { padding-top: 3rem; }
+.my-8 { margin-top: 2rem; margin-bottom: 2rem; }
+/* The comparison table on why-hardware-samplers-need-mono scrolls inside its own
+   frame on a phone. The class was in the markup but never in the build, so at
+   375 px the whole page scrolled sideways, before #92 as well. */
+.overflow-x-auto { overflow-x: auto; }

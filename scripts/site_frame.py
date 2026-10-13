@@ -77,7 +77,9 @@ def build_blocks():
             "         page dark like the home; html.dark turns on the Tailwind content's dark\n"
             "         colours, whose accent is already the lime. -->\n"
             '    <meta name="theme-color" content="#0D0F13">\n'
-            f"{css}\n{js}\n    <!-- /ij:head -->")
+            f"{css}\n"
+            '    <link rel="stylesheet" href="/assets/pages.css">\n'
+            f"{js}\n    <!-- /ij:head -->")
     nav = ("<!-- ij:nav -->\n"
            '<a class="ij-skip" href="#main">Skip to content</a>\n'
            "<ij-nav>\n"
