@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Give the site's guides, privacy and support the home's frame (#92).
+"""Serve the design system from the site itself, and frame the pages (#92, #94).
+
+The site loads iamjarl-design from its own origin, never from jsDelivr (#94,
+PROJECT_STANDARDS §5): this script copies the files the site uses from the
+release's GitHub tarball into website/assets/iamjarl-design@<release>/, checks
+every one against the tag's own dist/sri.json, and points every page, the home
+included, at that copy with the tag's hashes in `integrity`.
 
 The home (website/index.html) is built on the design system's marketing kit. The
 other pages keep their own words and Tailwind markup, and this script gives them
@@ -13,29 +19,39 @@ the same frame without the kit's marketing sections:
   under each guide's intro.
 
 Each part sits between <!-- ij:… --> markers, so moving to a new release is a
-rerun with a new RELEASE and new hashes. --check reports the pages that are
-out of date and changes nothing.
+rerun with a new RELEASE: a new folder and changed links, never a file edited in
+place. --check reports the pages that are out of date and changes nothing.
 
     python3 scripts/site_frame.py            # write the pages
     python3 scripts/site_frame.py --check    # exit 1 if any page is stale
 """
+import base64
+import hashlib
+import io
+import json
 import pathlib
 import re
+import shutil
 import sys
+import tarfile
 import urllib.request
 
-RELEASE = "v1.29.1"
-CDN = f"https://cdn.jsdelivr.net/gh/jarllyng/iamjarl-design@{RELEASE}"
-# From the release notes, checked against the CDN. A wrong hash blocks the file
-# with no visible cause, so copy them, never retype.
-SRI = {
-    "dist/css/tokens.css": "sha384-vobrBahZ7qeJ74LCQ/Q0e7jif8UTO/CGtv7PYdmZNRYk8A75O0IdZOyqtkfN/Yd6",
-    "dist/identity/its-mono-yo.css": "sha384-PUrVeMj2eQeYFe91NzWY4AsWELe9L+3V3BJAB2D0Uo8DqJXptm600N6p3QxOsgPV",
-    "dist/fonts/jetbrains-mono.css": "sha384-m5sTKiuLZVfgpzHrSArCLwS65xSR08vq68rr5sMbaXu7rLvz6swXTfxup+l9hQN4",
-    "dist/kit/kit.css": "sha384-yQPt3mv7QSPG7IrfOYoxTrymnkZ8Ume5VDKVeBfBBYiHPTy1tDjneOG8WrwZW3hz",
-    "dist/components/ij-nav.js": "sha384-x9Fn+y7Ku1i8bH8paRIcRE9kTRIkbDLhnD1WBw3YBMsYEpuqaTwwaUAfxUK/guk4",
-    "dist/components/ij-footer.js": "sha384-AgojJpwfV8Vqm/RF8oRImW+9cKnbde+z+aP1Hq2KgThJ6fJz9h2FMwPs5s0tR/hK",
-}
+RELEASE = "v1.32.2"
+TARBALL = f"https://github.com/JarlLyng/iamjarl-design/archive/refs/tags/{RELEASE}.tar.gz"
+BASE = f"/assets/iamjarl-design@{RELEASE}"
+# What the site loads from the design system. dist/ files are checked against the
+# tag's sri.json; the badge and the font come with them as they are.
+COPY = [
+    "badges/mac-app-store-white-en-us.svg",
+    "dist/components/ij-footer.js",
+    "dist/components/ij-nav.js",
+    "dist/css/tokens.css",
+    "dist/fonts/jetbrains-mono.css",
+    "dist/identity/its-mono-yo.css",
+    "dist/kit/kit.css",
+    "dist/kit/kit.js",
+    "fonts/jetbrains-mono-latin-wght-normal.woff2",
+]
 
 SITE = pathlib.Path(__file__).resolve().parent.parent / "website"
 GUIDES = [
@@ -54,9 +70,67 @@ GUIDES = [
 PAGES = [g for g, _ in GUIDES] + ["privacy.html", "support.html"]
 
 
+class Release:
+    """The tag's files, read from its GitHub tarball (not from jsDelivr)."""
+
+    def __init__(self):
+        with urllib.request.urlopen(TARBALL) as r:
+            data = r.read()
+        self.files = {}
+        with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as tar:
+            for m in tar.getmembers():
+                if m.isfile():
+                    self.files[m.name.split("/", 1)[1]] = tar.extractfile(m).read()
+        sri = json.loads(self.files["dist/sri.json"])
+        assert sri["version"] == RELEASE.lstrip("v"), "sri.json is for another release"
+        self.sri = sri["files"]
+
+    def text(self, path):
+        return self.files[path].decode()
+
+
+REL = None
+
+
 def fetch(path):
-    with urllib.request.urlopen(f"{CDN}/{path}") as r:
-        return r.read().decode()
+    return REL.text(path)
+
+
+def copy_release(check):
+    """Copy the files into the site, each dist/ file checked against sri.json.
+    Returns True if the copy on disk is already exactly this."""
+    dest = SITE / "assets" / f"iamjarl-design@{RELEASE}"
+    current = True
+    for path in COPY:
+        body = REL.files[path]
+        if path.startswith("dist/"):
+            got = "sha384-" + base64.b64encode(hashlib.sha384(body).digest()).decode()
+            assert got == REL.sri[path], f"{path}: hash mismatch with the tag's sri.json"
+        target = dest / path
+        if not target.exists() or target.read_bytes() != body:
+            current = False
+            if not check:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(body)
+    for old in (SITE / "assets").glob("iamjarl-design@*"):
+        if old.name != dest.name:
+            current = False
+            if not check:
+                shutil.rmtree(old)
+    return current
+
+
+def pin(s):
+    """Point every design-system link, script and image at the copy, with the tag's hash."""
+    def tag(m):
+        el, path = m.group(0), m.group(2)
+        el = el.replace(m.group(1) + path, f"{BASE}/{path}")
+        if path in REL.sri:
+            el = re.sub(r'\s*crossorigin="[^"]*"', "", el)
+            el = re.sub(r'integrity="[^"]*"', f'integrity="{REL.sri[path]}"', el)
+        return el
+    return re.sub(r'<(?:link|script|img)\b[^>]*?(?:href|src)="((?:https://cdn\.jsdelivr\.net/gh/jarllyng/iamjarl-design|/assets/iamjarl-design)@v[\d.]+/)([^"]+)"[^>]*>',
+                  tag, s, flags=re.I)
 
 
 def fragment(name, indent):
@@ -66,16 +140,17 @@ def fragment(name, indent):
 
 def build_blocks():
     css = "\n".join(
-        f'    <link rel="stylesheet" href="{CDN}/{p}"\n      integrity="{SRI[p]}" crossorigin="anonymous">'
+        f'    <link rel="stylesheet" href="{BASE}/{p}"\n      integrity="{REL.sri[p]}">'
         for p in ("dist/css/tokens.css", "dist/identity/its-mono-yo.css",
                   "dist/fonts/jetbrains-mono.css", "dist/kit/kit.css"))
     js = "\n".join(
-        f'    <script type="module" src="{CDN}/{p}"\n      integrity="{SRI[p]}" crossorigin="anonymous"></script>'
+        f'    <script type="module" src="{BASE}/{p}"\n      integrity="{REL.sri[p]}"></script>'
         for p in ("dist/components/ij-nav.js", "dist/components/ij-footer.js"))
     head = (f"<!-- ij:head {RELEASE} -->\n"
-            "    <!-- The home's design-system files (#86, #92). The identity sheet holds the\n"
-            "         page dark like the home; html.dark turns on the Tailwind content's dark\n"
-            "         colours, whose accent is already the lime. -->\n"
+            "    <!-- The home's design-system files, served from this site with the tag's\n"
+            "         hashes (#86, #92, #94). The identity sheet holds the page dark like the\n"
+            "         home; html.dark turns on the Tailwind content's dark colours, whose\n"
+            "         accent is already the lime. -->\n"
             '    <meta name="theme-color" content="#0D0F13">\n'
             f"{css}\n"
             '    <link rel="stylesheet" href="/assets/pages.css">\n'
@@ -169,15 +244,20 @@ def frame(page, s, blocks):
 
 
 def main():
+    global REL
     check = "--check" in sys.argv
+    REL = Release()
+    stale = [] if copy_release(check) else [f"assets/iamjarl-design@{RELEASE}"]
     blocks = build_blocks()
-    stale = []
-    for page in PAGES:
+    for page in PAGES + ["index.html"]:
         path = SITE / page
         before = path.read_text()
-        after = frame(page, before, blocks)
-        for name in ("head", "nav", "footer"):
-            assert f"<!-- ij:{name}" in after, f"{page}: no {name} block"
+        after = before if page == "index.html" else frame(page, before, blocks)
+        after = pin(after)
+        assert "cdn.jsdelivr.net" not in after, f"{page}: still loads from jsDelivr"
+        if page != "index.html":
+            for name in ("head", "nav", "footer"):
+                assert f"<!-- ij:{name}" in after, f"{page}: no {name} block"
         if after != before:
             stale.append(page)
             if not check:
