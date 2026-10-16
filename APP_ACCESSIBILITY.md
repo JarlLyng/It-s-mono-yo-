@@ -33,7 +33,7 @@ The website footer contains a short accessibility statement (VoiceOver, dark mod
 
 ## Kort test før du angiver
 
-1. **VoiceOver:** Slå VoiceOver til, kør gennem: åbn filer → vælg mappe → start konvertering → se færdig-skærm. Tjek at knapper og status er forståelige.
+1. **VoiceOver:** Slå VoiceOver til, kør gennem: åbn filer → vælg mappe → start konvertering → se færdig-skærm. Tjek at knapper og status er forståelige. *Kørt igennem af ejeren, bekræftet 2026-10-16 (#96).*
 2. **Dark Interface:** Skift system til mørk tilstand og tjek at UI er læsbart.
 3. **Differentiate Without Color Alone:** Tjek at du kan skelne "Pending / Converting / Completed / Failed" ud fra ikoner og tekst, ikke kun farve.
 
