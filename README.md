@@ -1,120 +1,101 @@
+<img src="SampleDrumConverter/Assets.xcassets/AppIcon.appiconset/256x256.png" alt="" width="80" height="80">
+
 # It's mono, yo!
 
-[![Co-created with AI](https://madebyhuman.iamjarl.com/badges/co-created-white.svg)](https://madebyhuman.iamjarl.com)
+Convert stereo to mono. Easy.
 
-![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
-![License](https://img.shields.io/github/license/JarlLyng/It-s-mono-yo-)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmonoyo.iamjarl.com)
+<!-- IAMJARL README store block for It's mono, yo! (en). Generated from apps.json, v1.34.0. Do not edit. -->
+<p>
+  <a href="https://apps.apple.com/app/id6758866918?pt=128512007&amp;ct=github&amp;mt=12"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.34.0/badges/mac-app-store-white-en-us.svg">
+    <img src="https://raw.githubusercontent.com/JarlLyng/iamjarl-design/v1.34.0/badges/mac-app-store-black-en-us.svg" alt="Download on the Mac App Store" width="156" height="40">
+  </picture></a>
+  <br>
+  $0.99 once · macOS 12 or later · <a href="https://itsmonoyo.iamjarl.com">itsmonoyo.iamjarl.com</a>
+</p>
 
-**Open-source** macOS app for batch converting stereo WAV and AIFF audio files to mono with configurable bit depth, sample rate, and output format. Built for hardware samplers like the Erica Synths Sample Drum, Elektron Digitakt, Roland SP-404, and Eurorack modules.
+<p>
+  <img src="appstore/1.4.5/mac-1.png" alt="Mono that keeps the whole sound. It's mono, yo! with a sample pack of 60 stereo WAV files added as a folder, ready for the next step." width="640">
+</p>
 
-[Website](https://itsmonoyo.iamjarl.com) · [Mac App Store](https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12) · [Report Issue](https://github.com/JarlLyng/It-s-mono-yo-/issues)
+It's mono, yo! batch converts stereo WAV and AIFF files to mono, for anyone loading samples onto a hardware sampler like the Erica Synths Sample Drum, an Elektron Digitakt or a Roland SP-404. It adds left and right at half level each, so a sound panned to one side isn't lost. Drop in a whole sample pack and the output keeps its folders, as WAV or AIFF, in 16-bit, 24-bit or 32-bit float, at the original sample rate or at 44.1, 48 or 96 kHz. The app has no network access: your audio is converted on your Mac, your originals are never changed, and nothing is collected.
 
-![App Screenshot](screenshots/Screenshot.png)
+## For developers
 
-## Features
+<p>
+  <a href="https://madebyhuman.iamjarl.com"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://madebyhuman.iamjarl.com/badges/co-created-white.svg">
+    <img src="https://madebyhuman.iamjarl.com/badges/co-created-black.svg" alt="Co-created with AI" width="120" height="40"></picture></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/JarlLyng/It-s-mono-yo-" alt="MIT License"></a>
+</p>
 
-- **Batch conversion** — drag in unlimited WAV and AIFF files
-- **Folder import** — drop a whole folder; sample packs convert recursively with their folder structure preserved in the output
-- **Configurable bit depth** — 16-bit (default), 24-bit, or 32-bit float output
-- **Output format** — WAV or AIFF
-- **Sample rate conversion** — keep original, or convert to 44.1 / 48 / 96 kHz
-- **Intelligent downmix** — proper stereo summing (not just left channel)
-- **Multi-channel support** — weighted downmix using ITU-R BS.775 coefficients for surround audio
-- **Overwrite protection** — existing files are auto-renamed, never replaced
-- **Drag and drop** — drop files directly into the app
-- **Keyboard shortcut** — ⌘O to open files
-- **Accessibility** — VoiceOver support, Reduce Motion, system dark mode
-- **Native macOS** — built with SwiftUI, lightweight, no internet required
+The developer half: what the app does in detail, how to build and run it, how it is put together, how to contribute, and the license.
 
-## Installation
+### Features
 
-**[Mac App Store](https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12)** — the recommended way to install with automatic updates.
+- **Batch conversion:** drag in as many WAV and AIFF files as you like. There's no file count or size limit.
+- **Folder import:** drop a whole folder, and every WAV and AIFF inside it converts, subfolders included, into the same folder structure in the output.
+- **Bit depth:** 16-bit (default), 24-bit or 32-bit float.
+- **Output format:** WAV or AIFF.
+- **Sample rate:** keep the original, or convert to 44.1, 48 or 96 kHz.
+- **Stereo downmix:** left and right are summed at half level each, not just the left channel kept.
+- **Multichannel files:** surround layouts like 5.1 are folded down with the ITU-R BS.775 weights.
+- **Overwrite protection:** if a name is taken, the new file gets a number. Nothing is replaced.
+- **Drag and drop**, or **⌘O** to open files.
+- **Accessibility:** VoiceOver, Reduce Motion and system dark mode.
+- **Native macOS:** SwiftUI, small, with no internet connection needed.
 
-### Build from source
+### Build and run
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/JarlLyng/It-s-mono-yo-.git
    ```
-2. Open `It's mono, yo!.xcodeproj` in Xcode 16+
-3. Select your development team in signing settings
-4. Build and run (⌘R)
+2. Open `It's mono, yo!.xcodeproj` in Xcode 16 or later.
+3. Pick your development team in the signing settings.
+4. Build and run with the **SampleDrumConverter** scheme (⌘R). The project was renamed, the scheme wasn't.
+5. Run the tests with **Product → Test** (⌘U).
 
-## System Requirements
+It needs macOS 12.0 or later. Releases build in Xcode Cloud; see [XCODE_CLOUD.md](XCODE_CLOUD.md).
 
-- macOS 12.0 or later
-- WAV and AIFF file format support
+### Usage
 
-## Usage
+1. Launch the app.
+2. Add audio files: click the drop area (⌘O), or drag files or folders onto it.
+3. Choose an output folder, then the format, bit depth and sample rate.
+4. Press Start.
+5. Open the converted files with "Show in Finder".
 
-1. Launch the app
-2. Add audio files — click "Select Files" (⌘O) or drag and drop
-3. Configure output settings (format, bit depth, sample rate)
-4. Choose an output folder
-5. Click Convert
-6. Open converted files with "Show in Finder"
+### Architecture
 
-## Technical Architecture
+- **Audio engine:** AudioToolbox and the ExtAudioFile API for format conversion.
+- **UI:** SwiftUI with a step-based conversion flow.
+- **Downmix:** float32 intermediate processing, with the ITU-R BS.775 weighted multichannel downmix.
+- **Concurrency:** Swift async/await. A batch converts in parallel through a bounded task group, with progress tracked per file.
+- **Website:** the source of [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com) is in `website/`. `.github/workflows/deploy-pages.yml` publishes it to GitHub Pages on every push to `main` that touches it.
 
-- **Audio engine** — AudioToolbox / ExtAudioFile API for format conversion
-- **UI** — SwiftUI with step-based conversion flow
-- **Downmix** — float32 intermediate processing, ITU-R BS.775 weighted multi-channel downmix
-- **Concurrency** — Swift async/await; batches convert in parallel via a bounded task group with per-file progress tracking
-- **Website** — the source of [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com) is in `website/`, published to GitHub Pages by `.github/workflows/deploy-pages.yml` on every push to `main` that touches it
+### Release notes
 
-## Release Notes
+Every version's changes are in [CHANGELOG.md](CHANGELOG.md), newest first.
 
-### Version 1.4.0
-- Folder import: drop or select a folder and convert an entire sample pack in one go, with the source folder structure preserved in the output
+### Contributing
 
-### Version 1.3.1
-- Parallel batch conversion (bounded task group) for faster large batches
-- Preserve headroom on 32-bit float output (no unnecessary clamping)
-- Conversion test suite now runs against a generated fixture
-- Internal cleanup: removed unused code paths
+Read [CONTRIBUTING.md](CONTRIBUTING.md) first. In short:
 
-### Version 1.3.0
-- In-app App Store review prompt after repeated successful conversions
-- Updated to IAMJARL Design System v0.5.0
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit your changes.
+4. Push and open a [pull request](https://github.com/JarlLyng/It-s-mono-yo-/compare).
 
-### Version 1.2.0
-- Configurable output bit depth (16-bit, 24-bit, 32-bit float)
-- AIFF input and output support
-- Sample rate conversion (44.1 / 48 / 96 kHz)
-- No file count or size limits
-- Overwrite protection with auto-rename
-- Weighted multi-channel downmix (ITU-R BS.775)
-- Reduce Motion accessibility support
-- Code architecture: extracted AudioConverter, OutputSettings, ReducedMotion modules
+Security issues go through [SECURITY.md](SECURITY.md), not a public issue.
 
-### Version 1.0.8
-- App Store release with sandbox and accessibility support
-- Export compliance declaration
-- VoiceOver, dark mode, accessibility URL
+### Support
 
-### Version 1.0.7
-- Semantic versioning fix
-- Removed AudioKit dependency
-- Improved mono conversion quality
-- Async/await conversion pipeline
-
-## Contributing
-
-Contributions are welcome:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes
-4. Push and open a [Pull Request](https://github.com/JarlLyng/It-s-mono-yo-/compare)
-
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
-
-## Support
-
-- **Email:** [support@iamjarl.com](mailto:support@iamjarl.com), or **Help → Send Feedback…** in the app, which fills in your app and macOS versions
-- **Community:** the [Elektronauts thread](https://www.elektronauts.com/t/small-mac-app-for-batch-converting-samples-to-mono-for-model-samples/247849), where most of the useful feedback has come from
-- **Bugs & feature requests:** [GitHub Issues](https://github.com/JarlLyng/It-s-mono-yo-/issues)
+- **Report issue:** bugs and feature requests go to [GitHub Issues](https://github.com/JarlLyng/It-s-mono-yo-/issues).
+- **Email:** [support@iamjarl.com](mailto:support@iamjarl.com), or **Help → Send Feedback…** in the app, which fills in your app and macOS versions.
+- **Community:** the [Elektronauts thread](https://www.elektronauts.com/t/small-mac-app-for-batch-converting-samples-to-mono-for-model-samples/247849), where most of the useful feedback has come from.
 - **Website:** [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com) · [support page](https://itsmonoyo.iamjarl.com/support.html)
+
+### License
+
+[MIT](LICENSE). It's mono, yo! is made by Jarl at [IAMJARL](https://iamjarl.com).
