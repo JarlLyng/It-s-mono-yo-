@@ -279,6 +279,44 @@ final class AudioConversionTests: XCTestCase {
         XCTAssertTrue(body.contains("macOS a?b#c"))
     }
 
+    // MARK: - Closing the Window (#101)
+
+    /// App Review turned down 1.4.6 because a closed window could not be
+    /// reopened from the menus. Closing it quits the app instead.
+    func testClosingTheLastWindowQuits() {
+        XCTAssertTrue(AppDelegate().applicationShouldTerminateAfterLastWindowClosed(NSApplication.shared))
+    }
+
+    /// With no batch running there is nothing to lose, so quitting does not ask.
+    func testQuittingWhileIdleDoesNotAsk() {
+        XCTAssertEqual(AppDelegate().applicationShouldTerminate(NSApplication.shared), .terminateNow)
+    }
+
+    /// The close guard stands in front of SwiftUI's window delegate, so whatever
+    /// it does not handle itself has to reach that delegate unchanged.
+    func testCloseGuardPassesEverythingElseOnToTheWindowsDelegate() {
+        final class Recorder: NSObject, NSWindowDelegate {
+            var resized = false
+            func windowDidResize(_ notification: Notification) { resized = true }
+            func windowShouldClose(_ sender: NSWindow) -> Bool { false }
+        }
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 200, height: 200),
+                              styleMask: [.titled, .closable, .resizable],
+                              backing: .buffered, defer: true)
+        window.isReleasedWhenClosed = false
+        let recorder = Recorder()
+        window.delegate = recorder
+        let closeGuard = WindowCloseGuard(appState: AppState())
+
+        closeGuard.install(on: window)
+        closeGuard.install(on: window)
+        XCTAssertTrue(window.delegate === closeGuard)
+
+        XCTAssertFalse(closeGuard.windowShouldClose(window), "the delegate's own answer still counts when idle")
+        window.setContentSize(NSSize(width: 300, height: 300))
+        XCTAssertTrue(recorder.resized)
+    }
+
     // MARK: - Overwrite Protection
 
     func testOverwriteAutoRename() {

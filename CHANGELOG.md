@@ -8,7 +8,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [1.4.6] - 2026-10
 ### Changed
-- No change to the app. This version carries a new App Store listing: subtitle, keywords, description and Support URL (#96).
+- Closing the window now quits the app. Before, the app kept running with no window and no menu item to bring it back (#101). While a batch is converting, closing the window or quitting asks first, since quitting would leave the files in progress unfinished.
+- This version also carries a new App Store listing: subtitle, keywords, description and Support URL (#96).
 
 ## [1.4.5] - 2026-10
 ### Fixed

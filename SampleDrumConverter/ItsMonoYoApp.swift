@@ -9,13 +9,15 @@ import SwiftUI
 
 @main
 struct ItsMonoYoApp: App {
-    @StateObject private var appState = AppState()
-    
+    // Quits the app when its window closes (#101). See AppDelegate.swift.
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .navigationTitle("It's mono, yo!")
-                .environmentObject(appState)
+                .environmentObject(appDelegate.appState)
+                .background(WindowReader(onWindow: appDelegate.guardClosing(of:)))
                 // The completion step does not scroll: its inner ScrollView is
                 // only the file list, capped at 150pt. Its natural height is
                 // roughly 480pt, so below this floor the "Show in Finder" and
@@ -33,7 +35,7 @@ struct ItsMonoYoApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("Open Files...") {
-                    appState.openFiles()
+                    appDelegate.appState.openFiles()
                 }
                 .keyboardShortcut("o", modifiers: .command)
             }
@@ -49,6 +51,9 @@ struct ItsMonoYoApp: App {
 }
 
 class AppState: ObservableObject {
+    /// True while a batch converts. Closing the window or quitting asks first then.
+    var isConverting = false
+
     func openFiles() {
         NotificationCenter.default.post(name: NSNotification.Name("OpenFiles"), object: nil)
     }
