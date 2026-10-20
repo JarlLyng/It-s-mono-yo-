@@ -167,6 +167,7 @@ struct ContentView: View {
     @State private var latestVersion: String = ""
     @State private var updateURL: String = ""
     @State private var outputSettings = OutputSettings()
+    @EnvironmentObject private var appState: AppState
 
     private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? AppConstants.defaultAppVersion
     
@@ -319,6 +320,7 @@ struct ContentView: View {
         .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
         // Update check disabled: app uses only user-selected file access (no network entitlement) for App Store compliance.
         .onChange(of: isProcessing) { _ in
+            appState.isConverting = isProcessing
             // Clear custom status message when processing state changes
             if isProcessing && customStatusMessage != nil {
                 clearStatusMessage()
