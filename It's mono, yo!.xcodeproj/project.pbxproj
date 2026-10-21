@@ -513,7 +513,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = SampleDrumConverter;
+				TEST_TARGET_NAME = "It's mono, yo!";
 			};
 			name = Debug;
 		};
@@ -530,7 +530,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = SampleDrumConverter;
+				TEST_TARGET_NAME = "It's mono, yo!";
 			};
 			name = Release;
 		};

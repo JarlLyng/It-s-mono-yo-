@@ -4,66 +4,62 @@
 //
 //  Created by IAMJARL on 27/12/2024.
 //
+//  These tests stay on the first screen and in the menus. They never open the
+//  file picker (NSOpenPanel), which XCUITest cannot drive reliably.
+//
 
 import XCTest
 
 final class ItsMonoYoUITests: XCTestCase {
     var app: XCUIApplication!
-    
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+    override func setUpWithError() throws {
         continueAfterFailure = false
 
-        // In UI tests it's important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
         app = XCUIApplication()
+        // Dev builds share the App Store app's container, saved window state
+        // included. Without this a run can start with no window at all.
+        app.launchArguments += ["-ApplePersistenceIgnoreState", "YES"]
         app.launch()
+
+        XCTAssertTrue(mainWindow.waitForExistence(timeout: 10), "The main window did not open")
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+        if app.state != .notRunning {
+            app.terminate()
         }
     }
 
-    func testFileSelection() throws {
-        // Test file selection button exists
-        XCTAssertTrue(app.buttons["Select WAV Files"].exists)
-        
-        // Note: Can't test actual file selection due to system dialog limitations
+    private var mainWindow: XCUIElement {
+        app.windows["It's mono, yo!"]
     }
-    
-    func testNavigationFlow() throws {
-        // Test initial state
-        XCTAssertTrue(app.staticTexts["Select WAV Files"].exists)
-        
-        // Test navigation buttons
-        let nextButton = app.buttons["Next"]
-        XCTAssertFalse(nextButton.isEnabled) // Should be disabled without files
+
+    func testFirstScreenShowsTheDropZone() throws {
+        let prompt = mainWindow.staticTexts.containing(
+            NSPredicate(format: "value BEGINSWITH 'Click to select WAV/AIFF files or folders'")
+        ).firstMatch
+        XCTAssertTrue(prompt.exists)
     }
-    
-    func testErrorStates() throws {
-        // Test error message display
-        // Note: Error messages are now displayed in the UI when conversion fails
-        // Retry functionality is available via context menu on failed files
-        // This test would require programmatic error triggering which is complex in UI tests
+
+    func testNextIsDisabledWithoutFiles() throws {
+        let nextButton = mainWindow.buttons["Next"]
+        XCTAssertTrue(nextButton.exists)
+        XCTAssertFalse(nextButton.isEnabled)
+    }
+
+    func testFileMenuHasOpenFiles() throws {
+        app.menuBars.menuBarItems["File"].click()
+        let openFiles = app.menuBars.menuItems["Open Files..."]
+        XCTAssertTrue(openFiles.waitForExistence(timeout: 2))
+        XCTAssertTrue(openFiles.isEnabled)
+        // Close the menu without choosing anything, so no file picker opens.
+        app.typeKey(.escape, modifierFlags: [])
+    }
+
+    func testClosingTheWindowQuitsTheApp() throws {
+        // Since #101 the app quits when its only window closes.
+        mainWindow.buttons[XCUIIdentifierCloseWindow].click()
+        XCTAssertTrue(app.wait(for: .notRunning, timeout: 10), "The app kept running after its window closed")
     }
 }
