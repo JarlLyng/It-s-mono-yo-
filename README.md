@@ -2,7 +2,7 @@
 
 # It's mono, yo!
 
-Convert stereo to mono. Easy.
+Batch convert stereo to mono
 
 <!-- IAMJARL README store block for It's mono, yo! (en). Generated from apps.json, v1.34.0. Do not edit. -->
 <p>
