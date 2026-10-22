@@ -6,10 +6,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
-## [1.4.6] - 2026-10
+## [1.4.6] - 2026-10-21
 ### Changed
 - Closing the window now quits the app. Before, the app kept running with no window and no menu item to bring it back (#101). While a batch is converting, closing the window or quitting asks first, since quitting would leave the files in progress unfinished.
 - This version also carries a new App Store listing: subtitle, keywords, description and Support URL (#96).
+
+### Notes
+- Live on the Mac App Store since 2026-10-21 as build 34. App Review turned down the first 1.4.6 submission because a closed window couldn't be reopened (#101); build 34 carries the fix from #102.
 
 ## [1.4.5] - 2026-10
 ### Fixed
