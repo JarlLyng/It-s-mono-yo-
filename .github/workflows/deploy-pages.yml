@@ -2,13 +2,15 @@ name: Deploy marketing site
 
 # Publishes website/ to GitHub Pages (#74). The site used to be hand-committed to
 # the gh-pages branch, which also served a stale copy of the app's source.
-# website/ is published as it is: no build step, no Jekyll.
+# website/ is published as it is, no build step and no Jekyll, except that the
+# sitemap gets its dates from git (#99).
 
 on:
   push:
     branches: [main]
     paths:
       - "website/**"
+      - "scripts/date_sitemap.py"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
@@ -29,6 +31,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: the sitemap step dates each page by its last commit.
+          fetch-depth: 0
+      # Each page's <lastmod> is the date of the last commit to its file (#99). The
+      # committed sitemap has none, so a date is never hand-written or the build date.
+      - name: Date the sitemap from git
+        run: python3 scripts/date_sitemap.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
