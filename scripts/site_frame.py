@@ -16,7 +16,9 @@ the same frame without the kit's marketing sections:
 - <ij-nav> in place of the old header, with a skip link;
 - <ij-footer> in place of the old footer, keeping the links to every guide;
 - the store fragment in place of the hand-made buttons, plus a midpage one
-  under each guide's intro.
+  under each guide's intro;
+- the release's offer fragment in every SoftwareApplication's JSON-LD, the home's
+  included, so the price there is the one the store fragment shows (#99).
 
 Each part sits between <!-- ij:… --> markers, so moving to a new release is a
 rerun with a new RELEASE: a new folder and changed links, never a file edited in
@@ -138,6 +140,20 @@ def fragment(name, indent):
     return "\n".join(indent + line for line in body.splitlines())
 
 
+def offers(s, offer):
+    """Give every SoftwareApplication the release's offer (#99). Search engines and
+    assistants read a guide on its own, so its HowTo tool needs the price as much
+    as the home's app does. JSON has no comments, so there are no markers: an
+    offer already there is replaced, which makes a rerun change nothing."""
+    # The home's app spans lines, and its offer with it.
+    s = re.sub(r'(\n( *)"offers": )\{[^{}]*\}',
+               lambda m: m[1] + json.dumps(offer, indent=2).replace("\n", "\n" + m[2]), s)
+    # A guide's tool is one line.
+    inline = "{ " + ", ".join(f"{json.dumps(k)}: {json.dumps(v)}" for k, v in offer.items()) + " }"
+    return re.sub(r'("tool": \{ "@type": "SoftwareApplication",[^{}]*?)(?:, "offers": \{[^{}]*\})? \}',
+                  lambda m: f'{m[1]}, "offers": {inline} }}', s)
+
+
 def build_blocks():
     css = "\n".join(
         f'    <link rel="stylesheet" href="{BASE}/{p}"\n      integrity="{REL.sri[p]}">'
@@ -249,12 +265,21 @@ def main():
     REL = Release()
     stale = [] if copy_release(check) else [f"assets/iamjarl-design@{RELEASE}"]
     blocks = build_blocks()
+    offer = json.loads(fetch("dist/store/its-mono-yo.en.offer.json"))
     for page in PAGES + ["index.html"]:
         path = SITE / page
         before = path.read_text()
         after = before if page == "index.html" else frame(page, before, blocks)
-        after = pin(after)
+        after = offers(pin(after), offer)
         assert "cdn.jsdelivr.net" not in after, f"{page}: still loads from jsDelivr"
+        for ld in re.findall(r'<script type="application/ld\+json">(.*?)</script>', after, re.S):
+            json.loads(ld)
+        apps = after.count('"@type": "SoftwareApplication"')
+        assert apps == after.count('"@type": "Offer"'), f"{page}: an app without the offer"
+        # The price in the JSON-LD is the one the page shows next to the badge.
+        shown = re.findall(r'<p class="ij-store-facts">([^<]*)</p>', after)
+        assert not apps or (shown and all(f"${offer['price']} " in f for f in shown)), \
+            f"{page}: the price shown isn't the offer's"
         if page != "index.html":
             for name in ("head", "nav", "footer"):
                 assert f"<!-- ij:{name}" in after, f"{page}: no {name} block"

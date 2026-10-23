@@ -76,3 +76,5 @@ Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competit
 - Sandboxed App Store build with accessibility support.
 - Privacy-first: no internet required; no tracking.
 - **The website** is in `website/` and deploys from `main` through `.github/workflows/deploy-pages.yml`. Plain HTML, no build step. Never commit to `gh-pages`, since the site no longer deploys from it (#74).
+  - The deploy writes each sitemap `<lastmod>` from git (`scripts/date_sitemap.py`, #99), so never hand-write a date.
+  - Every JSON-LD offer is the design system's offer fragment, written by `scripts/site_frame.py`. Rerun the script instead of editing an offer or price by hand.
