@@ -10,7 +10,7 @@ An open-source macOS app for **batch converting stereo WAV and AIFF audio to mon
 - **Website:** [itsmonoyo.iamjarl.com](https://itsmonoyo.iamjarl.com)
 - **App Store:** [apps.apple.com/app/its-mono-yo/id6758866918](https://apps.apple.com/app/its-mono-yo/id6758866918?mt=12)
 - **License:** [MIT](LICENSE) — open source.
-- **Price:** $0.99 USD one-time (no in-app purchases, no subscription, no ads)
+- **Price:** $1.99 USD one-time, since 2026-11-01 (no in-app purchases, no subscription, no ads)
 - **Platform:** macOS 12.0+ (SwiftUI).
 
 ## Boundaries: work only in this repo
@@ -77,4 +77,6 @@ Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competit
 - Privacy-first: no internet required; no tracking.
 - **The website** is in `website/` and deploys from `main` through `.github/workflows/deploy-pages.yml`. Plain HTML, no build step. Never commit to `gh-pages`, since the site no longer deploys from it (#74).
   - The deploy writes each sitemap `<lastmod>` from git (`scripts/date_sitemap.py`, #99), so never hand-write a date.
-  - Every JSON-LD offer is the design system's offer fragment, written by `scripts/site_frame.py`. Rerun the script instead of editing an offer or price by hand.
+  - A design-system release goes in with `scripts/iamjarl-vendor.mjs vX.Y.Z --root website` (#106). It copies the release into the site, points every page at the copy, and pastes the store buttons and every JSON-LD offer again, so never edit a price or an offer by hand.
+  - Then set `RELEASE` in `scripts/site_frame.py` to the same tag and rerun it: it keeps the guides' frame. `--check` on both scripts passes only when they agree.
+  - The README's store block is the release's `dist/store/its-mono-yo.en.readme.md`, pasted in whole.

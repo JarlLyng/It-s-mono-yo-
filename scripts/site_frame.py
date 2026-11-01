@@ -24,6 +24,12 @@ Each part sits between <!-- ij:… --> markers, so moving to a new release is a
 rerun with a new RELEASE: a new folder and changed links, never a file edited in
 place. --check reports the pages that are out of date and changes nothing.
 
+Since #106 a release goes in with the design system's own script first:
+`node scripts/iamjarl-vendor.mjs vX.Y.Z --root website` copies it, repoints
+every page and pastes the store buttons and offers, the home's included. Then
+set RELEASE to the same tag and run this one, which also writes the head
+marker's version. With different tags, the two would undo each other.
+
     python3 scripts/site_frame.py            # write the pages
     python3 scripts/site_frame.py --check    # exit 1 if any page is stale
 """
@@ -38,7 +44,7 @@ import sys
 import tarfile
 import urllib.request
 
-RELEASE = "v1.32.2"
+RELEASE = "v1.35.2"
 TARBALL = f"https://github.com/JarlLyng/iamjarl-design/archive/refs/tags/{RELEASE}.tar.gz"
 BASE = f"/assets/iamjarl-design@{RELEASE}"
 # What the site loads from the design system. dist/ files are checked against the
