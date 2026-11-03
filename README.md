@@ -56,7 +56,7 @@ The developer half: what the app does in detail, how to build and run it, how it
 4. Build and run with the **SampleDrumConverter** scheme (⌘R). The project was renamed, the scheme wasn't.
 5. Run the tests with **Product → Test** (⌘U).
 
-It needs macOS 12.0 or later. Releases build in Xcode Cloud; see [XCODE_CLOUD.md](XCODE_CLOUD.md).
+It needs macOS 12.0 or later. Releases build in Xcode Cloud.
 
 ### Usage
 

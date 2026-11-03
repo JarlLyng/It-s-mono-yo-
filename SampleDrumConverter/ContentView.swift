@@ -394,7 +394,7 @@ private struct UpdateAlertModifier: ViewModifier {
     }
 }
 
-// FileRowView til at vise individuelle filer
+// One row in the file list: the file, its format and its conversion status
 struct FileRowView: View {
     let file: AudioFile
     let onRemove: () -> Void

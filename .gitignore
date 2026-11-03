@@ -49,7 +49,6 @@ playground.xcworkspace
 *.p8
 .env
 .env.*
-!.env.example
 
 # Python virtualenv for scripts/
 .venv/
