@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D511C0DE0000000000000003 /* IAMJARLDesignTokens in Frameworks */ = {isa = PBXBuildFile; productRef = D511C0DE0000000000000002 /* IAMJARLDesignTokens */; };
+		D511C0DE0000000000000013 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = D511C0DE0000000000000012 /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D511C0DE0000000000000003 /* IAMJARLDesignTokens in Frameworks */,
+				D511C0DE0000000000000013 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +112,7 @@
 			name = "It's mono, yo!";
 			packageProductDependencies = (
 				D511C0DE0000000000000002 /* IAMJARLDesignTokens */,
+				D511C0DE0000000000000012 /* Sentry */,
 			);
 			productName = SampleDrumConverter;
 			productReference = 3BDF76072D1F625D00189ABE /* It's mono, yo!.app */;
@@ -195,6 +198,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				D511C0DE0000000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */,
+				D511C0DE0000000000000011 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3B469F0E2D1E18C2004E5EDE;
@@ -584,6 +588,14 @@
 				minimumVersion = 1.11.1;
 			};
 		};
+		D511C0DE0000000000000011 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.32.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -591,6 +603,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D511C0DE0000000000000001 /* XCRemoteSwiftPackageReference "iamjarl-design" */;
 			productName = IAMJARLDesignTokens;
+		};
+		D511C0DE0000000000000012 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D511C0DE0000000000000011 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

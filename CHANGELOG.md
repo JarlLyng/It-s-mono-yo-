@@ -6,6 +6,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 > Entries are reconstructed from release notes. Releases up to 1.3.0 predate this
 > changelog, and exact release dates for the earliest versions were not recorded.
 
+## [Unreleased]
+### Added
+- Anonymous crash reports, MetricKit diagnostics, crash-free session counts and one count when a batch finishes converting, sent to Sentry (#114). Every Mac reports as the same user, "anonymous", and no report carries an ID, a file name, a path or any audio. The app now has network access for this alone. The privacy policy, the site and the App Store label say so in the same release. [TELEMETRY.md](TELEMETRY.md) lists every field.
+
 ## [1.4.6] - 2026-10-21
 ### Changed
 - Closing the window now quits the app. Before, the app kept running with no window and no menu item to bring it back (#101). While a batch is converting, closing the window or quitting asks first, since quitting would leave the files in progress unfinished.

@@ -318,7 +318,7 @@ struct ContentView: View {
             }
         }
         .modifier(UpdateAlertModifier(showing: $showingUpdateAlert, latestVersion: $latestVersion, updateURL: $updateURL))
-        // Update check disabled: app uses only user-selected file access (no network entitlement) for App Store compliance.
+        // No update check: the App Store handles updates, and the app's only network use is anonymous telemetry (#114).
         .onChange(of: isProcessing) { _ in
             appState.isConverting = isProcessing
             // Clear custom status message when processing state changes
@@ -349,7 +349,7 @@ struct ContentView: View {
         }
     }
     
-    /// Shows user where to get updates (App Store). No network access – app uses minimal entitlements for App Review.
+    /// Shows user where to get updates (App Store). The app checks for nothing over the network itself.
     private func checkForUpdates() {
         latestVersion = ""
         updateURL = ""
@@ -986,6 +986,11 @@ struct ConvertView: View {
             isConverting = false
             isProcessing = false
             currentStep = .completed
+            // One anonymous count per batch that converted something, with the
+            // output format as its only attribute (#114).
+            if audioFiles.contains(where: { $0.status == .completed }) {
+                Telemetry.conversionFinished(format: settings.fileType)
+            }
         }
     }
 

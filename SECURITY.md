@@ -30,8 +30,8 @@ It's mono, yo! is a single-purpose audio batch converter with a deliberately sma
 
 - **No backend.** No server, no database, no API endpoints.
 - **No accounts.** No sign-up, no authentication, no password storage.
-- **No internet.** The app does not require or use a network connection; audio files are converted entirely on-device.
-- **No tracking.** No analytics in the app. The marketing website uses aggregate, cookieless analytics only.
+- **Network only for anonymous crash reports.** Audio files are converted entirely on the Mac and never leave it. The app's one network connection sends anonymous crash reports, MetricKit diagnostics and one count when a conversion finishes to Sentry, with no ID, no file names and no audio ([TELEMETRY.md](TELEMETRY.md)). It has no other network code.
+- **No tracking.** Nothing is linked to a person or an install, and nothing is stored on the Mac to measure. The marketing website uses aggregate, cookieless analytics only.
 - **Local file access only.** The app reads the audio files/folders you drop in and writes converted output (auto-renaming to avoid overwriting). Runs in the App Store sandbox.
 
 If you find a way to break any of those guarantees, I want to know.

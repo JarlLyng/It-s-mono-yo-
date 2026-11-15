@@ -43,7 +43,8 @@ The developer half: what the app does in detail, how to build and run it, how it
 - **Overwrite protection:** if a name is taken, the new file gets a number. Nothing is replaced.
 - **Drag and drop**, or **⌘O** to open files.
 - **Accessibility:** VoiceOver, Reduce Motion and system dark mode.
-- **Native macOS:** SwiftUI, small, with no internet connection needed.
+- **Native macOS:** SwiftUI, small, and it works offline.
+- **Anonymous crash reports:** the app sends crash reports, MetricKit diagnostics and one count when a conversion finishes, with no ID, no file names and no audio. [TELEMETRY.md](TELEMETRY.md) lists every field.
 
 ### Build and run
 
