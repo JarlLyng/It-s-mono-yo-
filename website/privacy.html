@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Privacy Policy for It's mono, yo!. We respect your privacy and do not collect any personal data.">
+    <meta name="description" content="Privacy Policy for It's mono, yo!. The app sends anonymous crash reports and one anonymous count, with no ID, no file names and no audio.">
     <meta name="author" content="IAMJARL">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta name="apple-itunes-app" content="app-id=6758866918">
     <meta property="og:title" content="Privacy Policy - It's mono, yo!">
-    <meta property="og:description" content="The privacy policy for It's mono, yo! We respect your privacy and do not collect any personal data.">
+    <meta property="og:description" content="The privacy policy for It's mono, yo! Anonymous crash reports and one anonymous count, with no ID, no file names and no audio.">
     <meta property="og:url" content="https://itsmonoyo.iamjarl.com/privacy.html">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://itsmonoyo.iamjarl.com/assets/og.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Privacy Policy - It's mono, yo!">
-    <meta name="twitter:description" content="The privacy policy for It's mono, yo! We respect your privacy and do not collect any personal data.">
+    <meta name="twitter:description" content="The privacy policy for It's mono, yo! Anonymous crash reports and one anonymous count, with no ID, no file names and no audio.">
     <meta name="twitter:image" content="https://itsmonoyo.iamjarl.com/assets/og.png">
 
     <title>Privacy Policy - It's mono, yo!</title>
@@ -70,24 +70,35 @@
             <h1 class="text-4xl md:text-5xl font-extrabold mb-8 text-black dark:text-white">Privacy Policy</h1>
             <div class="prose dark:prose-invert max-w-none text-black/80 dark:text-white/80">
                 <p class="text-lg mb-8">
-                    Last updated: October 15, 2026
+                    Last updated: November 15, 2026
                 </p>
 
                 <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Introduction</h2>
                 <p class="mb-6">
-                    "It's mono, yo!" ("we", "us", or "our") respects your privacy. This Privacy Policy explains that we do not collect, store, or share any of your personal information or data when you use our macOS application.
+                    "It's mono, yo!" ("we", "us", or "our") respects your privacy. This Privacy Policy explains the little the app sends: anonymous crash reports and one anonymous count, none of it linked to you, and none of it about your files.
                 </p>
 
-                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Data Collection and Usage</h2>
+                <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">What the App Sends</h2>
                 <p class="mb-6">
-                    <strong>We do not collect any personal data.</strong> The "It's mono, yo!" application operates entirely locally on your macOS device.
+                    So that we learn when a release breaks and whether the app does its job, it sends the following to <a href="https://sentry.io" class="text-primary-light dark:text-primary-dark hover:underline">Sentry</a>, a crash-reporting service, which stores it in its EU region in Germany:
                 </p>
                 <ul class="list-disc pl-6 mb-6 space-y-2">
-                    <li>We do not track your usage of the app.</li>
-                    <li>We do not collect any personal information (such as name, email, or IP address).</li>
-                    <li>We do not use any third-party analytics services.</li>
-                    <li>We do not use cookies or tracking technologies in the app.</li>
+                    <li><strong>Crash data:</strong> when the app crashes or hangs, a report of where in the app's code it happened.</li>
+                    <li><strong>Performance data:</strong> diagnostics that macOS collects about the app (MetricKit), such as hangs and heavy disk or CPU use, and whether a session ended in a crash.</li>
+                    <li><strong>Other diagnostic data:</strong> the technical context of each report, such as the app's memory use and the Mac's free memory and thermal state at the time.</li>
+                    <li><strong>Product interaction:</strong> one count each time a batch finishes converting, with the output format (WAV or AIFF) as its only detail.</li>
                 </ul>
+                <p class="mb-6">
+                    Each report carries the app version, the macOS version, the Mac model and the language setting. It does not carry:
+                </p>
+                <ul class="list-disc pl-6 mb-6 space-y-2">
+                    <li>any identifier: no installation ID, device ID or advertising ID. Every Mac reports as the same user, "anonymous", and Sentry stores no IP address;</li>
+                    <li>anything about your files: no file names, no folder paths and no audio;</li>
+                    <li>screenshots or anything else that watches what you do.</li>
+                </ul>
+                <p class="mb-6">
+                    Nothing is stored on your Mac in order to measure, and there are no cookies in the app. None of this is linked to you, used for tracking, used for advertising or sold. The code that sends it is open source, in <a href="https://github.com/JarlLyng/It-s-mono-yo-/blob/main/SampleDrumConverter/Telemetry.swift" class="text-primary-light dark:text-primary-dark hover:underline">Telemetry.swift</a>.
+                </p>
 
                 <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Local File Processing</h2>
                 <p class="mb-6">
