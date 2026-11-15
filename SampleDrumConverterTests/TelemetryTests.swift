@@ -31,6 +31,33 @@ final class TelemetryTests: XCTestCase {
         XCTAssertEqual(out.context?["device"]?["model"] as? String, "Mac14,2")
     }
 
+    func testTheAccountNameIsRedactedFromPathsAndTheRestKept() {
+        let appPath = "/Users/someone/Downloads/It's mono, yo!.app/Contents/MacOS/It's mono, yo!"
+        XCTAssertEqual(Telemetry.redactAccountName(appPath),
+                       "/Users/<user>/Downloads/It's mono, yo!.app/Contents/MacOS/It's mono, yo!")
+        // Paths outside a home folder are left alone.
+        let system = "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit"
+        XCTAssertEqual(Telemetry.redactAccountName(system), system)
+        XCTAssertEqual(Telemetry.redactAccountName("/Applications/It's mono, yo!.app"), "/Applications/It's mono, yo!.app")
+
+        let frame = Frame()
+        frame.package = appPath
+        let thread = SentryThread(threadId: 1)
+        thread.stacktrace = SentryStacktrace(frames: [frame], registers: [:])
+        let image = DebugMeta()
+        image.codeFile = appPath
+        let event = Event()
+        event.threads = [thread]
+        event.debugMeta = [image]
+
+        let out = Telemetry.anonymize(event)
+
+        XCTAssertEqual(out.threads?.first?.stacktrace?.frames.first?.package,
+                       "/Users/<user>/Downloads/It's mono, yo!.app/Contents/MacOS/It's mono, yo!")
+        XCTAssertEqual(out.debugMeta?.first?.codeFile,
+                       "/Users/<user>/Downloads/It's mono, yo!.app/Contents/MacOS/It's mono, yo!")
+    }
+
     func testMetricsKeepOnlyTheAllowedAttributes() {
         var metric = SentryMetric(
             timestamp: Date(),

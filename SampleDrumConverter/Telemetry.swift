@@ -135,7 +135,7 @@ enum Telemetry {
     }
 
     /// Covers errors, crashes, app hangs and MetricKit diagnostics: one shared
-    /// user, and no device ID or vendor-ID hash.
+    /// user, no device ID or vendor-ID hash, and no account name in a path.
     static func anonymize(_ event: Event) -> Event {
         event.user = User(userId: anonymousUser)
         if var context = event.context {
@@ -143,7 +143,22 @@ enum Telemetry {
             context["device"]?.removeValue(forKey: "id")
             event.context = context
         }
+        for exception in event.exceptions ?? [] {
+            exception.stacktrace?.frames.forEach { $0.package = $0.package.map(redactAccountName) }
+        }
+        for thread in event.threads ?? [] {
+            thread.stacktrace?.frames.forEach { $0.package = $0.package.map(redactAccountName) }
+        }
+        event.debugMeta?.forEach { $0.codeFile = $0.codeFile.map(redactAccountName) }
         return event
+    }
+
+    /// `/Users/<name>/Downloads/It's mono, yo!.app/…` becomes `/Users/<user>/…`.
+    /// An app run from the home folder carries the account name in every frame's
+    /// package and every image's path, and the name is not ours to send. The rest
+    /// of the path stays, so a crash can still be read.
+    static func redactAccountName(_ path: String) -> String {
+        path.replacingOccurrences(of: #"^/Users/[^/]+"#, with: "/Users/<user>", options: .regularExpression)
     }
 
     static func anonymize(_ metric: SentryMetric) -> SentryMetric {

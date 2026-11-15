@@ -27,7 +27,9 @@ ID as the user, as every session's `did` and on every metric, plus a hash of the
    metric. `beforeSend` drops `contexts.app.device_app_hash` and `contexts.device.id`.
    `beforeSendMetric` keeps only an allowlist of attributes, so `user.id` never leaves. Sessions
    take their `did` from the SDK's `INSTALLATION` file, which the app pins to `anonymous` before the
-   SDK starts. `sendDefaultPii` is off, and the SDK sends `infer_ip: never`. The Sentry organisation
+   SDK starts. An app run from the home folder would carry the account name in every stack frame's
+   `package` and every image's `code_file`, so `beforeSend` turns `/Users/<name>` into `/Users/<user>`
+   and keeps the rest of the path. `sendDefaultPii` is off, and the SDK sends `infer_ip: never`. The Sentry organisation
    also stores no IP addresses and scrubs these fields server-side as a safety net.
 2. **Stores nothing to measure.** No analytics ID and no "first seen" date. The pinned
    `INSTALLATION` file holds only the word `anonymous`.
