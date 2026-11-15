@@ -36,9 +36,11 @@ ID as the user, as every session's `did` and on every metric, plus a hash of the
 4. **Watches nothing.** No screenshots, view hierarchy or session replay. sentry-cocoa offers none of
    them on macOS anyway.
 5. **Says it plainly.** The [privacy policy](https://itsmonoyo.iamjarl.com/privacy.html),
-   `PrivacyInfo.xcprivacy` (Crash Data and Performance Data for App Functionality, Product
-   Interaction for Analytics, all not linked and not tracking) and the App Store label say the same
-   as this file.
+   `PrivacyInfo.xcprivacy` and the App Store label say the same as this file: Crash Data,
+   Performance Data and Other Diagnostic Data for App Functionality, and Product Interaction for
+   Analytics, none of it linked to the user or used for tracking. On the label that reads: Data Not
+   Linked to You, Diagnostics (Crash Data, Performance Data, Other Diagnostic Data) and Usage Data
+   (Product Interaction).
 
 ## Environments
 
