@@ -50,8 +50,10 @@ receipt as `development`, and builds with a sandbox receipt as `testflight`.
 - **The DSN** is not in git. Xcode Cloud reads the `SENTRY_DSN` secret on the workflow, and
   `ci_scripts/ci_post_clone.sh` writes it into `SampleDrumConverter/SentryDSN.txt` (gitignored),
   which the app bundles. `ci_scripts/ci_pre_xcodebuild.sh` stops an archive without it, so a release
-  can't ship without crash reports unnoticed. Locally, put the DSN in that file or in the scheme's
-  environment. Without one, the app runs with telemetry off.
+  can't ship without crash reports unnoticed. Locally, put the DSN in that file. **Never in the
+  scheme:** it is shared (`xcshareddata`), so its environment variables are committed, which is how a
+  DSN leaked in echolume#10. For a one-off run, `open --env SENTRY_DSN=… <app>` works too. Without a
+  DSN, the app runs with telemetry off.
 - **dSYMs:** `ci_scripts/ci_post_xcodebuild.sh` uploads them after an archive with sentry-cli,
   pinned and checked by SHA-256. It needs the `SENTRY_AUTH_TOKEN` secret, and only warns without it.
 - **After every sentry-cocoa upgrade,** repeat the envelope check: point a Debug build at a local

@@ -36,7 +36,7 @@ enum Telemetry {
 
         guard let dsn = dsn(environment: env) else {
             #if DEBUG
-            print("[Sentry] No DSN: set SENTRY_DSN in the scheme's environment, or put it in SampleDrumConverter/SentryDSN.txt (gitignored).")
+            print("[Sentry] No DSN: put it in SampleDrumConverter/SentryDSN.txt (gitignored). Not in the scheme, which is shared and committed.")
             #endif
             return
         }
@@ -83,9 +83,10 @@ enum Telemetry {
         #endif
     }
 
-    /// The DSN from the scheme's environment, or from SentryDSN.txt in the app
-    /// bundle, which Xcode Cloud writes from its SENTRY_DSN secret
-    /// (ci_scripts/ci_post_clone.sh). Never from git.
+    /// The DSN from SentryDSN.txt in the app bundle, which Xcode Cloud writes from
+    /// its SENTRY_DSN secret (ci_scripts/ci_post_clone.sh), or from a SENTRY_DSN
+    /// process variable for a one-off run (`open --env`). Never from git, and never
+    /// from the scheme: it is shared, so its environment variables are committed.
     static func dsn(environment env: [String: String], bundle: Bundle = .main) -> String? {
         var raw = env["SENTRY_DSN"]
         if raw?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true,
