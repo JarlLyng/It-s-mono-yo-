@@ -11,13 +11,13 @@ By participating in this project, you are expected to uphold general open-source
 ## How Can I Contribute?
 
 ### Reporting Bugs
-Bugs are tracked as [GitHub issues](https://github.com/JarlLyng/It-s-mono-yo-/issues). When creating an issue, please use the `bug_report.md` template provided in the repository and ensure you provide:
+Bugs are tracked as [GitHub issues](https://github.com/JarlLyng/It-s-mono-yo-/issues). Open a new issue and choose the **Bug report** form. It asks for:
 - Your macOS version.
 - Exact steps to reproduce the issue.
 - Expected behavior vs actual behavior.
 
 ### Suggesting Enhancements
-Enhancement suggestions are recorded as [GitHub issues](https://github.com/JarlLyng/It-s-mono-yo-/issues). Please use the `feature_request.md` template provided in the repository to structure your request.
+Enhancement suggestions are recorded as [GitHub issues](https://github.com/JarlLyng/It-s-mono-yo-/issues). Open a new issue and choose the **Feature request** form.
 
 ### Pull Requests (Code Contributions)
 

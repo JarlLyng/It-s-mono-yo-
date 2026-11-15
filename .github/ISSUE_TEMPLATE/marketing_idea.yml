@@ -9,7 +9,7 @@ body:
     attributes:
       value: |
         For **public-safe** marketing work only: a blog post, a community thread, a screenshot to redo, an ASO copy tweak.
-        **Anything competitive-sensitive** (positioning, pricing reasoning, channel plans that reveal an edge, competitor analysis) does **not** belong in a public issue.
+        **Anything competitive-sensitive** (positioning, pricing reasoning, channel plans that reveal an edge, competitor analysis) does **not** belong in a public issue, so leave it out.
 
   - type: textarea
     id: idea

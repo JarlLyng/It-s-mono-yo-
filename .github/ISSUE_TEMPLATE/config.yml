@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support and general questions
+    url: https://itsmonoyo.iamjarl.com/support.html
+    about: For questions about using the app, or anything that isn't a bug or a feature request.
+  - name: Security vulnerability
+    url: https://github.com/JarlLyng/It-s-mono-yo-/security/policy
+    about: Please report security issues privately, not as a public issue.
