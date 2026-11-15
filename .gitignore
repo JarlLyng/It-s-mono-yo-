@@ -77,3 +77,8 @@ CLAUDE.local.md
 .mcp.json
 GEMINI.md
 .github/copilot-instructions.md
+
+# Sentry DSN for local and Xcode Cloud builds (#114). ci_scripts/ci_post_clone.sh writes it
+# from the SENTRY_DSN secret; locally, put the DSN in this file. Never in the scheme: it is shared
+# (xcshareddata), so its environment variables are committed. That is how a DSN leaked in echolume#10.
+SampleDrumConverter/SentryDSN.txt

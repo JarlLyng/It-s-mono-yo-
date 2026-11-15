@@ -12,6 +12,11 @@ struct ItsMonoYoApp: App {
     // Quits the app when its window closes (#101). See AppDelegate.swift.
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
+    init() {
+        // Anonymous crash reports and one count, before anything else runs (#114).
+        Telemetry.start()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

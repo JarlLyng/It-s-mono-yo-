@@ -67,14 +67,14 @@ Target audience, positioning, pricing reasoning, SEO/ASO playbooks, and competit
 - In-app App Store review prompt after repeated successful conversions.
 
 ### Features that do NOT exist (common hallucination targets)
-- No internet / cloud / accounts.
+- No cloud, accounts or sync. The only network use is anonymous crash reports and one count to Sentry (#114, `TELEMETRY.md`).
 - No file count or size limits, but no audio *editing* — it converts, it doesn't edit.
 - No subscription / IAP.
 
 ## Build & conventions
 - SwiftUI, step-based conversion flow; Swift async/await with a bounded task group for parallel per-file conversion.
 - Sandboxed App Store build with accessibility support.
-- Privacy-first: no internet required; no tracking.
+- Privacy-first: works offline, no tracking. Telemetry is anonymous or it isn't sent (#114): read `TELEMETRY.md` and keep its five rules before touching `Telemetry.swift`, adding a count or upgrading sentry-cocoa.
 - **The website** is in `website/` and deploys from `main` through `.github/workflows/deploy-pages.yml`. Plain HTML, no build step. Never commit to `gh-pages`, since the site no longer deploys from it (#74).
   - The deploy writes each sitemap `<lastmod>` from git (`scripts/date_sitemap.py`, #99), so never hand-write a date.
   - A design-system release goes in with `scripts/iamjarl-vendor.mjs vX.Y.Z --root website` (#106). It copies the release into the site, points every page at the copy, and pastes the store buttons and every JSON-LD offer again, so never edit a price or an offer by hand.
