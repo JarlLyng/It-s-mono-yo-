@@ -1,0 +1,55 @@
+name: Feature request
+description: Suggest a new feature or an improvement for It's mono, yo!
+title: '[Feature] '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. It's mono, yo! is deliberately small: it converts audio files for hardware samplers, it doesn't edit them, and it works without an account. The clearer the problem you describe, the easier it is to weigh. "Not right now" is a normal answer, not a judgement of the idea.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: The situation or the snag, before any solution. Name your sampler if it matters.
+      placeholder: 'My sampler only reads files up to 44.1 kHz, and I have to…'
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Your proposed solution (optional)
+      description: If you have an idea for how to solve it, share it here.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered (optional)
+      description: Other ways you thought of, including workarounds you use today.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where would it live?
+      options:
+        - Mac app
+        - Website
+        - Documentation
+        - Other / several places
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: alignment
+    attributes:
+      label: Fit with the app
+      description: These keep requests inside what the app is for. See [CONTRIBUTING.md](https://github.com/JarlLyng/It-s-mono-yo-/blob/main/CONTRIBUTING.md).
+      options:
+        - label: It doesn't need an account or cloud storage, and doesn't send audio or files anywhere
+          required: true
+        - label: It doesn't involve a subscription, in-app purchases or ads
+          required: true
+        - label: I searched the existing issues and didn't find a duplicate
+          required: true
